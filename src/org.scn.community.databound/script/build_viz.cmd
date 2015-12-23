@@ -29,6 +29,36 @@ type ..\res\Table2D\def\header.xml ^
 .\vizDefs\Footer.xml > ^
 ..\res\Table2D\def\contribution.xml
 
+del ..\res\AdvancedDataTable\def\contribution.xml
+type ..\res\AdvancedDataTable\def\header.xml ^
+.\vizDefs\Databound.generated.xml ^
+..\res\AdvancedDataTable\def\properties.xml ^
+.\vizDefs\InitializationHeader.xml ^
+.\vizDefs\Databound.defaults.generated.xml ^
+..\res\AdvancedDataTable\def\defaults.xml ^
+.\vizDefs\Footer.xml > ^
+..\res\AdvancedDataTable\def\contribution.xml
+
+del ..\res\Pictogram\def\contribution.xml
+type ..\res\Pictogram\def\header.xml ^
+.\vizDefs\Core.generated.xml ^
+..\res\Pictogram\def\properties.xml ^
+.\vizDefs\InitializationHeader.xml ^
+.\vizDefs\Core.defaults.generated.xml ^
+..\res\Pictogram\def\defaults.xml ^
+.\vizDefs\Footer.xml > ^
+..\res\Pictogram\def\contribution.xml
+
+del ..\res\ProgressBarSet\def\contribution.xml
+type ..\res\ProgressBarSet\def\header.xml ^
+.\vizDefs\Databound.generated.xml ^
+..\res\ProgressBarSet\def\properties.xml ^
+.\vizDefs\InitializationHeader.xml ^
+.\vizDefs\Databound.defaults.generated.xml ^
+..\res\ProgressBarSet\def\defaults.xml ^
+.\vizDefs\Footer.xml > ^
+..\res\ProgressBarSet\def\contribution.xml
+
 del ..\res\ScatterPlot\def\contribution.xml
 type ..\res\ScatterPlot\def\header.xml ^
 .\vizDefs\BaseVizXY.generated.xml ^

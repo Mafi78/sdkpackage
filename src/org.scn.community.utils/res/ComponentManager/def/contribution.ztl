@@ -663,220 +663,283 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 	/**Cast to Accordion 2.0 component*/
 	org.scn.community.basics.Accordion returnAsScnAccordion (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Action Sheet Button component*/
+	/**Cast to Action Sheet Button 2.0 component*/
 	org.scn.community.basics.ActionSheetButton returnAsScnActionSheetButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Activity Viewer component*/
+	/**Cast to Activity Viewer 2.0 component*/
 	org.scn.community.basics.ActivityViewer returnAsScnActivityViewer (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Application Header component*/
+	/**Cast to Application Header 2.0 component*/
 	org.scn.community.basics.ApplicationHeader returnAsScnApplicationHeader (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Base64 Image Encoder component*/
+	/**Cast to Arrowed Line 2.0 component*/
+	org.scn.community.basics.ArrowedLine returnAsScnArrowedLine (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Base64 Image Encoder 2.0 component*/
 	org.scn.community.basics.Base64Image returnAsScnBase64Image (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Basic Business Card component*/
+	/**Cast to Basic Business Card 2.0 component*/
 	org.scn.community.basics.BasicBusinessCard returnAsScnBasicBusinessCard (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Calendar component*/
+	/**Cast to Calendar 2.0 component*/
 	org.scn.community.basics.Calendar returnAsScnCalendar (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Check Box Group component*/
+	/**Cast to Check Box Group 2.0 component*/
 	org.scn.community.basics.CheckBoxGroup returnAsScnCheckBoxGroup (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Color Picker component*/
+	/**Cast to Color Picker 2.0 component*/
 	org.scn.community.basics.ColorPicker returnAsScnColorPicker (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Date Range Scroller component*/
+	/**Cast to Date Range Scroller 2.0 component*/
 	org.scn.community.basics.DateRangeScroller returnAsScnDateRangeScroller (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Date Range Slider component*/
+	/**Cast to Date Range Slider 2.0 component*/
 	org.scn.community.basics.DateRangeSlider returnAsScnDateRangeSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Drag Drop Area component*/
+	/**Cast to Drag Drop Area 2.0 component*/
 	org.scn.community.basics.DragDropArea returnAsScnDragDropArea (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Embedded Frame component*/
+	/**Cast to Embedded Frame 2.0 component*/
 	org.scn.community.basics.EmbeddedFrame returnAsScnEmbeddedFrame (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Embedded Media component*/
+	/**Cast to Embedded Media 2.0 component*/
 	org.scn.community.basics.EmbeddedMedia returnAsScnEmbeddedMedia (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fallback Picture component*/
+	/**Cast to Fallback Picture 2.0 component*/
 	org.scn.community.basics.FallbackPicture returnAsScnFallbackPicture (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fiori App Header component*/
+	/**Cast to Fiori App Header 2.0 component*/
 	org.scn.community.basics.FioriAppHeader returnAsScnFioriAppHeader (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fiori Button component*/
+	/**Cast to Fiori Bar 2.0 component*/
+	org.scn.community.basics.FioriBar returnAsScnFioriBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Button 2.0 component*/
 	org.scn.community.basics.FioriButton returnAsScnFioriButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fiori Toolbar component*/
+	/**Cast to Fiori Input Field component*/
+	org.scn.community.basics.FioriInput returnAsScnFioriInput (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Segmented Button component*/
+	org.scn.community.basics.FioriSegmentedButton returnAsScnFioriSegmentedButton (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Slider component*/
+	org.scn.community.basics.FioriSlider returnAsScnFioriSlider (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Switch component*/
+	org.scn.community.basics.FioriSwitch returnAsScnFioriSwitch (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Toolbar 2.0 component*/
 	org.scn.community.basics.FioriToolbar returnAsScnFioriToolbar (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fish Eye component*/
+	/**Cast to Fish Eye 2.0 component*/
 	org.scn.community.basics.FishEye returnAsScnFishEye (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Gauge (Speedometer) component*/
+	/**Cast to Gauge (Speedometer) 2.0 component*/
 	org.scn.community.basics.Gauge returnAsScnGauge (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Image Carousel component*/
+	/**Cast to Image Carousel 2.0 component*/
 	org.scn.community.basics.ImageCarousel returnAsScnImageCarousel (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Kpi View component*/
+	/**Cast to Kpi Tile 2.0 component*/
+	org.scn.community.basics.KpiTile returnAsScnKpiTile (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Kpi View 2.0 component*/
 	org.scn.community.basics.KpiView returnAsScnKpiView (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Launch Pad component*/
+	/**Cast to Launch Pad 2.0 component*/
 	org.scn.community.basics.LaunchPad returnAsScnLaunchPad (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Leader Board component*/
+	/**Cast to Leader Board 2.0 component*/
 	org.scn.community.basics.LeaderBoard returnAsScnLeaderBoard (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Link component*/
+	/**Cast to Link 2.0 component*/
 	org.scn.community.basics.Link returnAsScnLink (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to List Selector component*/
+	/**Cast to List Selector 2.0 component*/
 	org.scn.community.basics.ListSelector returnAsScnListSelector (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Menu Bar (>= 1.4) component*/
-	org.scn.community.basics.MenuBar returnAsScnMenuBar (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Menu Button (>= 1.4) component*/
-	org.scn.community.basics.MenuButton returnAsScnMenuButton (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Modal Browser component*/
-	org.scn.community.basics.ModalBrowser returnAsScnModalBrowser (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Navigation Bar component*/
-	org.scn.community.basics.NavigationBar returnAsScnNavigationBar (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Notification Bar component*/
-	org.scn.community.basics.NotificationBar returnAsScnNotificationBar (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Notify component*/
-	org.scn.community.basics.Notify returnAsScnNotify (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Open Street Map (Basic) component*/
+	/**Cast to Open Street Map (Basic) 2.0 component*/
 	org.scn.community.basics.Map returnAsScnMap (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Paginator component*/
+	/**Cast to Menu Bar 2.0 component*/
+	org.scn.community.basics.MenuBar returnAsScnMenuBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Menu Button 2.0 component*/
+	org.scn.community.basics.MenuButton returnAsScnMenuButton (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Modal Browser 0.X component*/
+	org.scn.community.basics.ModalBrowser returnAsScnModalBrowser (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Navigation Bar 2.0 component*/
+	org.scn.community.basics.NavigationBar returnAsScnNavigationBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Notification Bar 2.0 component*/
+	org.scn.community.basics.NotificationBar returnAsScnNotificationBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Notify 2.0 component*/
+	org.scn.community.basics.Notify returnAsScnNotify (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Object 2.0 component*/
+	org.scn.community.basics.Object returnAsScnObject (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Paginator 2.0 component*/
 	org.scn.community.basics.Paginator returnAsScnPaginator (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Password Field component*/
+	/**Cast to Password Field 2.0 component*/
 	org.scn.community.basics.PasswordField returnAsScnPasswordField (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Progress Indicator component*/
+	/**Cast to Progress Indicator 2.0 component*/
 	org.scn.community.basics.ProgressIndicator returnAsScnProgressIndicator (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to QRCode Generator component*/
+	/**Cast to QRCode Generator 2.0 component*/
 	org.scn.community.basics.QRCode returnAsScnQRCode (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Range Slider component*/
-	org.scn.community.basics.RangeSlider returnAsScnRangeSlider (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Rating Indicator component*/
-	org.scn.community.basics.RatingIndicator returnAsScnRatingIndicator (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Road Map component*/
-	org.scn.community.basics.RoadMap returnAsScnRoadMap (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to RSSFeedReader component*/
+	/**Cast to RSSFeedReader 2.0 component*/
 	org.scn.community.basics.RSSFeedReader returnAsScnRSSFeedReader (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Segmented Button component*/
+	/**Cast to Range Slider 2.0 component*/
+	org.scn.community.basics.RangeSlider returnAsScnRangeSlider (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Rating Indicator 2.0 component*/
+	org.scn.community.basics.RatingIndicator returnAsScnRatingIndicator (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Road Map 2.0 component*/
+	org.scn.community.basics.RoadMap returnAsScnRoadMap (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Segmented Button 2.0 component*/
 	org.scn.community.basics.SegmentedButton returnAsScnSegmentedButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Slider component*/
+	/**Cast to Slider 2.0 component*/
 	org.scn.community.basics.Slider returnAsScnSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Text Area component*/
+	/**Cast to Text Area 2.0 component*/
 	org.scn.community.basics.TextArea returnAsScnTextArea (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Toggle Button component*/
+	/**Cast to TimeOut (Timer) 2.0 component*/
+	org.scn.community.basics.TimeOut returnAsScnTimeOut (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Toggle Button 2.0 component*/
 	org.scn.community.basics.ToggleButton returnAsScnToggleButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Tree component*/
+	/**Cast to Tree 2.0 component*/
 	org.scn.community.basics.Tree returnAsScnTree (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Tri State CheckBox component*/
+	/**Cast to Tri State CheckBox 2.0 component*/
 	org.scn.community.basics.TriStateCheckBox returnAsScnTriStateCheckBox (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Validated Input Field component*/
+	/**Cast to Validated Input Field 2.0 component*/
 	org.scn.community.basics.ValiInput returnAsScnValiInput (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Value Help Field component*/
+	/**Cast to Value Help Field 2.0 component*/
 	org.scn.community.basics.ValueHelpField returnAsScnValueHelpField (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to WorldTime component*/
+	/**Cast to World Time 2.0 component*/
 	org.scn.community.basics.WorldTime returnAsScnWorldTime (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Bullet Chart component*/
+	/**Cast to Advanced Data Table 2.0 component*/
+	org.scn.community.databound.AdvancedDataTable returnAsScnAdvancedDataTable (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Area Micro Chart 2.0 component*/
+	org.scn.community.databound.AreaMicroChart returnAsScnAreaMicroChart (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Bullet Chart 2.0 component*/
 	org.scn.community.databound.BulletChart returnAsScnBulletChart (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Choropleth Map component*/
+	/**Cast to Bullet Micro Chart 2.0 component*/
+	org.scn.community.databound.BulletMicroChart returnAsScnBulletMicroChart (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Choropleth Map 2.0 component*/
 	org.scn.community.databound.Choropleth returnAsScnChoropleth (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Table component*/
-	org.scn.community.databound.Table returnAsScnTable (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Data Drop Down component*/
+	/**Cast to Data Drop Down 2.0 component*/
 	org.scn.community.databound.DropDown returnAsScnDropDown (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Facet Filter component*/
+	/**Cast to Facet Filter 2.0 component*/
 	org.scn.community.databound.FacetFilter returnAsScnFacetFilter (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Hexbin Chart component*/
+	/**Cast to Facet Selector 2.0 component*/
+	org.scn.community.databound.FacetSelector returnAsScnFacetSelector (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Busy Dialog 2.0 component*/
+	org.scn.community.databound.FioriBusyDialog returnAsScnFioriBusyDialog (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Link 2.0 component*/
+	org.scn.community.databound.FioriLink returnAsScnFioriLink (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Harvey Ball Micro Chart 2.0 component*/
+	org.scn.community.databound.HarveyBallMicroChart returnAsScnHarveyBallMicroChart (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Hexbin Chart 2.0 component*/
 	org.scn.community.databound.HexBin returnAsScnHexBin (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to D3 Hierarchy component*/
+	/**Cast to D3 Hierarchy 2.0 component*/
 	org.scn.community.databound.jpd3hier returnAsScnjpd3hier (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Data Leader Board component*/
 	org.scn.community.databound.LeaderBoard returnAsScnLeaderBoard (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Location Intelligence component*/
+	/**Cast to Leaflet Map component*/
+	org.scn.community.databound.LeafletMap returnAsScnLeafletMap (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Location Intelligence 2.0 component*/
 	org.scn.community.databound.LocationIntel returnAsScnLocationIntel (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Marimekko Chart component*/
+	/**Cast to Marimekko Chart 2.0 component*/
 	org.scn.community.databound.MarimekkoChart returnAsScnMarimekkoChart (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Hierarchical Menu component*/
+	/**Cast to Multi ComboBox 0.0 component*/
+	org.scn.community.databound.MultiComboBox returnAsScnMultiComboBox (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Hierarchical Menu 1.0 component*/
 	org.scn.community.databound.MultiLevelDropDown returnAsScnMultiLevelDropDown (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Nice Chart component*/
+	/**Cast to Nice Chart 2.0 component*/
 	org.scn.community.databound.NiceChart returnAsScnNiceChart (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Projector component*/
-	org.scn.community.databound.Projector returnAsScnProjector (Component inputComponent) {* return inputComponent; *}
+	/**Cast to Pictogram component*/
+	org.scn.community.databound.Pictogram returnAsScnPictogram (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Range Slider component*/
+	/**Cast to Process Flow 2.0 component*/
+	org.scn.community.databound.ProcessFlow returnAsScnProcessFlow (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Progress Bar Set 2.0 component*/
+	org.scn.community.databound.ProgressBarSet returnAsScnProgressBarSet (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Radio Button Group 2.0 component*/
+	org.scn.community.databound.RadioButtonGroup returnAsScnRadioButtonGroup (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Data Range Slider 2.0 component*/
 	org.scn.community.databound.RangeSlider returnAsScnRangeSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Result Set Information component*/
+	/**Cast to Result Set Information 2.0 component*/
 	org.scn.community.databound.ResultSetInfo returnAsScnResultSetInfo (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Result Set Mixer component*/
+	/**Cast to Result Set Mixer 2.0 component*/
 	org.scn.community.databound.ResultSetMixer returnAsScnResultSetMixer (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Scatter Plot Chart component*/
+	/**Cast to Scatter Plot Chart 2.0 component*/
 	org.scn.community.databound.ScatterPlot returnAsScnScatterPlot (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Slider component*/
+	/**Cast to Data Slider 2.0 component*/
 	org.scn.community.databound.Slider returnAsScnSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to 2D Crosstab component*/
+	/**Cast to 2D Crosstab 2.0 component*/
 	org.scn.community.databound.Table2D returnAsScnTable2D (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Tag Cloud component*/
+	/**Cast to Data Table 2.0 component*/
+	org.scn.community.databound.Table returnAsScnTable (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Tag Cloud 2.0 component*/
 	org.scn.community.databound.tagCloud returnAsScntagCloud (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Data Top Flop Chart component*/
+	org.scn.community.databound.TopFlopChart returnAsScnTopFlopChart (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Data Top Flop component*/
 	org.scn.community.databound.TopFlop returnAsScnTopFlop (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Top FLop Chart component*/
-	org.scn.community.databound.TopFlopChart returnAsScnTopFlopChart (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to UI5 Table component*/
+	/**Cast to UI5 Table 2.0 component*/
 	org.scn.community.databound.UI5Table returnAsScnUI5Table (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Bring Your Own Data component*/
@@ -884,6 +947,9 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 
 	/**Cast to Dynamic Csv Data Source component*/
 	org.scn.community.datasource.DynCsvDataSource returnAsScnDynCsvDataSource (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Scaling Data Source 2.0 component*/
+	org.scn.community.datasource.ScalingDataSource returnAsScnScalingDataSource (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Maps component*/
 	org.scn.community.geovis.Maps returnAsScnMaps (Component inputComponent) {* return inputComponent; *}
@@ -894,14 +960,17 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 	/**Cast to (PROTOTYPE!) Application Header (OnBeforeRender) component*/
 	org.scn.community.prototypes.ApplicationHeaderO returnAsScnApplicationHeaderO (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Aps Tester component*/
-	org.scn.community.prototypes.ApsTester returnAsScnApsTester (Component inputComponent) {* return inputComponent; *}
-
 	/**Cast to Aps Tester UI5 component*/
 	org.scn.community.prototypes.ApsTesterUI5 returnAsScnApsTesterUI5 (Component inputComponent) {* return inputComponent; *}
 
+	/**Cast to Aps Tester component*/
+	org.scn.community.prototypes.ApsTester returnAsScnApsTester (Component inputComponent) {* return inputComponent; *}
+
 	/**Cast to Bullet Chart (Gen Prototype) component*/
 	org.scn.community.prototypes.BulletChartGen returnAsScnBulletChartGen (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Horizon Chart component*/
+	org.scn.community.prototypes.horizonChart returnAsScnhorizonChart (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Progress Bar Set component*/
 	org.scn.community.prototypes.ProgressSet returnAsScnProgressSet (Component inputComponent) {* return inputComponent; *}
@@ -912,68 +981,56 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 	/**Cast to (PROTOTYPE!) Sap M List component*/
 	org.scn.community.prototypes.SapMList returnAsScnSapMList (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Array Utility component*/
+	/**Cast to Array Utility 0.X component*/
 	org.scn.community.utils.Array returnAsScnArray (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Client Information component*/
+	/**Cast to Client Information 0.X component*/
 	org.scn.community.utils.ClientInformation returnAsScnClientInformation (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Collection Utility component*/
+	/**Cast to Collection Utility 0.X component*/
 	org.scn.community.utils.Collection returnAsScnCollection (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Component Manager component*/
+	/**Cast to Component Manager 0.X component*/
 	org.scn.community.utils.ComponentManager returnAsScnComponentManager (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Custom Css Collector component*/
+	/**Cast to Custom Css Collector 0.X component*/
 	org.scn.community.utils.CustomCssCollector returnAsScnCustomCssCollector (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Debugger Code Inspector component*/
+	/**Cast to Data Source Helper 2.0 component*/
+	org.scn.community.utils.DataSourceHelper returnAsScnDataSourceHelper (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Debugger Code Inspector 0.X component*/
 	org.scn.community.utils.Debugger returnAsScnDebugger (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Flow Layouter component*/
+	/**Cast to Flow Layouter 0.X component*/
 	org.scn.community.utils.FlowLayouter returnAsScnFlowLayouter (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Json Object component*/
 	org.scn.community.utils.JsonObject returnAsScnJsonObject (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Math Utility component*/
+	/**Cast to Math Utility 0.X component*/
 	org.scn.community.utils.Math returnAsScnMath (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Open Url Inplace component*/
+	/**Cast to Open Url Inplace 0.X component*/
 	org.scn.community.utils.OpenUrlInplace returnAsScnOpenUrlInplace (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Open Window by Post component*/
+	/**Cast to Open Window by Post 0.X component*/
 	org.scn.community.utils.OpenWindowPost returnAsScnOpenWindowPost (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to PDF Print component*/
+	/**Cast to PDF Print 2.0 component*/
 	org.scn.community.utils.PdfPrint returnAsScnPdfPrint (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Post Response Parser component*/
+	/**Cast to Post Response Parser 2.0 component*/
 	org.scn.community.utils.PostResponseParser returnAsScnPostResponseParser (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Real Date component*/
+	/**Cast to Real Date 0.X component*/
 	org.scn.community.utils.RealDate returnAsScnRealDate (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Simple Date component*/
+	/**Cast to Simple Date 0.X component*/
 	org.scn.community.utils.SimpleDate returnAsScnSimpleDate (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Accordion 2.0 component*/
-	org.scn.community.basics.Accordion returnAsScnAccordion (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Activity Viewer component*/
-	org.scn.community.basics.ActivityViewer returnAsScnActivityViewer (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Aps Tester component*/
-	org.scn.community.prototypes.ApsTester returnAsScnApsTester (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Aps Tester UI5 component*/
-	org.scn.community.prototypes.ApsTesterUI5 returnAsScnApsTesterUI5 (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Bullet Chart (Gen Prototype) component*/
-	org.scn.community.prototypes.BulletChartGen returnAsScnBulletChartGen (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Json Object component*/
-	org.scn.community.utils.JsonObject returnAsScnJsonObject (Component inputComponent) {* return inputComponent; *}
+	/**Cast to WebSocket Implementation 0.X component*/
+	org.scn.community.utils.WSPusher returnAsScnWSPusher (Component inputComponent) {* return inputComponent; *}
 
 
 }

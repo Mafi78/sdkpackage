@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 import org.scn.community.defgenerator.ParamSimpleSpec;
 import org.scn.community.defgenerator.ZtlAndAps;
 import org.scn.community.spec.SpecificationReader;
+import org.scn.community.spec.orgin.OrginSpec;
 import org.scn.community.utils.Helpers;
 
 public class Component {
@@ -65,6 +67,10 @@ public class Component {
 	private String icon;
 
 	private String path;
+	
+	private HashMap<String, String> dafaultValues = new HashMap<String, String>();
+
+	private boolean databound; 
 
 	@SuppressWarnings("null")
 	Component(File contributionXml) {
@@ -113,7 +119,7 @@ public class Component {
 			if (localName.equals("component")) {
 				setComponent(reader);
 			} else if (localName.equals("property")) {
-				currentProperty = new Property(reader, this.name);
+				currentProperty = new Property(reader, this.name, this.contributionXml);
 				this.properties.add(currentProperty);
 			} else if (localName.equals("possibleValue")) {
 				currentProperty.addValue(reader);
@@ -123,6 +129,12 @@ public class Component {
 
 				if (property != null) {
 					property.setDefaultValue(reader);
+				} else {
+					try {
+						dafaultValues.put(attributeValue, reader.getElementText());
+					} catch (XMLStreamException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			}
 
@@ -388,6 +400,11 @@ public class Component {
 		this.title = reader.getAttributeValue("", "title");
 		this.tooltip = reader.getAttributeValue("", "tooltip");
 		this.group = reader.getAttributeValue("", "group");
+		String databoundV = reader.getAttributeValue("", "databound");
+		if(databoundV== null) {
+			this.databound = false;
+		} else { this.databound = true; };
+		
 		this.icon = reader.getAttributeValue("", "icon");
 		
 		// special code for filter in ChangeLog components
@@ -439,6 +456,56 @@ public class Component {
 			// TODO Auto-generated catch block
 
 		}
+	}
+
+	public String[] toSpec20() {
+		String templateComp = Helpers.resource2String(OrginSpec.class, "spec.component.json");
+		String templateAbout = Helpers.resource2String(OrginSpec.class, "spec.about.json");
+		String templateSpec = Helpers.resource2String(OrginSpec.class, "spec.specification.json");
+		String templateZtl = Helpers.resource2String(OrginSpec.class, "spec.contribution.ztl");
+
+		templateComp = templateComp.replace("%COMPONENT_NAME%", this.name);
+		templateComp = templateComp.replace("%COMPONENT_TITLE%", this.title);
+		templateComp = templateComp.replace("%COMPONENT_GROUP%", this.group);
+		templateComp = templateComp.replace("%COMPONENT_TOOLTIP%", this.tooltip != "" ? this.tooltip : this.title);
+		String shortPackage = this.packageName.replace("org.scn.community.", "").replace(".","");
+		templateComp = templateComp.replace("%COMPONENT_PACKAGE%", shortPackage);
+		templateComp = templateComp.replace("%COMPONENT_TYPE%", this.handlerType);
+		
+		templateComp = templateComp.replace("%COMPONENT_DATABOUND%", ""+this.databound);
+		
+		templateComp = templateComp.replace("%COMPONENT_WIDTH%", this.dafaultValues.get("WIDTH"));
+		templateComp = templateComp.replace("%COMPONENT_HEIGHT%", this.dafaultValues.get("HEIGHT"));
+		
+		templateAbout = templateAbout.replace("%COMPONENT_NAME%", this.name);
+		templateAbout = templateAbout.replace("%COMPONENT_TITLE%", this.title);
+		templateAbout = templateAbout.replace("%COMPONENT_TOOLTIP%", this.tooltip != "" ? this.tooltip : this.title);
+
+		for (Property property : this.properties) {
+			String propSpec = property.toSpec20();
+			if (property.visible.equals("false")) {
+				templateSpec = templateSpec.replace("%HIDDEN_PROPERTY_ENTRY%", propSpec + ",\r\n" + "%HIDDEN_PROPERTY_ENTRY%");
+			} else {
+				if (property.type.equals("ScriptText")) {
+					templateSpec = templateSpec.replace("%EVENT_ENTRY%", propSpec + ",\r\n" + "%EVENT_ENTRY%");
+				} else {
+					templateSpec = templateSpec.replace("%VISIBLE_PROPERTY_ENTRY%", propSpec + ",\r\n" + "%VISIBLE_PROPERTY_ENTRY%");
+				}
+			}
+		}
+		
+		for (ZtlFunction function : this.functions) {
+			String html = function.toHtml();
+			String shortHtml = function.toSpec20();
+			templateZtl = templateZtl.replace("%FUNCTION_ENTRY_LIST%", shortHtml + "\r\n\t" + "%FUNCTION_ENTRY_LIST%");
+		}
+
+		templateSpec = templateSpec.replace("%VISIBLE_PROPERTY_ENTRY%", "");
+		templateSpec = templateSpec.replace("%HIDDEN_PROPERTY_ENTRY%", "");
+		templateSpec = templateSpec.replace("%EVENT_ENTRY%", "");
+		templateZtl = templateZtl.replace("%FUNCTION_ENTRY_LIST%", "");
+
+		return new String[] {templateComp, templateSpec, templateAbout, templateZtl};
 	}
 
 	public String toHtml(String iFileName) {
@@ -527,7 +594,7 @@ public class Component {
 		
 		return template;
 	}
-
+	
 	public Properties toProperties() {
 		SortedProperties props = new SortedProperties();
 
@@ -548,20 +615,30 @@ public class Component {
 			props.put("Ztl Function " + function.name, propertyValue);
 		}
 
-		// read all files in RES
+		boolean hasSpec = new File(contributionXml.getParentFile().getParentFile().getAbsolutePath() + File.separator + "spec").exists();
+		boolean isComponentManager = this.name.equals("ComponentManager");
+		
 		File[] resFiles = Helpers.listFiles(contributionXml.getParentFile().getParentFile().getAbsolutePath());
+		
 		for (File file : resFiles) {
 			String file2String = Helpers.file2String(file);
 			if(!file.isDirectory()) {
+				if(file.getName().endsWith("Loader.js") || file.getName().endsWith("Spec.js")) {
+					continue;
+				}
 				props.put("Resource " + file.getParentFile().getName() + " - " +file.getName(), file2String.length() + ";" + Helpers.hashString(file2String));	
 			}
 		}
 		
-		resFiles = Helpers.listFiles(contributionXml.getParentFile().getParentFile().getAbsolutePath() + File.separator + "def");
-		for (File file : resFiles) {
-			String file2String = Helpers.file2String(file);
-			if(!file.isDirectory()) {
-				props.put("Resource " + file.getParentFile().getName() + " - " +file.getName(), file2String.length() + ";" + Helpers.hashString(file2String));	
+		// do not monitor def filder in case it is fully generated
+		if(!hasSpec && !isComponentManager) {
+			// read all files in RES
+			resFiles = Helpers.listFiles(contributionXml.getParentFile().getParentFile().getAbsolutePath() + File.separator + "def");
+			for (File file : resFiles) {
+				String file2String = Helpers.file2String(file);
+				if(!file.isDirectory()) {
+					props.put("Resource " + file.getParentFile().getName() + " - " +file.getName(), file2String.length() + ";" + Helpers.hashString(file2String));	
+				}
 			}
 		}
 		
@@ -583,6 +660,9 @@ public class Component {
 			
 			resFiles = Helpers.listFiles(parentFolder, filter);
 			for (File file : resFiles) {
+				if(file.isDirectory()) {
+					continue;
+				}
 				String file2String = Helpers.file2String(file);
 
 				int indexOfTimestamp = file2String.indexOf("/*%TIMESTAMP-START%*/");
@@ -797,6 +877,9 @@ public class Component {
 			}
 			return false;
 		}
+	}
+	public String getName() {
+		return this.name;
 	};
 	
 }

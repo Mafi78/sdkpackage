@@ -16,10 +16,21 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
+define([],
+function() {
 
-(function() {
+	var spec = {
+		id: "Accordion",
+		name: "basics.Accordion",
+		requireName: "basicsaccordion",
+		fullComponentName: "org.scn.community.basics.Accordion",
+		fullComponentPackage: "org.scn.community.basics/res/Accordion",
+		script: "org.scn.community.basics/res/Accordion/Accordion",
+		scriptSpec: "org.scn.community.basics/res/Accordion/AccordionSpec",
+		min: false
+	};
 
-	org_scn_community_require.knownComponents.basics.Accordion.spec = 
+	spec.spec = 
 {
   "cleanAll": {
     "opts": {
@@ -42,7 +53,7 @@
   "defaultImage": {
     "opts": {
       "apsControl": "text",
-      "cat": "Image",
+      "cat": "Display-Image",
       "desc": "Default Image",
       "noAps": true,
       "noZtl": false,
@@ -68,7 +79,7 @@
             "mode": "ztl",
             "type": "String"
           },
-          "sequence": "key,text,url,parentKey",
+          "sequence": "parentKey,key,text,url",
           "text": {
             "desc": "Given Text",
             "type": "String"
@@ -102,7 +113,7 @@
       "ztlType": "DoubleArray"
     },
     "type": "String",
-    "value": "[]",
+    "value": "[{\"parentKey\":\"ROOT\",\"key\":\"SECTION1\",\"leaf\":false,\"text\":\"First Section\"},{\"parentKey\":\"ROOT\",\"key\":\"SECTION2\",\"leaf\":false,\"text\":\"Second Section\"},{\"parentKey\":\"ROOT\",\"key\":\"SECTION3\",\"leaf\":false,\"text\":\"Third Section\"},{\"parentKey\":\"SECTION1\",\"key\":\"SECTION1_ITEM\",\"leaf\":true,\"text\":\"Item 1\"},{\"parentKey\":\"SECTION1\",\"key\":\"SECTION1_ITEM1\",\"leaf\":true,\"text\":\"Item 2\"},{\"parentKey\":\"SECTION2\",\"key\":\"SECTION2_ITEM\",\"leaf\":true,\"text\":\"Item 2/1\"},{\"parentKey\":\"SECTION2\",\"key\":\"SECTION2_ITEM1\",\"leaf\":true,\"text\":\"Item 2/2\"},{\"parentKey\":\"SECTION2\",\"key\":\"SECTION2_ITEM2\",\"leaf\":true,\"text\":\"Item 2/3\"},{\"parentKey\":\"SECTION3\",\"key\":\"SECTION3_ITEM\",\"leaf\":true,\"text\":\"Item 3/1\"}]",
     "visible": true
   },
   "expandedKey": {
@@ -123,15 +134,16 @@
   "imageSize": {
     "opts": {
       "apsControl": "combobox",
-      "cat": "Image",
+      "cat": "Display-Image",
+      "choiceType": "ImageSize",
       "desc": "Size of the Image",
       "options": [
         {
-          "key": "16px",
+          "key": "Size_16px",
           "text": "16x16 pixels"
         },
         {
-          "key": "32px",
+          "key": "Size_32px",
           "text": "32x32 pixels"
         }
       ],
@@ -140,20 +152,44 @@
       "ztlType": "Choice"
     },
     "type": "String",
-    "value": "16px",
+    "value": "Size_16px",
     "visible": true
   },
   "maxSectionHeight": {
     "opts": {
       "apsControl": "spinner",
-      "cat": "Image",
+      "cat": "Display-Section",
       "desc": "Max Height for Section",
       "tooltip": "Max Height for Section",
       "ztlFunction": "",
-      "ztlType": "String"
+      "ztlType": "int"
     },
     "type": "int",
-    "value": "200",
+    "value": 200,
+    "visible": true
+  },
+  "memberDisplay": {
+    "opts": {
+      "apsControl": "combobox",
+      "cat": "Display-Members",
+      "choiceType": "MemberDisplay",
+      "desc": "Member Display",
+      "options": [
+        {
+          "key": "Text",
+          "text": "Text Only"
+        },
+        {
+          "key": "Text_Key",
+          "text": "Text (Key)"
+        }
+      ],
+      "tooltip": "Member Display",
+      "ztlFunction": "",
+      "ztlType": "Choice"
+    },
+    "type": "String",
+    "value": "Text",
     "visible": true
   },
   "onFirstExpand": {
@@ -188,18 +224,32 @@
       "noAps": true,
       "noZtl": false,
       "tooltip": "Selected Key",
-      "ztlFunction": "",
+      "ztlFunction": "-get",
       "ztlType": "String"
     },
     "type": "String",
-    "value": "-get",
+    "value": "",
+    "visible": false
+  },
+  "supportedContentNotation": {
+    "opts": {
+      "apsControl": "text",
+      "cat": "Internal",
+      "desc": "Supported Content Notation",
+      "noAps": true,
+      "noZtl": false,
+      "tooltip": "Supported Content Notation",
+      "ztlFunction": "-get",
+      "ztlType": "shared.ContentNotation"
+    },
+    "type": "String",
+    "value": "PARENT_CHILD_TEXT_URL",
     "visible": false
   },
   "withImage": {
-    "onSet": "flattenData",
     "opts": {
       "apsControl": "checkbox",
-      "cat": "Image",
+      "cat": "Display-Image",
       "desc": "Use Images",
       "tooltip": "Use Images",
       "ztlFunction": "",
@@ -211,7 +261,10 @@
   }
 };
 
-	org_scn_community_require.knownComponents.basics.Accordion.specAbout = 
+	spec.specInclude = 
+{};
+
+	spec.specAbout = 
 {
   "description": "Accordion - Dynamic List of Entries",
   "icon": "Accordion.png",
@@ -228,7 +281,7 @@
   ]
 };
 
-	org_scn_community_require.knownComponents.basics.Accordion.specComp = 
+	spec.specComp = 
 {
   "databound": false,
   "extension": "Component",
@@ -237,6 +290,7 @@
   "height": "600",
   "id": "Accordion",
   "package": "basics",
+  "parentControl": "sap.zen.commons.layout.AbsoluteLayout",
   "require": [{
     "id": "common_basics",
     "space": "known"
@@ -246,4 +300,5 @@
   "width": "260"
 };
 
-})();// End of closure
+	return spec;
+});// End of closure

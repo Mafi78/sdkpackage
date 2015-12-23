@@ -37,21 +37,35 @@ class org.scn.community.prototypes.ApsTester extends org.scn.community.shared.Co
 	/**
 	 * Gets Simple Color Property
 	 */	
-	Color getColorExample() {*
+	String getColorExample() {*
 		return this.colorExample;
 	*}
 
 	/**
-	 * Sets Simple Choice Property
+	 * Sets Simple Choice Property by String
 	 */	
-	void setComboboxExample( /**Simple Choice*/ String comboboxExample){*
+	void setComboboxExampleByString( /**Simple Choice*/ String comboboxExample){*
 		this.comboboxExample = comboboxExample;
 	*}
 
 	/**
-	 * Gets Simple Choice Property
+	 * Gets Simple Choice Property as String
 	 */	
-	String getComboboxExample() {*
+	String getComboboxExampleAsString() {*
+		return this.comboboxExample;
+	*}
+	
+	/**
+	 * Sets Simple Choice Property by Choice Option
+	 */	
+	void setComboboxExample( /**Simple Choice*/ org_scn_community_shared_Enumfield comboboxExample){*
+		this.comboboxExample = comboboxExample;
+	*}
+	
+	/**
+	 * Gets Simple Choice Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getComboboxExample() {*
 		return this.comboboxExample;
 	*}
 
@@ -191,6 +205,582 @@ class org.scn.community.prototypes.ApsTester extends org.scn.community.shared.Co
 	*}
 
 	/**
+	 * Gets Buttons As JSON String
+	 */	
+	String getButtonsAsJSON() {*
+		var jsonObject = JSON.parse(this.doublearray);
+		return JSON.stringify(jsonObject, null, 4);
+	*}
+	
+	/**
+	 * Sets the Text for Button keys<br/>
+	 */
+	void setButtonTexts (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Text */ String text
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].text = text;
+					break;
+				}
+			}
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Text for Button Key<br/>
+	 */
+	void setButtonText (
+			/**/ String key,
+			/**/ String text
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].text = text;
+				break;
+			}
+		}
+
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Text for Button Key<br/>
+	 */
+	String getButtonText (
+			/**/ String key
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].text;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Image for Button keys<br/>
+	 */
+	void setButtonImages (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Image */ String image
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].image = image;
+					break;
+				}
+			}
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Image for Button Key<br/>
+	 */
+	void setButtonImage (
+			/**/ String key,
+			/**/ String image
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].image = image;
+				break;
+			}
+		}
+
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Image for Button Key<br/>
+	 */
+	String getButtonImage (
+			/**/ String key
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].image;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Selected for Button keys<br/>
+	 */
+	void setButtonSelecteds (
+			/**/ String keys,
+			/**/ String separator
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].selected = false;
+			
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].selected = true;
+					break;
+				}
+			}
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Selected for Button Key<br/>
+	 */
+	void setButtonSelected (
+			/**/ String key,
+			/**/ boolean selected
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].selected = selected;
+				break;
+			}
+		}
+
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+		
+	/**
+	 * Clean all Selected of Button keys<br/>
+	 */
+	void cleanAllButtonSelecteds (
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].selected = false;
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Selected for Button Key<br/>
+	 */
+	String getButtonSelected (
+			/**/ String key
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		var value = undefined;
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].selected;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+
+	/**
+	 * Returns the Selected keys<br/>
+	 */
+	org.scn.pack.KeyArray getButtonSelectedKeysArray (
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return [];
+		}
+		
+		var elementsJson = JSON.parse(this.doublearray);
+		
+		var newElementsJson = [];
+		
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].selected == true) {
+				newElementsJson.push(elementsJson[i]);
+			}
+		}
+		
+		return newElementsJson;
+	*}
+	/**
+	 * Sets the Text for Item keys<br/>
+	 */
+	void setItemTexts (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Text */ String text
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].text = text;
+					break;
+				}
+			}
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Text for Item Key<br/>
+	 */
+	void setItemText (
+			/**/ String key,
+			/**/ String text
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].text = text;
+				break;
+			}
+		}
+
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Text for Item Key<br/>
+	 */
+	String getItemText (
+			/**/ String key
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].text;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Image for Item keys<br/>
+	 */
+	void setItemImages (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Image */ String image
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].image = image;
+					break;
+				}
+			}
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Image for Item Key<br/>
+	 */
+	void setItemImage (
+			/**/ String key,
+			/**/ String image
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].image = image;
+				break;
+			}
+		}
+
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Image for Item Key<br/>
+	 */
+	String getItemImage (
+			/**/ String key
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].image;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Selected for Item keys<br/>
+	 */
+	void setItemSelecteds (
+			/**/ String keys,
+			/**/ String separator
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].selected = false;
+			
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].selected = true;
+					break;
+				}
+			}
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Selected for Item Key<br/>
+	 */
+	void setItemSelected (
+			/**/ String key,
+			/**/ boolean selected
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].selected = selected;
+				break;
+			}
+		}
+
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+
+		
+	/**
+	 * Clean all Selected of Item keys<br/>
+	 */
+	void cleanAllItemSelecteds (
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+	
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].selected = false;
+		}
+		
+		this.doublearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Selected for Item Key<br/>
+	 */
+	String getItemSelected (
+			/**/ String key
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.doublearray);
+
+		var value = undefined;
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].selected;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+
+	/**
+	 * Returns the Selected keys<br/>
+	 */
+	org.scn.pack.KeyArray getItemSelectedKeysArray (
+			) 
+	{*
+		if (this.doublearray === undefined || this.doublearray === "" || this.doublearray === "<delete>"){
+			return [];
+		}
+		
+		var elementsJson = JSON.parse(this.doublearray);
+		
+		var newElementsJson = [];
+		
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].selected == true) {
+				newElementsJson.push(elementsJson[i]);
+			}
+		}
+		
+		return newElementsJson;
+	*}
+
+
+	/**
 	 * Sets Color Palette Property
 	 */	
 	void setPaletteExample( /**Color Palette*/ String paletteExample){*
@@ -220,8 +810,8 @@ class org.scn.community.prototypes.ApsTester extends org.scn.community.shared.Co
 			/**Text for the button*/String text, 
 			/**Given image for the button*/optional String image, 
 			/**Selection state of the button*/optional boolean selected
-			) {*		
-		
+			) {*
+
 		if(image == undefined) { image = "";}
 		if(selected == undefined) { selected = false;}
 		
@@ -232,13 +822,13 @@ class org.scn.community.prototypes.ApsTester extends org.scn.community.shared.Co
 			image:image, 
 			selected:selected
 			};
-	
+
 		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
 			this.singlearray = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.singlearray);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -246,11 +836,11 @@ class org.scn.community.prototypes.ApsTester extends org.scn.community.shared.Co
 				break;
 			}
 		}
-		
+
 		if(!alreadyFound) {
 			elementsJson.push(itemDef);
 		}
-	
+
 		this.singlearray = JSON.stringify(elementsJson);
 	*}
 	
@@ -266,14 +856,14 @@ class org.scn.community.prototypes.ApsTester extends org.scn.community.shared.Co
 	 */
 	void removeButton (
 			String key
-			) {*		
-		
+			) {*
+
 		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
 			this.singlearray = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.singlearray);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -291,6 +881,401 @@ class org.scn.community.prototypes.ApsTester extends org.scn.community.shared.Co
 
 		this.singlearray = JSON.stringify(elementsJson);
 	*}
+
+	/** Insert a root element by index.
+
+ 	<example>
+	You want to insert a root element
+	<code>
+	APSTESTER.insertButton(index [int], key [String], text [String], image [String], selected [boolean]);<br>
+	<br>
+	</code>
+	</example>
+	 */
+	void insertButton (
+			/**Index to Insert (0-based)*/int insertionIndex0based,
+			/**Unique key of this button*/String key, 
+			/**Text for the button*/String text, 
+			/**Given image for the button*/optional String image, 
+			/**Selection state of the button*/optional boolean selected
+			) {*
+
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			this.singlearray = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.singlearray);
+		var newElementsJson = [];
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			text:text, 
+			image:image, 
+			selected:selected
+		};
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (i == insertionIndex0based) {
+				newElementsJson.push(itemDef);
+			}
+
+			newElementsJson.push(elementsJson[i]);
+		}
+
+		this.singlearray = JSON.stringify(newElementsJson);
+	*}
+
+	/**
+	 * Updates given Button<br/>
+	 */
+	void updateButton (
+			/**Unique key of this button*/String key, 
+			/**Text for the button*/String text, 
+			/**Given image for the button*/optional String image, 
+			/**Selection state of the button*/optional boolean selected
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			this.singlearray = "[]";
+		}
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			text:text, 
+			image:image, 
+			selected:selected
+		};
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == elementKey) {
+				elementsJson[i] = itemDef;
+				break;
+			}
+		}
+
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Returns Key at given Index<br/>
+	 */
+	String getButtonAtIndex (
+			/**Index to pick the key*/ int index0based
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			this.singlearray = "[]";
+		}
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (index0based == i) {
+				return elementsJson[i].key;
+			}
+		}
+
+		return "";
+	*}
+
+	/**
+	 * Gets Buttons As JSON String
+	 */	
+	String getButtonsAsJSON() {*
+		var jsonObject = JSON.parse(this.singlearray);
+		return JSON.stringify(jsonObject, null, 4);
+	*}
+	
+	/**
+	 * Sets the Text for Button keys<br/>
+	 */
+	void setButtonTexts (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Text */ String text
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].text = text;
+					break;
+				}
+			}
+		}
+		
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Text for Button Key<br/>
+	 */
+	void setButtonText (
+			/**/ String key,
+			/**/ String text
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].text = text;
+				break;
+			}
+		}
+
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Text for Button Key<br/>
+	 */
+	String getButtonText (
+			/**/ String key
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].text;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Image for Button keys<br/>
+	 */
+	void setButtonImages (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Image */ String image
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].image = image;
+					break;
+				}
+			}
+		}
+		
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Image for Button Key<br/>
+	 */
+	void setButtonImage (
+			/**/ String key,
+			/**/ String image
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].image = image;
+				break;
+			}
+		}
+
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Image for Button Key<br/>
+	 */
+	String getButtonImage (
+			/**/ String key
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].image;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Selected for Button keys<br/>
+	 */
+	void setButtonSelecteds (
+			/**/ String keys,
+			/**/ String separator
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].selected = false;
+			
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].selected = true;
+					break;
+				}
+			}
+		}
+		
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Selected for Button Key<br/>
+	 */
+	void setButtonSelected (
+			/**/ String key,
+			/**/ boolean selected
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].selected = selected;
+				break;
+			}
+		}
+
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+
+		
+	/**
+	 * Clean all Selected of Button keys<br/>
+	 */
+	void cleanAllButtonSelecteds (
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+	
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].selected = false;
+		}
+		
+		this.singlearray = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Selected for Button Key<br/>
+	 */
+	String getButtonSelected (
+			/**/ String key
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.singlearray);
+
+		var value = undefined;
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].selected;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+
+	/**
+	 * Returns the Selected keys<br/>
+	 */
+	org.scn.pack.KeyArray getButtonSelectedKeysArray (
+			) 
+	{*
+		if (this.singlearray === undefined || this.singlearray === "" || this.singlearray === "<delete>"){
+			return [];
+		}
+		
+		var elementsJson = JSON.parse(this.singlearray);
+		
+		var newElementsJson = [];
+		
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].selected == true) {
+				newElementsJson.push(elementsJson[i]);
+			}
+		}
+		
+		return newElementsJson;
+	*}
+
+
 
 	/**
 	 * Sets Some numbers Property

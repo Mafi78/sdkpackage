@@ -5,7 +5,7 @@
 	title="Design Studio SCN Community Data Sources"
 
 	xmlns="http://www.sap.com/bi/zen/sdk"
-	version="2.0"
+	version="3.0"
 	vendor="SCN Design Studio Community"
 	eula="Content is free for use and distribution under Apache License Version 2.0. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License. For details refer to https://github.com/org-scn-design-studio-community/sdkpackage//blob/master/LICENSE">
 
@@ -190,25 +190,24 @@
 <component id="BYOData" 
 	title="Bring Your Own Data" 
 	handlerType="datasource"
+	modes = "commons m"
 	icon="res/BYOData/BYOData.png"
-	propertySheetPath="res/BYOData/aps/BYODataPropertyPage.html"
+	propertySheetPath="aps/PropertyPage.html"
 >
-	<jsInclude>res/BYOData/BYOData.js</jsInclude>
+	<requireJs modes="commons m">res/BYOData/BYOData</requireJs>
 	<property type="String" title="Data" id="data"/>
-	<property type="String" title="Mutators" id="mutators"/>
+	<property type="String" title="Mutators (Deprecated)" id="mutators"/>
 	<property type="String" title="Number of Dimensions" id="kfIndex"/>
-	<property type="boolean" title="Measures in Rows" id="swap"/>
-	<property type="String" title="Sort Method" id="sortMethod">
+	<property type="String" title="Sort Method (Deprecated)" id="sortMethod">
 		<possibleValue>NONE</possibleValue>
 		<possibleValue>Alphanumeric Ascending</possibleValue>
 		<possibleValue>Alphanumeric Descending</possibleValue>
 	</property>
 	<initialization>
 		<defaultValue property="kfIndex">2</defaultValue>
-		<defaultValue property="swap">false</defaultValue>
-		<defaultValue property="sortMethod">Alphanumeric Ascending</defaultValue>
-		<defaultValue property="data">Region,Year,Sales,Quantity~|~East,2011,100,5~|~West,2011,75,7</defaultValue>
+		<defaultValue property="data">Department,Product,Sales,Quantity~|~Produce,Apples,100,20~|~Produce,Oranges,75,15~|~Produce,Kiwis,30,5~|~Produce,Bananas,150,30~|~Grocery,Cereal,34,20~|~Grocery,Juice,25,15~|~Grocery,Coffee,17,5~|~Meat,Poultry,150,30~|~Meat,Pork,78,23</defaultValue>
 		<defaultValue property="mutators">[1,1,1]</defaultValue>
+		<defaultValue property="sortMethod">NONE</defaultValue>
 	</initialization>
 </component><component
 	id="DynCsvDataSource"
@@ -235,4 +234,72 @@
 		title="Has Header Column"
 		type="boolean" />
 </component>
+<component
+	id="ScalingDataSource"
+	title="Scaling Data Source 2.0"
+	tooltip="Scaling Data Source - Data Source with Scaling on Selection"
+	icon="res/ScalingDataSource/ScalingDataSource.png"
+	handlerType="datasource"
+	propertySheetPath="aps/PropertyPage.html"
+	group="ScnCommunityDatasource"
+	databound="false"
+	modes="commons"
+>
+	
+	<requireJs modes="commons">res/ScalingDataSource/ScalingDataSource</requireJs>
+
+	<cssInclude>res/ScalingDataSource/ScalingDataSource.css</cssInclude>
+	
+	
+	<property
+		id="data"
+		type="ResultCellSet"
+		title="Data"
+		group="DataBinding"
+		visible="true"
+		bindable="true">
+
+		<option name="includeFormattedData" value="true"/>
+		<option name="includeData" value="true"/>
+		<option name="includeMetadata" value="true"/>
+	</property>
+	<property
+		id="scalingFactor"
+		type="float"
+		title="Scaling Factor"
+		group="Display"
+		bindable="true"
+		visible="true">
+
+	</property>
+	<property
+		id="scalingSelection"
+		type="ResultCellList"
+		title="Data Range to Scale"
+		group="DataBinding"
+		visible="true"
+		bindable="true">
+
+		<option name="includeFormattedData" value="true"/>
+		<option name="includeData" value="true"/>
+		<option name="includeMetadata" value="true"/>
+	</property>
+
+
+	<initialization>
+		<defaultValue property="TOP_MARGIN">0</defaultValue>
+		<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
+		<defaultValue property="LEFT_MARGIN">0</defaultValue>
+		<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
+		<defaultValue property="WIDTH">260</defaultValue>
+		<defaultValue property="HEIGHT">600</defaultValue>
+		
+		<defaultValue property="data"><![CDATA[]]></defaultValue>
+		<defaultValue property="scalingFactor"><![CDATA[1.0]]></defaultValue>
+		<defaultValue property="scalingSelection"><![CDATA[]]></defaultValue>
+
+	</initialization>
+
+</component>
+
 </sdkExtension>

@@ -37,21 +37,35 @@ class org.scn.community.prototypes.ApsTesterUI5 extends org.scn.community.shared
 	/**
 	 * Gets Simple Color Property
 	 */	
-	Color getColorExample() {*
+	String getColorExample() {*
 		return this.colorExample;
 	*}
 
 	/**
-	 * Sets Simple Choice Property
+	 * Sets Simple Choice Property by String
 	 */	
-	void setComboboxExample( /**Simple Choice*/ String comboboxExample){*
+	void setComboboxExampleByString( /**Simple Choice*/ String comboboxExample){*
 		this.comboboxExample = comboboxExample;
 	*}
 
 	/**
-	 * Gets Simple Choice Property
+	 * Gets Simple Choice Property as String
 	 */	
-	String getComboboxExample() {*
+	String getComboboxExampleAsString() {*
+		return this.comboboxExample;
+	*}
+	
+	/**
+	 * Sets Simple Choice Property by Choice Option
+	 */	
+	void setComboboxExample( /**Simple Choice*/ org_scn_community_shared_Enumfield comboboxExample){*
+		this.comboboxExample = comboboxExample;
+	*}
+	
+	/**
+	 * Gets Simple Choice Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getComboboxExample() {*
 		return this.comboboxExample;
 	*}
 

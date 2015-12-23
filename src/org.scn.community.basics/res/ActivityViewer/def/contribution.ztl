@@ -24,8 +24,8 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 			/**Assigned State Key*/String state, 
 			/**Start Date YYYYMMDD*/String startDate, 
 			/**End Date YYYYMMDD*/String endDate
-			) {*		
-		
+			) {*
+
 		
 		var itemDef = {
 			leaf:true,
@@ -36,13 +36,13 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 			startDate:startDate, 
 			endDate:endDate
 			};
-	
+
 		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
 			this.activities = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.activities);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -50,11 +50,11 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 				break;
 			}
 		}
-		
+
 		if(!alreadyFound) {
 			elementsJson.push(itemDef);
 		}
-	
+
 		this.activities = JSON.stringify(elementsJson);
 	*}
 	
@@ -70,14 +70,14 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 	 */
 	void removeActivity (
 			String key
-			) {*		
-		
+			) {*
+
 		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
 			this.activities = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.activities);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -95,6 +95,521 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 
 		this.activities = JSON.stringify(elementsJson);
 	*}
+
+	/** Insert a root element by index.
+
+ 	<example>
+	You want to insert a root element
+	<code>
+	ACTIVITYVIEWER.insertActivity(index [int], key [String], text [String], category [String], state [String], startDate [String], endDate [String]);<br>
+	<br>
+	</code>
+	</example>
+	 */
+	void insertActivity (
+			/**Index to Insert (0-based)*/int insertionIndex0based,
+			/**Unique Activity Key*/String key, 
+			/**Activity Description*/String text, 
+			/**Assigned Category Key*/String category, 
+			/**Assigned State Key*/String state, 
+			/**Start Date YYYYMMDD*/String startDate, 
+			/**End Date YYYYMMDD*/String endDate
+			) {*
+
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			this.activities = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.activities);
+		var newElementsJson = [];
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			text:text, 
+			category:category, 
+			state:state, 
+			startDate:startDate, 
+			endDate:endDate
+		};
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (i == insertionIndex0based) {
+				newElementsJson.push(itemDef);
+			}
+
+			newElementsJson.push(elementsJson[i]);
+		}
+
+		this.activities = JSON.stringify(newElementsJson);
+	*}
+
+	/**
+	 * Updates given Activity<br/>
+	 */
+	void updateActivity (
+			/**Unique Activity Key*/String key, 
+			/**Activity Description*/String text, 
+			/**Assigned Category Key*/String category, 
+			/**Assigned State Key*/String state, 
+			/**Start Date YYYYMMDD*/String startDate, 
+			/**End Date YYYYMMDD*/String endDate
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			this.activities = "[]";
+		}
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			text:text, 
+			category:category, 
+			state:state, 
+			startDate:startDate, 
+			endDate:endDate
+		};
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == elementKey) {
+				elementsJson[i] = itemDef;
+				break;
+			}
+		}
+
+		this.activities = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Returns Key at given Index<br/>
+	 */
+	String getActivityAtIndex (
+			/**Index to pick the key*/ int index0based
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			this.activities = "[]";
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (index0based == i) {
+				return elementsJson[i].key;
+			}
+		}
+
+		return "";
+	*}
+
+	/**
+	 * Gets Activitys As JSON String
+	 */	
+	String getActivitysAsJSON() {*
+		var jsonObject = JSON.parse(this.activities);
+		return JSON.stringify(jsonObject, null, 4);
+	*}
+	
+	/**
+	 * Sets the Text for Activity keys<br/>
+	 */
+	void setActivityTexts (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Text */ String text
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].text = text;
+					break;
+				}
+			}
+		}
+		
+		this.activities = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Text for Activity Key<br/>
+	 */
+	void setActivityText (
+			/**/ String key,
+			/**/ String text
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].text = text;
+				break;
+			}
+		}
+
+		this.activities = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Text for Activity Key<br/>
+	 */
+	String getActivityText (
+			/**/ String key
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].text;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Category for Activity keys<br/>
+	 */
+	void setActivityCategorys (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Category */ String category
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].category = category;
+					break;
+				}
+			}
+		}
+		
+		this.activities = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Category for Activity Key<br/>
+	 */
+	void setActivityCategory (
+			/**/ String key,
+			/**/ String category
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].category = category;
+				break;
+			}
+		}
+
+		this.activities = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Category for Activity Key<br/>
+	 */
+	String getActivityCategory (
+			/**/ String key
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].category;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the State for Activity keys<br/>
+	 */
+	void setActivityStates (
+			/**/ String keys,
+			/**/ String separator,
+	        /* State */ String state
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].state = state;
+					break;
+				}
+			}
+		}
+		
+		this.activities = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the State for Activity Key<br/>
+	 */
+	void setActivityState (
+			/**/ String key,
+			/**/ String state
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].state = state;
+				break;
+			}
+		}
+
+		this.activities = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of State for Activity Key<br/>
+	 */
+	String getActivityState (
+			/**/ String key
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].state;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the StartDate for Activity keys<br/>
+	 */
+	void setActivityStartDates (
+			/**/ String keys,
+			/**/ String separator,
+	        /* StartDate */ String startDate
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].startDate = startDate;
+					break;
+				}
+			}
+		}
+		
+		this.activities = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the StartDate for Activity Key<br/>
+	 */
+	void setActivityStartDate (
+			/**/ String key,
+			/**/ String startDate
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].startDate = startDate;
+				break;
+			}
+		}
+
+		this.activities = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of StartDate for Activity Key<br/>
+	 */
+	String getActivityStartDate (
+			/**/ String key
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].startDate;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the EndDate for Activity keys<br/>
+	 */
+	void setActivityEndDates (
+			/**/ String keys,
+			/**/ String separator,
+	        /* EndDate */ String endDate
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].endDate = endDate;
+					break;
+				}
+			}
+		}
+		
+		this.activities = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the EndDate for Activity Key<br/>
+	 */
+	void setActivityEndDate (
+			/**/ String key,
+			/**/ String endDate
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].endDate = endDate;
+				break;
+			}
+		}
+
+		this.activities = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of EndDate for Activity Key<br/>
+	 */
+	String getActivityEndDate (
+			/**/ String key
+			) 
+	{*
+		if (this.activities === undefined || this.activities === "" || this.activities === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.activities);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].endDate;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+
+
 
 	/** Adds a root element containing key [String], text [String], visible [boolean].
 
@@ -111,8 +626,8 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 			/**Unique Category Key*/String key, 
 			/**Category Description*/String text, 
 			/**Visibility*/boolean visible
-			) {*		
-		
+			) {*
+
 		
 		var itemDef = {
 			leaf:true,
@@ -120,13 +635,13 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 			text:text, 
 			visible:visible
 			};
-	
+
 		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
 			this.categories = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.categories);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -134,11 +649,11 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 				break;
 			}
 		}
-		
+
 		if(!alreadyFound) {
 			elementsJson.push(itemDef);
 		}
-	
+
 		this.categories = JSON.stringify(elementsJson);
 	*}
 	
@@ -154,14 +669,14 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 	 */
 	void removeCategory (
 			String key
-			) {*		
-		
+			) {*
+
 		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
 			this.categories = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.categories);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -180,7 +695,326 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 		this.categories = JSON.stringify(elementsJson);
 	*}
 
+	/** Insert a root element by index.
 
+ 	<example>
+	You want to insert a root element
+	<code>
+	ACTIVITYVIEWER.insertCategory(index [int], key [String], text [String], visible [boolean]);<br>
+	<br>
+	</code>
+	</example>
+	 */
+	void insertCategory (
+			/**Index to Insert (0-based)*/int insertionIndex0based,
+			/**Unique Category Key*/String key, 
+			/**Category Description*/String text, 
+			/**Visibility*/boolean visible
+			) {*
+
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			this.categories = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.categories);
+		var newElementsJson = [];
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			text:text, 
+			visible:visible
+		};
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (i == insertionIndex0based) {
+				newElementsJson.push(itemDef);
+			}
+
+			newElementsJson.push(elementsJson[i]);
+		}
+
+		this.categories = JSON.stringify(newElementsJson);
+	*}
+
+	/**
+	 * Updates given Category<br/>
+	 */
+	void updateCategory (
+			/**Unique Category Key*/String key, 
+			/**Category Description*/String text, 
+			/**Visibility*/boolean visible
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			this.categories = "[]";
+		}
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			text:text, 
+			visible:visible
+		};
+
+		var elementsJson = JSON.parse(this.categories);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == elementKey) {
+				elementsJson[i] = itemDef;
+				break;
+			}
+		}
+
+		this.categories = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Returns Key at given Index<br/>
+	 */
+	String getCategoryAtIndex (
+			/**Index to pick the key*/ int index0based
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			this.categories = "[]";
+		}
+
+		var elementsJson = JSON.parse(this.categories);
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (index0based == i) {
+				return elementsJson[i].key;
+			}
+		}
+
+		return "";
+	*}
+
+	/**
+	 * Gets Categorys As JSON String
+	 */	
+	String getCategorysAsJSON() {*
+		var jsonObject = JSON.parse(this.categories);
+		return JSON.stringify(jsonObject, null, 4);
+	*}
+	
+	/**
+	 * Sets the Text for Category keys<br/>
+	 */
+	void setCategoryTexts (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Text */ String text
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.categories);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].text = text;
+					break;
+				}
+			}
+		}
+		
+		this.categories = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Text for Category Key<br/>
+	 */
+	void setCategoryText (
+			/**/ String key,
+			/**/ String text
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.categories);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].text = text;
+				break;
+			}
+		}
+
+		this.categories = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Text for Category Key<br/>
+	 */
+	String getCategoryText (
+			/**/ String key
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.categories);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].text;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+	/**
+	 * Sets the Visible for Category keys<br/>
+	 */
+	void setCategoryVisibles (
+			/**/ String keys,
+			/**/ String separator
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.categories);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].visible = false;
+			
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].visible = true;
+					break;
+				}
+			}
+		}
+		
+		this.categories = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Visible for Category Key<br/>
+	 */
+	void setCategoryVisible (
+			/**/ String key,
+			/**/ boolean visible
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.categories);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].visible = visible;
+				break;
+			}
+		}
+
+		this.categories = JSON.stringify(elementsJson);
+	*}
+
+		
+	/**
+	 * Clean all Visible of Category keys<br/>
+	 */
+	void cleanAllCategoryVisibles (
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return;
+		}
+	
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			// clean all
+			elementsJson[i].visible = false;
+		}
+		
+		this.categories = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Visible for Category Key<br/>
+	 */
+	String getCategoryVisible (
+			/**/ String key
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.categories);
+
+		var value = undefined;
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].visible;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+
+	/**
+	 * Returns the Visible keys<br/>
+	 */
+	org.scn.pack.KeyArray getCategoryVisibleKeysArray (
+			) 
+	{*
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			return [];
+		}
+		
+		var elementsJson = JSON.parse(this.categories);
+		
+		var newElementsJson = [];
+		
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].visible == true) {
+				newElementsJson.push(elementsJson[i]);
+			}
+		}
+		
+		return newElementsJson;
+	*}
+
+
+
+
+
+	/**
+	 * Gets Selected Key Property
+	 */	
+	String getSelectedKey() {*
+		return this.selectedKey;
+	*}
 
 	/** Adds a root element containing key [String], style [String].
 
@@ -196,21 +1030,21 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 	void addState (
 			/**Unique State Key*/String key, 
 			/**State CSS Style*/String style
-			) {*		
-		
+			) {*
+
 		
 		var itemDef = {
 			leaf:true,
 			key:key, 
 			style:style
 			};
-	
+
 		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
 			this.states = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.states);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -218,11 +1052,11 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 				break;
 			}
 		}
-		
+
 		if(!alreadyFound) {
 			elementsJson.push(itemDef);
 		}
-	
+
 		this.states = JSON.stringify(elementsJson);
 	*}
 	
@@ -238,14 +1072,14 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 	 */
 	void removeState (
 			String key
-			) {*		
-		
+			) {*
+
 		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
 			this.states = "[]";
 		}
-		
+
 		var elementsJson = JSON.parse(this.states);
-		
+
 		var alreadyFound = false;
 		for (var i = 0; i < elementsJson.length ; i++){
 			if (elementsJson[i].key == key) {
@@ -263,6 +1097,189 @@ class org.scn.community.basics.ActivityViewer extends org.scn.community.shared.C
 
 		this.states = JSON.stringify(elementsJson);
 	*}
+
+	/** Insert a root element by index.
+
+ 	<example>
+	You want to insert a root element
+	<code>
+	ACTIVITYVIEWER.insertState(index [int], key [String], style [String]);<br>
+	<br>
+	</code>
+	</example>
+	 */
+	void insertState (
+			/**Index to Insert (0-based)*/int insertionIndex0based,
+			/**Unique State Key*/String key, 
+			/**State CSS Style*/String style
+			) {*
+
+		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
+			this.states = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.states);
+		var newElementsJson = [];
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			style:style
+		};
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (i == insertionIndex0based) {
+				newElementsJson.push(itemDef);
+			}
+
+			newElementsJson.push(elementsJson[i]);
+		}
+
+		this.states = JSON.stringify(newElementsJson);
+	*}
+
+	/**
+	 * Updates given State<br/>
+	 */
+	void updateState (
+			/**Unique State Key*/String key, 
+			/**State CSS Style*/String style
+			) 
+	{*
+		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
+			this.states = "[]";
+		}
+
+		var itemDef = {
+			leaf:true,
+			key:key, 
+			style:style
+		};
+
+		var elementsJson = JSON.parse(this.states);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == elementKey) {
+				elementsJson[i] = itemDef;
+				break;
+			}
+		}
+
+		this.states = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Returns Key at given Index<br/>
+	 */
+	String getStateAtIndex (
+			/**Index to pick the key*/ int index0based
+			) 
+	{*
+		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
+			this.states = "[]";
+		}
+
+		var elementsJson = JSON.parse(this.states);
+
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (index0based == i) {
+				return elementsJson[i].key;
+			}
+		}
+
+		return "";
+	*}
+
+	/**
+	 * Gets States As JSON String
+	 */	
+	String getStatesAsJSON() {*
+		var jsonObject = JSON.parse(this.states);
+		return JSON.stringify(jsonObject, null, 4);
+	*}
+	
+	/**
+	 * Sets the Style for State keys<br/>
+	 */
+	void setStateStyles (
+			/**/ String keys,
+			/**/ String separator,
+	        /* Style */ String style
+			) 
+	{*
+		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
+			return;
+		}
+	
+		var changeKeys = keys.split(separator);	
+
+		var elementsJson = JSON.parse(this.states);
+
+		// loop and find and change
+		for (var i = 0; i < elementsJson.length ; i++){
+			for (var j = 0; j < changeKeys.length ; j++){
+				if (elementsJson[i].key == changeKeys[j]) {
+					elementsJson[i].style = style;
+					break;
+				}
+			}
+		}
+		
+		this.states = JSON.stringify(elementsJson);
+	*}
+
+	/**
+	 * Sets the Style for State Key<br/>
+	 */
+	void setStateStyle (
+			/**/ String key,
+			/**/ String style
+			) 
+	{*
+		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.states);
+
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				elementsJson[i].style = style;
+				break;
+			}
+		}
+
+		this.states = JSON.stringify(elementsJson);
+	*}
+	
+	/**
+	 * Returns value of Style for State Key<br/>
+	 */
+	String getStateStyle (
+			/**/ String key
+			) 
+	{*
+		if (this.states === undefined || this.states === "" || this.states === "<delete>"){
+			return;
+		}
+
+		var elementsJson = JSON.parse(this.states);
+
+		var value = "";
+		// loop and find and update
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == key) {
+				value = elementsJson[i].style;
+				break;
+			}
+		}
+		
+		return value;
+	*}
+
+
 
 
 	/* START HERE PLACE FOR CUSTOM ZTL FUNCTIONS */

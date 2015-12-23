@@ -16,29 +16,43 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
+ 
+ //%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./DateRangeSliderSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics",
+	"../../../"+scn_pkg+"basics/os/date/DateFormat",
+	"../../../"+scn_pkg+"basics/os/sapui5/sap_suite_loader"
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
 
-jQuery.sap.require("sap.suite.ui.commons.DateRangeSlider");
+var myComponentData = spec;
 
-sap.suite.ui.commons.DateRangeSlider.extend("org.scn.community.basics.DateRangeSlider", {
-	
-	metadata: {
-        properties: {
-              "DMin": {type: "string"},
-              "DMax": {type: "string"},
-              "DValue": {type: "string"},
-              "DValue2": {type: "string"},
-              "DLangFormat": {type: "boolean"},
-              "DLangPattern": {type: "string"},
-              "DLangStyle": {type: "string"},
-              "DLangRelative": {type: "boolean"},
-              "DGranulatiry": {type: "string"},
-        }
-	},
+DateRangeSlider = {
+
+	renderer: {},
 	
 	initDesignStudio: function() {
 		var that = this;
-		
-		this.attachChange(function() {
+
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
+	},
+	
+	initAsync: function (owner) {
+		var that = owner;
+		org_scn_community_component_Core(that, myComponentData);
+
+		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+		that.attachChange(function() {
 			if(that._deactivateEvent) {
 				// endless loop...
 				return;
@@ -63,8 +77,8 @@ sap.suite.ui.commons.DateRangeSlider.extend("org.scn.community.basics.DateRangeS
 			if(updateRequired) {
 				that._SavedValue = startDate+endDate;
 				
-				var minDate = that.getDateValue(that.getDMin(), dateFormat);
-				var maxDate = that.getDateValue(that.getDMax(), dateFormat);
+				var minDate = org_scn_community_basics.getDateValue (that.getDMin());
+				var maxDate = org_scn_community_basics.getDateValue (that.getDMax());
 			
 				if(that._oldDateValues != minDate.formatted+maxDate.formatted+startDate+endDate) {
 					that._oldDateValues = minDate.formatted+maxDate.formatted+startDate+endDate;
@@ -73,21 +87,38 @@ sap.suite.ui.commons.DateRangeSlider.extend("org.scn.community.basics.DateRangeS
 				that.setDValue(startDate);
 				that.setDValue2(endDate);
 				
-				that.fireDesignStudioPropertiesChanged(["DValue", "DValue2"]);
-				that.fireDesignStudioEvent("onChange");
+				that.fireDesignStudioPropertiesChangedAndEvent(["DValue", "DValue2"], "onChange");
 			}
 		});
+		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
+		
+		// that.onAfterRendering = function () {
+			// org_scn_community_basics.resizeContentAbsoluteLayout(that, that._oRoot, that.onResize);
+		// }
 	},
 	
-	renderer: {},
-		
 	afterDesignStudioUpdate: function() {
 		var that = this;
 		
-		var minDate = that.getDateValue(that.getDMin(), dateFormat);
-		var maxDate = that.getDateValue(that.getDMax(), dateFormat);
-		var valueDate = that.getDateValue(that.getDValue(), dateFormat);
-		var value2Date = that.getDateValue(that.getDValue2(), dateFormat);
+		org_scn_community_basics.fillDummyData(that, that.processData, that.afterPrepare);
+	},
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+	processData: function (flatData, afterPrepare, owner) {
+		var that = owner;
+
+		// processing on data
+		that.afterPrepare(that);
+	},
+
+	afterPrepare: function (owner) {
+		var that = owner;
+			
+		// visualization on processed data
+		var minDate = org_scn_community_basics.getDateValue (that.getDMin());
+		var maxDate = org_scn_community_basics.getDateValue (that.getDMax());
+		var valueDate = org_scn_community_basics.getDateValue (that.getDValue());
+		var value2Date = org_scn_community_basics.getDateValue (that.getDValue2());
 		
 		that._deactivateEvent = true;
 		if(that._oldDateValues != minDate.formatted+maxDate.formatted+valueDate.formatted+value2Date.formatted) {
@@ -97,7 +128,6 @@ sap.suite.ui.commons.DateRangeSlider.extend("org.scn.community.basics.DateRangeS
 			that.setValue(valueDate);
 			that.setValue2(value2Date);
 		}
-		that._deactivateEvent = false;
 		
 		var langFormat = that.getDLangFormat();
 		var pattern = that.getDLangPattern();
@@ -122,7 +152,7 @@ sap.suite.ui.commons.DateRangeSlider.extend("org.scn.community.basics.DateRangeS
 			}
 		}
 		
-		var granularity = that.getDGranulatiry();
+		var granularity = that.getDGranularity();
 		
 		if(that._oldGranualarity != granularity) {
 			that._oldGranualarity = granularity;
@@ -133,21 +163,18 @@ sap.suite.ui.commons.DateRangeSlider.extend("org.scn.community.basics.DateRangeS
 				that.setDayGranularity();
 			}
 		}
+
+		that._deactivateEvent = false;
 	},
 	
-	getDateValue: function (inputDate, dateFormat) {
-		if(inputDate.length != 8) {
-			inputDate = new Date();
-			inputDate = inputDate.format(dateFormat.masks.technical);
-		}
-		
-		var year = inputDate.substring(0,4);
-		var month = inputDate.substring(4,6);
-		var day = inputDate.substring(6,8);
-		
-		var date = new Date(year, month - 1, day);
-		date.formatted = date.format(dateFormat.masks.technical);
-		
-		return date;
+	onResize: function(width, height, parent) {
+		// in case special resize code is required
 	},
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+};
+
+//%INIT-START%
+myComponentData.instance = DateRangeSlider;
+jQuery.sap.require("sap.suite.ui.commons.DateRangeSlider");
+sap.suite.ui.commons.DateRangeSlider.extend(myComponentData.fullComponentName, myComponentData.instance);
 });

@@ -5,14 +5,16 @@
 	tooltip="Accordion - Dynamic List of Entries"
 	icon="res/Accordion/Accordion.png"
 	handlerType="sapui5"
-	propertySheetPath="res/Accordion/aps/PropertyPage.html"
+	propertySheetPath="aps/PropertyPage.html"
 	group="ScnCommunityBasics"
 	databound="false"
+	modes="commons"
 >
 	
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/Accordion/AccordionLoader.js</jsInclude>
+	<requireJs modes="commons">res/Accordion/Accordion</requireJs>
+
 	<cssInclude>res/Accordion/Accordion.css</cssInclude>
+	
 	
 	<property
 		id="cleanAll"
@@ -69,6 +71,15 @@
 
 	</property>
 	<property
+		id="memberDisplay"
+		type="String"
+		title="Member Display"
+		group="Display"
+		bindable="true"
+		visible="true">
+
+	</property>
+	<property
 		id="onFirstExpand"
 		type="ScriptText"
 		title="On First Expand"
@@ -94,6 +105,15 @@
 
 	</property>
 	<property
+		id="supportedContentNotation"
+		type="String"
+		title="Supported Content Notation"
+		group="Display"
+		bindable="true"
+		visible="false">
+
+	</property>
+	<property
 		id="withImage"
 		type="boolean"
 		title="Use Images"
@@ -112,16 +132,18 @@
 		<defaultValue property="WIDTH">260</defaultValue>
 		<defaultValue property="HEIGHT">600</defaultValue>
 		
-		<defaultValue property="cleanAll">false</defaultValue>
-		<defaultValue property="defaultImage"></defaultValue>
-		<defaultValue property="elementsContent">[]</defaultValue>
-		<defaultValue property="expandedKey"></defaultValue>
-		<defaultValue property="imageSize">16px</defaultValue>
-		<defaultValue property="maxSectionHeight">200</defaultValue>
-		<defaultValue property="onFirstExpand"></defaultValue>
-		<defaultValue property="onSelectionChanged"></defaultValue>
-		<defaultValue property="selectedKey">-get</defaultValue>
-		<defaultValue property="withImage">true</defaultValue>
+		<defaultValue property="cleanAll"><![CDATA[false]]></defaultValue>
+		<defaultValue property="defaultImage"><![CDATA[]]></defaultValue>
+		<defaultValue property="elementsContent"><![CDATA[[{"parentKey":"ROOT","key":"SECTION1","leaf":false,"text":"First Section"},{"parentKey":"ROOT","key":"SECTION2","leaf":false,"text":"Second Section"},{"parentKey":"ROOT","key":"SECTION3","leaf":false,"text":"Third Section"},{"parentKey":"SECTION1","key":"SECTION1_ITEM","leaf":true,"text":"Item 1"},{"parentKey":"SECTION1","key":"SECTION1_ITEM1","leaf":true,"text":"Item 2"},{"parentKey":"SECTION2","key":"SECTION2_ITEM","leaf":true,"text":"Item 2/1"},{"parentKey":"SECTION2","key":"SECTION2_ITEM1","leaf":true,"text":"Item 2/2"},{"parentKey":"SECTION2","key":"SECTION2_ITEM2","leaf":true,"text":"Item 2/3"},{"parentKey":"SECTION3","key":"SECTION3_ITEM","leaf":true,"text":"Item 3/1"}]]]></defaultValue>
+		<defaultValue property="expandedKey"><![CDATA[]]></defaultValue>
+		<defaultValue property="imageSize"><![CDATA[Size_16px]]></defaultValue>
+		<defaultValue property="maxSectionHeight"><![CDATA[200]]></defaultValue>
+		<defaultValue property="memberDisplay"><![CDATA[Text]]></defaultValue>
+		<defaultValue property="onFirstExpand"><![CDATA[]]></defaultValue>
+		<defaultValue property="onSelectionChanged"><![CDATA[]]></defaultValue>
+		<defaultValue property="selectedKey"><![CDATA[]]></defaultValue>
+		<defaultValue property="supportedContentNotation"><![CDATA[PARENT_CHILD_TEXT_URL]]></defaultValue>
+		<defaultValue property="withImage"><![CDATA[true]]></defaultValue>
 
 	</initialization>
 

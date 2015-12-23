@@ -16,96 +16,112 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-
-(function() {
-/** code for recognition of script path */
-var myScript = $("script:last")[0].src;
-var ownComponentName = "org.scn.community.basics.CheckBoxGroup";
-var _readScriptPath = function () {
-	var scriptInfo = org_scn_community_basics.readOwnScriptAccess(myScript, ownComponentName);
-	return scriptInfo.myScriptPath;
-};
-/** end of path recognition */
-
-sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
-
-	setFallbackPicture : function(value) {
-		this._FallbackPicture = value;
-		
-		if(value != undefined && value != "")  {
-			this._pImagePrefix = value.substring(0, value.lastIndexOf("/") + 1);	
-		}
-	},
-
-	getFallbackPicture : function() {
-		return this._FallbackPicture;
-	},
-
-	metadata: {
-        properties: {
-              "elements": {type: "string"},
-              "withPicture": {type: "boolean"},
-              "pictureSize": {type: "string"}
-        }
-	},
-  
-	initDesignStudio: function() {
-		var that = this;
-		this._ownScript = _readScriptPath();
-		
-		this.addStyleClass("scn-pack-CheckBoxGroup");
-	},
+ 
+//%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./CheckBoxGroupSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics"
 	
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
+
+var myComponentData = spec;
+
+CheckBoxGroup = {
+
 	renderer: {},
 	
-	afterDesignStudioUpdate : function() {
+	initDesignStudio: function() {
 		var that = this;
-		
-		if(!this._lLayout) {
-			this._lLayout = new sap.ui.layout.VerticalLayout({
+
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
+	},
+	
+	initAsync: function (owner) {
+		var that = owner;
+
+		if(that._lLayout == undefined) {
+			org_scn_community_component_Core(that, myComponentData);
+			/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+			that.addStyleClass("scn-pack-CheckBoxGroup");
+			
+			that._lLayout = new sap.ui.layout.VerticalLayout({
 				
 			});
-
-			this.addContent(
-				this._lLayout,
-				{left: "0px", top: "2px"}	
-			);
+			/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
+			
+			that.onAfterRendering = function () {
+				org_scn_community_basics.resizeContentAbsoluteLayout(that, that._lLayout, that.onResize);
+			}
 		}
+	},
+	
+	afterDesignStudioUpdate: function() {
+		var that = this;
 		
-		var lElementsToRender = this.getElements();
-		if(lElementsToRender != null && lElementsToRender != undefined && lElementsToRender != ""){
+		org_scn_community_basics.fillDummyData(that, that.processData, that.afterPrepare);
+	},
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+	processData: function (flatData, afterPrepare, owner) {
+		var that = owner;
+
+		that.initAsync(owner);
+		
+		// processing on data
+		that.afterPrepare(that);
+	},
+
+	afterPrepare: function (owner) {
+		var that = owner;
+			
+		// visualization on processed data
+		var lElementsToRender = that.getElements();
+		if(lElementsToRender != null && lElementsToRender != undefined && lElementsToRender != "") {
 			var lElementsToRenderArray = JSON.parse(lElementsToRender);
 
 			// Destroy old content
-			this._lLayout.destroyContent();
+			that._lLayout.destroyContent();
 			
 			// distribute content
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
 				var element = lElementsToRenderArray[i];
-				var lImageElement = this.createCheckBoxElement(i, element.key, element.text, element.url, element.selected);
-				this._lLayout.addContent(lImageElement);
+				var lImageElement = that.createCheckBoxElement(owner, i, element.key, element.text, element.url, element.selected);
+				that._lLayout.addContent(lImageElement);
 			}
-			
 		}
 	},
 	
-	createCheckBoxElement: function (index, iKey, iText, iImageUrl, selected) {
-		var that = this;
+	onResize: function(width, height, parent) {
+		// in case special resize code is required
+	},
+	
+	createCheckBoxElement: function (owner, index, iKey, iText, iImageUrl, selected) {
+		var that = owner;
+		
+		if(iImageUrl == undefined) {iImageUrl = ""};
 		
 		// in case starts with http, keep as is 
 		if(iImageUrl.indexOf("http") == 0) {
 			// no nothing
 		} else {
 			// in case of repository, add the prefix from repository
-			if(this._pImagePrefix != undefined && this._pImagePrefix != ""){
-				iImageUrl = this._pImagePrefix + iImageUrl;
-			} else {
-				iImageUrl = this._ownScript + "CheckBoxGroup.png";
-			}
+			iImageUrl = org_scn_community_basics.getRepositoryImageUrlPrefix(that, that.getFallbackPicture(), iImageUrl, "CheckBoxGroup.png");
 		}
 
-		var pictureSize = this.getPictureSize();
-		var withPicture = this.getWithPicture();
+		var pictureSize = that.getPictureSize();
+		pictureSize = pictureSize.replace("Size_", "");
+		
+		var withPicture = that.getWithPicture();
 
 		var height = "20px";
 		var topImage = "5px";
@@ -124,7 +140,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 			topImage = "3px";
 		} 
 
-		var oLayout = new sap.ui.commons.layout.AbsoluteLayout ({
+		var oLayout = new sap.zen.commons.layout.AbsoluteLayout ({
 			width: "225px",
 			height: height
 		});
@@ -171,8 +187,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 					that.setElements(lElementsToRender);
 				}
 				
-				that.fireDesignStudioPropertiesChanged(["elements"]);
-				that.fireDesignStudioEvent("onSelectionChanged");
+				that.fireDesignStudioPropertiesChangedAndEvent(["elements"], "onSelectionChanged");
 			}
 		});
 		
@@ -210,7 +225,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 		};
 		
 		// just a check if there is some picture at all
-		if(withPicture && iPicture != "") {
+		if(withPicture && iImageUrl != "") {
 			requestForPicture.open("GET", iImageUrl, true);
 			requestForPicture.send();
 		} else {
@@ -219,6 +234,12 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 		}
 		
 		return oLayout;
-	}
+	},
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+};
+
+//%INIT-START%
+myComponentData.instance = CheckBoxGroup;
+jQuery.sap.require("sap.zen.commons.layout.AbsoluteLayout");
+sap.zen.commons.layout.AbsoluteLayout.extend(myComponentData.fullComponentName, myComponentData.instance);
 });
-})();

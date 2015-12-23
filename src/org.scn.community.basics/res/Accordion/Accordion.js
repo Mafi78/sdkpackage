@@ -1,6 +1,21 @@
-(function(){
+//%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./AccordionSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics"
+	
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
 
-var myComponentData = org_scn_community_require.knownComponents.basics.Accordion;
+var myComponentData = spec;
 
 Accordion = {
 
@@ -8,59 +23,135 @@ Accordion = {
 	
 	initDesignStudio: function() {
 		var that = this;
+		
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
+	},
+	
+	initAsync: function (owner) {
+		var that = owner;
 		org_scn_community_component_Core(that, myComponentData);
 
 		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
-		this._ownScript = org_scn_community_basics.readOwnScriptAccess
-			("", org_scn_community_require.knownComponents.basics.Accordion.fullComponentName).myScriptPath;
+		that._ownScript = org_scn_community_basics.readOwnScriptAccess
+			("", spec.fullComponentName).myScriptPath;
 		
-		this.addStyleClass("scn-pack-Accordion");
+		that.addStyleClass("scn-pack-Accordion");
 		
-		this._oElements = {};
+		that._oElements = {};
 		
-		this._initComponent();
+		that._initComponent(owner);
 		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
 	},
 	
 	afterDesignStudioUpdate: function() {
 		var that = this;
 		
+		org_scn_community_basics.fillDummyData(that, that.processData, that.afterPrepare);
+	},
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+	processData: function (flatData, afterPrepare, owner) {
+		var that = owner;
+
+		// processing on data
+		that.afterPrepare(that);
+	},
+
+	afterPrepare: function (owner) {
+		var that = owner;
+			
+		// visualization on processed data
 		/* COMPONENT SPECIFIC CODE - START(afterDesignStudioUpdate)*/
-		if(this.getCleanAll()) {
-			this._destroyAll();
+
+		// backup current nodes
+		that._oElementsTemp = that._oElements;
+		if(that._oElementsTemp == undefined) {
+			that._oElementsTemp = {};
+		}
+		that._oElements = {};
+		that._oElementsArray = [];
+
+		if(that.getCleanAll()) {
+			that._destroyAll();
 			
-			this._oElements = {};
+			that._oElements = {};
+			that._oElementsArray = [];
+			that._oElementsTemp = {};
 			
-			this.setCleanAll(false);
+			that.setCleanAll(false);
 			that.fireDesignStudioPropertiesChanged(["cleanAll"]);
 		}
 		
-		var lElementsToRender = this.getElementsContent();
+		var lElementsToRender = that.getElementsContent();
 		if(lElementsToRender != null && lElementsToRender != undefined && lElementsToRender != ""){
 			var lElementsToRenderArray = JSON.parse(lElementsToRender);
 
 			// distribute content
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
 				var element = lElementsToRenderArray[i];
-				if(this._oElements[element.key] == undefined) {
-					var lNewElement = this._createElement(i, element.key, element.text, element.url, element.parentKey, element.leaf);
+				
+				if(that._oElements[element.key] == undefined) {
+					var lNewElement = undefined;
 					
-					this._oElements[element.key] = lNewElement;
+					// new or the same?
+					if(that._oElementsTemp[element.key] == undefined) {
+						lNewElement = that._createElement(owner, i, element.key, element.text, element.url, element.parentKey, element.leaf);	
+					} else {
+						lNewElement = that._oElementsTemp[element.key];
+						if(lNewElement._oLabel) {
+							lNewElement._oLabel.setText(element.text);
+						} else {
+							lNewElement.setTitle(element.text);
+							lNewElement.setTooltip(element.text);	
+						}
+						if(lNewElement._oImage) {
+							var withImage = that.getWithImage();
+							if(withImage) {
+								var iImageUrl = org_scn_community_basics.getRepositoryImageUrlPrefix(that, that.getDefaultImage(), element.url, "Accordion.png");
+								lNewElement._oImage.setSrc(iImageUrl);
+								lNewElement._oImage.setAlt(element.text);
+								lNewElement._oImage.setTooltip(element.text);
+							} else {
+								lNewElement._oImage.setSrc("");
+							}
+						}
+					}
+					
+					lNewElement.index = that._oElementsArray.length;
+					that._oElements[element.key] = lNewElement;
+					that._oElementsArray.push(lNewElement);
 				}
 			}
 		}
 		
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+		for (lElementKey in that._oElementsTemp) {
+			if(that._oElements[lElementKey] == undefined) {
+				// it means the key is now removed, we have to update the component
+				var elemToRemove = that._oElementsTemp[lElementKey];
+				
+				// it has a parent
+				if(elemToRemove._realParent) {
+					elemToRemove._realParent.removeContent(elemToRemove);
+				} else {
+					that.removeContent(elemToRemove);
+				}
+				elemToRemove.destroy();
+			}
+		}
+
+		for (lNodeInd in that._oElementsArray) {
+			var lElement = that._oElementsArray[lNodeInd];
 			if(lElement._Placed != true) {
 				var parentKey = lElement._ParentKey;
 				
 				if(parentKey == "ROOT") {
-					this._addRoot(lElement);
+					that._addRoot(lElement);
 				} else {
-					var parentElement = this._oElements[parentKey];
+					var parentElement = that._oElements[parentKey];
 					if(parentElement != undefined) {
-						this._addChild(parentElement, lElement);
+						lElement._realParent = parentElement;
+
+						that._addChild(parentElement, lElement);
 					}
 				}
 				
@@ -70,18 +161,24 @@ Accordion = {
 			}
 		}
 		
-		this._cleanUpAfterUpdate();
+		that._cleanUpAfterUpdate();
 		/* COMPONENT SPECIFIC CODE - START(afterDesignStudioUpdate)*/
 	},
 	
+	onResize: function(width, height, parent) {
+		// in case special resize code is required
+	},
+
 	/* COMPONENT SPECIFIC CODE - START METHODS*/
 	/**
 	 * Specific Function for Initialization of the Content Component
 	 */
-	_initComponent : function() {
-		var that = this;
+	_initComponent : function(owner) {
+		var that = owner;
 		
 		that._oAccordion = new sap.ui.commons.Accordion();
+		that.addStyleClass("scn-pack-FullSizeChildren");
+		that._oAccordion.addStyleClass("scn-pack-Accordion-Main");
 		
 		that._oAccordion.attachSectionOpen(function(oControlEvent, oControl) {
 			var lElementId = oControlEvent.getParameters().openSectionId;
@@ -89,21 +186,24 @@ Accordion = {
 			
 			var lElement = that._oElements[lElementId];
 			
+			var changedProperties = [];
 			if(that.getExpandedKey() != lElement._Key) {
 				that.setExpandedKey(lElement._Key);
 				that._lastExpanded = that.getExpandedKey();
-
-				that.fireDesignStudioPropertiesChanged(["expandedKey"]);
+				
+				changedProperties = ["expandedKey"];
 			}
 			
 			if(lElement._childrenRequested == undefined) {
 				lElement._childrenRequested = true;
 
-				that.fireDesignStudioEvent("onFirstExpand");
+				that.fireDesignStudioPropertiesChangedAndEvent(changedProperties, "onFirstExpand");
+			} else {
+				that.fireDesignStudioPropertiesChanged(changedProperties);
 			}
 		});
 		
-		this.onAfterRendering = function () {
+		that.onAfterRendering = function () {
 			org_scn_community_basics.resizeContentAbsoluteLayout(that, that._oAccordion);
 		}
 	},
@@ -112,22 +212,26 @@ Accordion = {
 	 * Specific Function for Destroy All
 	 */
 	_destroyAll : function () {
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+		var that = this;
+		
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			lElement.destroy();
 		}
 		
-		this._oAccordion.removeAllSections();
-		this._oAccordion.destroySections();
+		that._oAccordion.removeAllSections();
+		that._oAccordion.destroySections();
 		
-		this._oElements = {};
+		that._oElements = {};
 	},
 	
 	/**
 	 * Specific Function for Adding Root Elements
 	 */
 	_addRoot : function(iElement) {
-		this._oAccordion.addSection(iElement);
+		var that = this;
+		
+		that._oAccordion.addSection(iElement);
 	},
 	
 	/**
@@ -141,9 +245,11 @@ Accordion = {
 	 * Specific Function for CleanUp (if required)
 	 */
 	_cleanUpAfterUpdate : function () {
+		var that = this;
+		
 		// clean up "loading" element
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			if(lElement._childrenRequested) {
 				var elements = lElement.getContent();
 				// lElement.removeContent(elements[0]);
@@ -154,8 +260,8 @@ Accordion = {
 		}
 		
 		// make once
-		if(this.getExpandedKey() != this._lastExpanded) {
-			var lElement = this._oElements[this.getExpandedKey()];
+		if(that.getExpandedKey() != that._lastExpanded) {
+			var lElement = that._oElements[that.getExpandedKey()];
 			if(lElement) {
 				if(lElement._childrenRequested == undefined) {
 					var elements = lElement.getContent();
@@ -166,33 +272,29 @@ Accordion = {
 				}
 				
 				lElement.setCollapsed(false);
-				this._oAccordion.setOpenedSectionsId(this.getExpandedKey());	
+				that._oAccordion.setOpenedSectionsId(that.getExpandedKey());	
 			}
 		}
-		
-		this._lastExpanded = this.getExpandedKey();
+	
+		that._lastExpanded = that.getExpandedKey();
 	},
 
-	_createElement: function (index, iElementKey, iElementText, iImageUrl, iParentKey, isLeaf) {
-		var that = this;
+	_createElement: function (owner, index, iElementKey, iElementText, iImageUrl, iParentKey, isLeaf) {
+		var that = owner;
 		
-		// in case starts with http, keep as is 
-		if(iImageUrl === undefined || iImageUrl.indexOf("http") == 0) {
-			// no nothing
-		} else {
-			// in case of repository, add the prefix from repository
-			if(iImageUrl != "" && this._pImagePrefix != undefined && this._pImagePrefix != ""){
-				iImageUrl = this._pImagePrefix + iImageUrl;
-			}
-		}
+		iImageUrl = org_scn_community_basics.getRepositoryImageUrlPrefix(that, that.getDefaultImage(), iImageUrl, "Accordion.png");
 		
 		var lElement = undefined;
 		
+		if(that.getMemberDisplay() == "Text_Key") {
+			iElementText = iElementText + " [" + iElementKey + "]";
+		}
+		
 		if(isLeaf){
-			lElement = this._creatLabelElement(iElementKey, iElementText, iImageUrl);
+			lElement = that._creatLabelElement(owner, iElementKey, iElementText, iImageUrl);
 		} else {
 			lElement = new sap.ui.commons.AccordionSection({
-					id: this.getId() + "-sec-" +  iElementKey,
+					id: that.getId() + "-sec-" +  iElementKey,
 					title: iElementText,
 					tooltip: iElementText,
 					collapsed: true});
@@ -206,11 +308,11 @@ Accordion = {
 		return lElement;
 	},
 	
-	_creatLabelElement: function (iKey, iText, iImageUrl) {
-		var that = this;
+	_creatLabelElement: function (owner, iKey, iText, iImageUrl) {
+		var that = owner;
 
-		var imageSize = this.getImageSize();
-		var withImage = this.getWithImage();
+		var imageSize = that.getImageSize();
+		var withImage = that.getWithImage();
 
 		var height = "20px";
 		var topImage = "5px";
@@ -229,13 +331,15 @@ Accordion = {
 			topImage = "2px";
 		} 
 
-		var oLayout = new sap.ui.commons.layout.AbsoluteLayout ({
+		var oLayout = new sap.zen.commons.layout.AbsoluteLayout ({
 			height: height
 		});
 		
 		oLayout.addStyleClass("scn-pack-Accordion-Layout");
 		oLayout._Key = iKey;
 
+		imageSize = imageSize.replace("Size_", "");
+		
 		var oImage = new sap.ui.commons.Image ({
 			src : iImageUrl,
 			width : imageSize,
@@ -253,6 +357,7 @@ Accordion = {
 					{left: "4px", top: topImage}
 			);
 		}
+		oLayout._oImage = oImage;
 
 		var oLabel = new sap.ui.commons.Label({
 			text: iText
@@ -265,12 +370,13 @@ Accordion = {
 				oLabel,
 				{left: leftText, top: topText}
 		);
+		oLayout._oLabel = oLabel;
+		
+		if(that.getSelectedKey() == iKey) {
+			oLayout.addStyleClass("scn-pack-Accordion-SelectedValue");
+		}
 		
 		if(withImage) {
-			if(this.getSelectedKey() == iKey) {
-				oLayout.addStyleClass("scn-pack-Accordion-SelectedValue");
-			}
-			
 			oImage.setSrc(iImageUrl);
 		}
 
@@ -279,8 +385,7 @@ Accordion = {
 				that.setSelectedKey(oLayout._Key);
 				that._updateSelection(oLayout._Key);
 				
-				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-				that.fireDesignStudioEvent("onSelectionChanged");
+				that.fireDesignStudioPropertiesChangedAndEvent(["selectedKey"], "onSelectionChanged");
 			}
 		});
 		
@@ -289,8 +394,7 @@ Accordion = {
 				that.setSelectedKey(oLayout._Key);
 				that._updateSelection(oLayout._Key);
 				
-				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-				that.fireDesignStudioEvent("onSelectionChanged");
+				that.fireDesignStudioPropertiesChangedAndEvent(["selectedKey"], "onSelectionChanged");
 			}
 		});
 		
@@ -299,8 +403,7 @@ Accordion = {
 				that.setSelectedKey(oLayout._Key);
 				that._updateSelection(oLayout._Key);
 				
-				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-				that.fireDesignStudioEvent("onSelectionChanged");
+				that.fireDesignStudioPropertiesChangedAndEvent(["selectedKey"], "onSelectionChanged");
 			}
 		});
 
@@ -308,8 +411,9 @@ Accordion = {
 	},
 	
 	_updateSelection : function (iSelectedKey) {
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+		var that = this;
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			if(lElement.addStyleClass) {
 				if(iSelectedKey == lElement._Key){
 					lElement.addStyleClass("scn-pack-Accordion-SelectedValue");
@@ -322,9 +426,8 @@ Accordion = {
 	/* COMPONENT SPECIFIC CODE - END METHODS*/
 };
 
-define([myComponentData.requireName], function(basicsaccordion){
-	myComponentData.instance = Accordion;
-	return myComponentData.instance;
+//%INIT-START%
+myComponentData.instance = Accordion;
+jQuery.sap.require("sap.zen.commons.layout.AbsoluteLayout");
+sap.zen.commons.layout.AbsoluteLayout.extend(myComponentData.fullComponentName, myComponentData.instance);
 });
-
-}).call(this);

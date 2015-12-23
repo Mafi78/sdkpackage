@@ -16,129 +16,46 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-
-(function() {
-/** code for recognition of script path */
-var myScript = $("script:last")[0].src;
-var ownComponentName = "org.scn.community.basics.MenuButton";
-var _readScriptPath = function () {
-	var scriptInfo = org_scn_community_basics.readOwnScriptAccess(myScript, ownComponentName);
-	return scriptInfo.myScriptPath;
-};
-/** end of path recognition */
-
-sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
-
-	setDefaultImage : function(value) {
-		this._DefaultImage = value;
-		
-		if(value != undefined && value != "")  {
-			this._pImagePrefix = value.substring(0, value.lastIndexOf("/") + 1);	
-		}
-	},
-
-	getDefaultImage : function() {
-		return this._DefaultImage;
-	},
+ 
+ //%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./MenuButtonSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics"
 	
-	metadata: {
-        properties: {
-        	  "text": {type: "string"},
-        	  "tooltip": {type: "string"},
-        	  "enabled": {type: "boolean"},
-        	  "icon": {type: "string"},
-        	  "withImage": {type: "boolean"},
-              "imageSize": {type: "string"},
-              "selectedKey": {type: "string"},
-              "selectedText": {type: "string"},
-              "expandedKey": {type: "string"},
-              "elementsContent": {type: "string"},
-              "cleanAll": {type: "boolean"}
-        }
-	},
-  
-	initDesignStudio: function() {
-		var that = this;
-		this._ownScript = _readScriptPath();
-		
-		this.addStyleClass("scn-pack-MenuButton");
-		
-		this._oElements = {};
-		
-		this._initComponent();
-	},
-	
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
+
+var myComponentData = spec;
+
+MenuButton = {
+
 	renderer: {},
 	
-	afterDesignStudioUpdate : function() {
+	initDesignStudio: function() {
 		var that = this;
-		
-		if(that._oResize) {
-			that._oResize();	
-		}
-		
-		this._oMenuButton.setText(this.getText());
-		this._oMenuButton.setTooltip(this.getTooltip());
-		this._oMenuButton.setIcon(this.getIcon());
-		this._oMenuButton.setEnabled(this.getEnabled());
-		
-		if(this.getCleanAll()) {
-			this._destroyAll();
-			
-			this._oElements = {};
-			
-			this.setCleanAll(false);
-			that.fireDesignStudioPropertiesChanged(["cleanAll"]);
-		}
-		
-		var lElementsToRender = this.getElementsContent();
-		if(lElementsToRender != null && lElementsToRender != undefined && lElementsToRender != ""){
-			var lElementsToRenderArray = JSON.parse(lElementsToRender);
 
-			// distribute content
-			for (var i = 0; i < lElementsToRenderArray.length; i++) {
-				var element = lElementsToRenderArray[i];
-				if(this._oElements[element.key] == undefined) {
-					var lNewElement = this._createElement(i, element.key, element.text, element.url, element.parent, element.enabled, element.leaf);
-					
-					this._oElements[element.key] = lNewElement;
-				}
-			}
-		}
-		
-		for (lElementKey in this._oElements) {
-			if(lElementKey.indexOf("-SUB") > -1) {
-				continue;
-			}
-			
-			var lElement = this._oElements[lElementKey];
-			if(lElement._Placed != true) {
-				var parentKey = lElement._ParentKey;
-				
-				if(parentKey == "ROOT") {
-					this._addRoot(lElement);
-				} else {
-					var parentElement = this._oElements[parentKey + "-SUB"];
-					if(parentElement != undefined) {
-						this._addChild(parentElement, lElement);
-					}
-				}
-				
-				lElement._Placed = true;
-			} else {
-				// need to code update?
-			}
-		}
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
 	},
 	
+	initAsync: function (owner) {
+		var that = owner;
+		org_scn_community_component_Core(that, myComponentData);
 
-	/**
-	 * Specific Function for Initialization of the Content Component
-	 */
-	_initComponent : function() {
-		var that = this;
+		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+		that.addStyleClass("scn-pack-MenuButton");
 		
-		this._oMenuButton = new sap.ui.commons.MenuButton();
+		that._oElements = {};
+		
+		that._oMenuButton = new sap.ui.commons.MenuButton();
 		
 		var handleSelect = function(oEvent){
 			var lElementKey = oEvent.getParameter("itemId");
@@ -151,58 +68,123 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 			that.setSelectedKey(lElement._Key);
 			that.setSelectedText(lElement.getText());
 			
-			that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-			that.fireDesignStudioPropertiesChanged(["selectedText"]);
-			that.fireDesignStudioEvent("onSelectionChanged");
+			that.fireDesignStudioPropertiesChangedAndEvent(["selectedKey", "selectedText"], "onSelectionChanged");
 		};
 
-		this._oMenuButton.attachItemSelected(handleSelect);
+		that._oMenuButton.attachItemSelected(handleSelect);
 		
-//		var handlePress = function(oEvent){
-//			var lElementKey = oEvent.getParameter("itemId");
-//			// prepare the ID
-//			lElementKey = lElementKey.replace(that.getId(), "");
-//			lElementKey = lElementKey.replace("-sub-", "");
-//			lElementKey = lElementKey.replace("-sec-", "");
-//			
-//			var lElement = that._oElements[lElementKey];
-//			that.setPressedKey(lElement._Key);
-//			
-//			that.fireDesignStudioPropertiesChanged(["pressedKey"]);
-//			that.fireDesignStudioEvent("onPressed");
-//		};
-//
-//		this._oMenuButton.attachPress(handlePress);
+		that._oMainMenu = new sap.ui.commons.Menu("menu", {ariaDescription: "", tooltip: ""});
+		that._oMenuButton.setMenu(that._oMainMenu);
+		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
 		
-		this._oMainMenu = new sap.ui.commons.Menu("menu", {ariaDescription: "", tooltip: ""});
-		this._oMenuButton.setMenu(this._oMainMenu);
+		 that.onAfterRendering = function () {
+			 org_scn_community_basics.resizeContentAbsoluteLayout(that, that._oMenuButton, that.onResize);
+		 }
+	},
+	
+	afterDesignStudioUpdate: function() {
+		var that = this;
+		
+		org_scn_community_basics.fillDummyData(that, that.processData, that.afterPrepare);
+	},
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+	processData: function (flatData, afterPrepare, owner) {
+		var that = owner;
 
-		// resize function
-		this.onAfterRendering = function() {
-			org_scn_community_basics.resizeContentAbsoluteLayout(that, this._oMenuButton);
-		};
+		// processing on data
+		that.afterPrepare(that);
+	},
+
+	afterPrepare: function (owner) {
+		var that = owner;
+			
+		// visualization on processed data
+		that._oMenuButton.setText(that.getText());
+		that._oMenuButton.setTooltip(that.getTooltip());
+		that._oMenuButton.setIcon(that.getIcon());
+		that._oMenuButton.setEnabled(that.getEnabled());
+		
+		if(that.getCleanAll()) {
+			that._destroyAll();
+			
+			that._oElements = {};
+			
+			that.setCleanAll(false);
+			that.fireDesignStudioPropertiesChanged(["cleanAll"]);
+		}
+		
+		var lElementsToRender = that.getElementsContent();
+		if(lElementsToRender != null && lElementsToRender != undefined && lElementsToRender != ""){
+			var lElementsToRenderArray = JSON.parse(lElementsToRender);
+
+			// distribute content
+			for (var i = 0; i < lElementsToRenderArray.length; i++) {
+				var element = lElementsToRenderArray[i];
+				if(that._oElements[element.key] == undefined) {
+					var lNewElement = that._createElement(that, i, element.key, element.text, element.url, element.parentKey, element.enabled, element.leaf);
+					
+					that._oElements[element.key] = lNewElement;
+				} else {
+					var elementObject = that._oElements[element.key];
+					elementObject.setText(element.text);
+					elementObject.setEnabled(element.enabled);
+					elementObject.setIcon(org_scn_community_basics.getRepositoryImageUrlPrefix(that, that.getDefaultImage(), element.url, "MenuButton.png"));
+				}
+			}
+		}
+		
+		for (lElementKey in that._oElements) {
+			if(lElementKey.indexOf("-SUB") > -1) {
+				continue;
+			}
+			
+			var lElement = that._oElements[lElementKey];
+			if(lElement._Placed != true) {
+				var parentKey = lElement._ParentKey;
+				
+				if(parentKey == "ROOT") {
+					that._addRoot(that, lElement);
+				} else {
+					var parentElement = that._oElements[parentKey + "-SUB"];
+					if(parentElement != undefined) {
+						that._addChild(parentElement, lElement);
+					}
+				}
+				
+				lElement._Placed = true;
+			} else {
+				// need to code update?
+			}
+		}
+	},
+	
+	onResize: function(width, height, parent) {
+		// in case special resize code is required
 	},
 	
 	/**
 	 * Specific Function for Destroy All
 	 */
-	_destroyAll : function () {
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+	_destroyAll : function (owner) {
+		var that = owner;
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			lElement.destroy();
 		}
 		
-		this._oMainMenu.removeAllItems();
-		this._oMainMenu.destroyItems();
+		that._oMainMenu.removeAllItems();
+		that._oMainMenu.destroyItems();
 		
-		this._oElements = {};
+		that._oElements = {};
 	},
 	
 	/**
 	 * Specific Function for Adding Root Elements
 	 */
-	_addRoot : function(iElement) {
-		this._oMainMenu.addItem(iElement);
+	_addRoot : function(owner, iElement) {
+		var that = owner;
+		that._oMainMenu.addItem(iElement);
 	},
 	
 	/**
@@ -212,31 +194,27 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 		iParent.addItem(iElement);
 	},
 
-	_createElement: function (index, iElementKey, iElementText, iImageUrl, iParentKey, isEnabled, isLeaf) {
-		var that = this;
+	_createElement: function (owner, index, iElementKey, iElementText, iImageUrl, iParentKey, isEnabled, isLeaf) {
+		var that = owner;
 		
-		// in case starts with http, keep as is 
-		if(iImageUrl.indexOf("http") == 0) {
-			// no nothing
-		} else {
-			// in case of repository, add the prefix from repository
-			if(iImageUrl != "" && this._pImagePrefix != undefined && this._pImagePrefix != ""){
-				iImageUrl = this._pImagePrefix + iImageUrl;
-			}
-		}
-		
+		if(iElementText == undefined) {iElementText = ""};
+		if(iImageUrl == undefined) {iImageUrl = ""};
+		if(isEnabled == undefined) {isEnabled = true};
+
+		iImageUrl = org_scn_community_basics.getRepositoryImageUrlPrefix(that, that.getDefaultImage(), iImageUrl, "MenuButton.png");
+
 		var lElement = undefined;
 		
 		if(isLeaf){
 			lElement = new sap.ui.unified.MenuItem({
-					id: this.getId() + "-sec-" +  iElementKey,
+					id: that.getId() + "-sec-" +  iElementKey,
 					text: iElementText,
 					icon: iImageUrl,
 					enabled: isEnabled
 				});
 		} else {
 			lElement = new sap.ui.unified.MenuItem({
-					id: this.getId() + "-sec-" +  iElementKey,
+					id: that.getId() + "-sec-" +  iElementKey,
 					text: iElementText,
 					icon: iImageUrl,
 					enabled: isEnabled
@@ -248,13 +226,13 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 		
 		if(!isLeaf) {
 			var oSubMenu = new sap.ui.commons.Menu({
-				id: this.getId() + "-sub-" +  iElementKey
+				id: that.getId() + "-sub-" +  iElementKey
 			});
 			lElement.setSubmenu(oSubMenu);
 
 			oSubMenu._lElement = lElement;
 			
-			this._oElements[iElementKey + "-SUB"] = oSubMenu;
+			that._oElements[iElementKey + "-SUB"] = oSubMenu;
 		} else {
 			
 		}
@@ -263,8 +241,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 	},
 	
 	_updateSelection : function (iSelectedKey) {
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			if(lElement.addStyleClass) {
 				if(iSelectedKey == lElement._Key){
 					lElement.addStyleClass("scn-pack-MenuButton-SelectedValue");
@@ -274,5 +252,11 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 			}
 		};
 	}
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+};
+
+//%INIT-START%
+myComponentData.instance = MenuButton;
+jQuery.sap.require("sap.zen.commons.layout.AbsoluteLayout");
+sap.zen.commons.layout.AbsoluteLayout.extend(myComponentData.fullComponentName, myComponentData.instance);
 });
-})();

@@ -9,6 +9,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.xml.head.txt ^
 ..\res\ActivityViewer\def\contribution.xml ^
 ..\res\ActionSheetButton\def\contribution.xml ^
 ..\res\ApplicationHeader\def\contribution.xml ^
+..\res\ArrowedLine\def\contribution.xml ^
 ..\res\Base64Image\def\contribution.xml ^
 ..\res\BasicBusinessCard\def\contribution.xml ^
 ..\res\Calendar\def\contribution.xml ^
@@ -21,11 +22,17 @@ type ..\..\org.scn.community.shared\templates.main\contribution.xml.head.txt ^
 ..\res\EmbeddedMedia\def\contribution.xml ^
 ..\res\FallbackPicture\def\contribution.xml ^
 ..\res\FioriAppHeader\def\contribution.xml ^
+..\res\FioriBar\def\contribution.xml ^
 ..\res\FioriButton\def\contribution.xml ^
+..\res\FioriInput\def\contribution.xml ^
+..\res\FioriSegmentedButton\def\contribution.xml ^
+..\res\FioriSlider\def\contribution.xml ^
+..\res\FioriSwitch\def\contribution.xml ^
 ..\res\FioriToolbar\def\contribution.xml ^
 ..\res\FishEye\def\contribution.xml ^
 ..\res\Gauge\def\contribution.xml ^
 ..\res\ImageCarousel\def\contribution.xml ^
+..\res\KpiTile\def\contribution.xml ^
 ..\res\KpiView\def\contribution.xml ^
 ..\res\LaunchPad\def\contribution.xml ^
 ..\res\LeaderBoard\def\contribution.xml ^
@@ -37,7 +44,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.xml.head.txt ^
 ..\res\NavigationBar\def\contribution.xml ^
 ..\res\NotificationBar\def\contribution.xml ^
 ..\res\Notify\def\contribution.xml ^
-..\res\OSMap\def\contribution.xml ^
+..\res\Map\def\contribution.xml ^
 ..\res\Paginator\def\contribution.xml ^
 ..\res\PasswordField\def\contribution.xml ^
 ..\res\QRCode\def\contribution.xml ^
@@ -49,6 +56,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.xml.head.txt ^
 ..\res\SegmentedButton\def\contribution.xml ^
 ..\res\Slider\def\contribution.xml ^
 ..\res\TextArea\def\contribution.xml ^
+..\res\TimeOut\def\contribution.xml ^
 ..\res\ToggleButton\def\contribution.xml ^
 ..\res\Tree\def\contribution.xml ^
 ..\res\TriStateCheckBox\def\contribution.xml ^
@@ -67,6 +75,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.ztl.head.txt ^
 ..\res\ActivityViewer\def\contribution.ztl ^
 ..\res\ActionSheetButton\def\contribution.ztl ^
 ..\res\ApplicationHeader\def\contribution.ztl ^
+..\res\ArrowedLine\def\contribution.ztl ^
 ..\res\Base64Image\def\contribution.ztl ^
 ..\res\BasicBusinessCard\def\contribution.ztl ^
 ..\res\Calendar\def\contribution.ztl ^
@@ -79,11 +88,17 @@ type ..\..\org.scn.community.shared\templates.main\contribution.ztl.head.txt ^
 ..\res\EmbeddedMedia\def\contribution.ztl ^
 ..\res\FallbackPicture\def\contribution.ztl ^
 ..\res\FioriAppHeader\def\contribution.ztl ^
+..\res\FioriBar\def\contribution.ztl ^
 ..\res\FioriButton\def\contribution.ztl ^
+..\res\FioriInput\def\contribution.ztl ^
+..\res\FioriSegmentedButton\def\contribution.ztl ^
+..\res\FioriSlider\def\contribution.ztl ^
+..\res\FioriSwitch\def\contribution.ztl ^
 ..\res\FioriToolbar\def\contribution.ztl ^
 ..\res\FishEye\def\contribution.ztl ^
 ..\res\Gauge\def\contribution.ztl ^
 ..\res\ImageCarousel\def\contribution.ztl ^
+..\res\KpiTile\def\contribution.ztl ^
 ..\res\KpiView\def\contribution.ztl ^
 ..\res\LaunchPad\def\contribution.ztl ^
 ..\res\LeaderBoard\def\contribution.ztl ^
@@ -95,7 +110,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.ztl.head.txt ^
 ..\res\NavigationBar\def\contribution.ztl ^
 ..\res\NotificationBar\def\contribution.ztl ^
 ..\res\Notify\def\contribution.ztl ^
-..\res\OSMap\def\contribution.ztl ^
+..\res\Map\def\contribution.ztl ^
 ..\res\Paginator\def\contribution.ztl ^
 ..\res\PasswordField\def\contribution.ztl ^
 ..\res\ProgressIndicator\def\contribution.ztl ^
@@ -107,6 +122,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.ztl.head.txt ^
 ..\res\SegmentedButton\def\contribution.ztl ^
 ..\res\Slider\def\contribution.ztl ^
 ..\res\TextArea\def\contribution.ztl ^
+..\res\TimeOut\def\contribution.ztl ^
 ..\res\ToggleButton\def\contribution.ztl ^
 ..\res\Tree\def\contribution.ztl ^
 ..\res\TriStateCheckBox\def\contribution.ztl ^

@@ -1,17 +1,81 @@
 
 /**
- * Class for EmbeddedFrame
+ * Generated ZTL Class for EmbeddedFrame
+ * 
+ * DO NOT EDIT, ROOT SOURCE for custom functions in /spec/contribution.ztl
  */
 class org.scn.community.basics.EmbeddedFrame extends org.scn.community.shared.Component {
-	
-	/** Sets the content url which will be embedded */
-	void setURL(
-		/** text */ String text) {*
-		this.url = url;	
+
+	/**
+	 * Sets Domain Relax Level Property
+	 */	
+	void setDomainrelaxlevel( /**Domain Relax Level*/ int domainrelaxlevel){*
+		this.domainrelaxlevel = domainrelaxlevel;
+	*}
+
+	/**
+	 * Gets Domain Relax Level Property
+	 */	
+	int getDomainrelaxlevel() {*
+		return this.domainrelaxlevel;
+	*}
+
+	/**
+	 * Sets Skip port in domain Property
+	 */	
+	void setSkipport( /**Skip port in domain*/ boolean skipport){*
+		this.skipport = skipport;
+	*}
+
+	/**
+	 * Gets Skip port in domain Property
+	 */	
+	boolean isSkipport() {*
+		return this.skipport;
+	*}
+
+	/**
+	 * Sets Url Property
+	 */	
+	void setUrl( /**Url*/ String url){*
+		this.url = url;
+	*}
+
+	/**
+	 * Gets Url Property
+	 */	
+	String getUrl() {*
+		return this.url;
+	*}
+
+
+	/* START HERE PLACE FOR CUSTOM ZTL FUNCTIONS */
+	// here is the place for other custom functions	
+	/**
+	 * Gets Domain Relaxation level Property
+	 */	
+	int getDomainRelaxLevel(){*
+		return this.domainrelaxlevel;
 	*}
 	
-	/** Returns the content url */
-	String getURL() {*
-		return this.url;	
+	/**
+	 * Gets Domain Relaxation level Property
+	 */	
+	void setDomainRelaxLevel(int level){*
+		this.domainrelaxlevel = level;
+	*}
+	
+		/**
+	 * Gets Domain Relaxation level Property
+	 */	
+	boolean getSkipPort(){*
+		return this.skipport;
+	*}
+	
+	/**
+	 * Gets Domain Relaxation level Property
+	 */	
+	void setSkipPort(boolean skip){*
+		this.skipport = skip;
 	*}
 }

@@ -5,14 +5,16 @@
 	tooltip="Utility for work with Json Object"
 	icon="res/JsonObject/JsonObject.png"
 	handlerType="div"
-	propertySheetPath="aps/org.scn.community.PropertyPage.div.html"
+	propertySheetPath="aps/PropertyPage.html"
 	group="ScnCommunityUtils"
 	databound="false"
+	modes="commons"
 >
 	
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/JsonObject/JsonObjectLoader.js</jsInclude>
+	<requireJs modes="commons">res/JsonObject/JsonObject</requireJs>
+
 	<cssInclude>res/JsonObject/JsonObject.css</cssInclude>
+	
 	
 	<property
 		id="content"
@@ -33,7 +35,7 @@
 		<defaultValue property="WIDTH">10</defaultValue>
 		<defaultValue property="HEIGHT">10</defaultValue>
 		
-		<defaultValue property="content">{}</defaultValue>
+		<defaultValue property="content"><![CDATA[{}]]></defaultValue>
 
 	</initialization>
 

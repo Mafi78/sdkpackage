@@ -5,7 +5,7 @@
 	title="Design Studio SCN Community Prototypes"
 
 	xmlns="http://www.sap.com/bi/zen/sdk"
-	version="2.0"
+	version="3.0"
 	vendor="SCN Design Studio Community"
 	eula="Content is free for use and distribution under Apache License Version 2.0. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License. For details refer to https://github.com/org-scn-design-studio-community/sdkpackage//blob/master/LICENSE">
 
@@ -197,14 +197,16 @@
 	tooltip="Application Property Sheet Tester"
 	icon="res/ApsTester/ApsTester.png"
 	handlerType="div"
-	propertySheetPath="aps/org.scn.community.PropertyPage.div.html"
+	propertySheetPath="aps/PropertyPage.html"
 	group="ScnCommunityPrototypes"
 	databound="true"
+	modes="commons"
 >
 	
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/ApsTester/ApsTesterLoader.js</jsInclude>
+	<requireJs modes="commons">res/ApsTester/ApsTester</requireJs>
+
 	<cssInclude>res/ApsTester/ApsTester.css</cssInclude>
+	
 	
 	<property
 		id="checkboxExample"
@@ -246,10 +248,13 @@
 		id="data"
 		type="ResultSet"
 		title="Data"
-		group="Display"
-		bindable="true"
+		group="DataBinding"
 		visible="true">
 
+		<option name="maxCells" value="100000" />
+		<option name="includeFormattedData" value="true"/>
+		<option name="includeData" value="true"/>
+		<option name="presentationDelimiter" value=" | " />
 	</property>
 	<property
 		id="doublearray"
@@ -315,17 +320,17 @@
 		<defaultValue property="WIDTH">200</defaultValue>
 		<defaultValue property="HEIGHT">200</defaultValue>
 		
-		<defaultValue property="checkboxExample">true</defaultValue>
-		<defaultValue property="checkboxOnlyGetterExample">true</defaultValue>
-		<defaultValue property="colorExample"></defaultValue>
-		<defaultValue property="comboboxExample">quantile</defaultValue>
-		<defaultValue property="data">null</defaultValue>
-		<defaultValue property="doublearray">[]</defaultValue>
-		<defaultValue property="paletteExample"></defaultValue>
-		<defaultValue property="singlearray">[]</defaultValue>
-		<defaultValue property="spinnerExample"></defaultValue>
-		<defaultValue property="stringarray">[]</defaultValue>
-		<defaultValue property="textExample">initial</defaultValue>
+		<defaultValue property="checkboxExample"><![CDATA[true]]></defaultValue>
+		<defaultValue property="checkboxOnlyGetterExample"><![CDATA[true]]></defaultValue>
+		<defaultValue property="colorExample"><![CDATA[]]></defaultValue>
+		<defaultValue property="comboboxExample"><![CDATA[quantile]]></defaultValue>
+		<defaultValue property="data"><![CDATA[null]]></defaultValue>
+		<defaultValue property="doublearray"><![CDATA[[]]]></defaultValue>
+		<defaultValue property="paletteExample"><![CDATA[]]></defaultValue>
+		<defaultValue property="singlearray"><![CDATA[[]]]></defaultValue>
+		<defaultValue property="spinnerExample"><![CDATA[0]]></defaultValue>
+		<defaultValue property="stringarray"><![CDATA[[]]]></defaultValue>
+		<defaultValue property="textExample"><![CDATA[initial]]></defaultValue>
 
 	</initialization>
 
@@ -337,14 +342,16 @@
 	tooltip="Application Property Sheet Tester UI5"
 	icon="res/ApsTesterUI5/ApsTesterUI5.png"
 	handlerType="sapui5"
-	propertySheetPath="res/ApsTesterUI5/aps/PropertyPage.html"
+	propertySheetPath="aps/PropertyPage.html"
 	group="ScnCommunityPrototypes"
 	databound="true"
+	modes="commons"
 >
 	
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/ApsTesterUI5/ApsTesterUI5Loader.js</jsInclude>
+	<requireJs modes="commons">res/ApsTesterUI5/ApsTesterUI5</requireJs>
+
 	<cssInclude>res/ApsTesterUI5/ApsTesterUI5.css</cssInclude>
+	
 	
 	<property
 		id="checkboxExample"
@@ -386,10 +393,13 @@
 		id="data"
 		type="ResultSet"
 		title="Data"
-		group="Display"
-		bindable="true"
+		group="DataBinding"
 		visible="true">
 
+		<option name="maxCells" value="100000" />
+		<option name="includeFormattedData" value="true"/>
+		<option name="includeData" value="true"/>
+		<option name="presentationDelimiter" value=" | " />
 	</property>
 	<property
 		id="paletteExample"
@@ -428,14 +438,14 @@
 		<defaultValue property="WIDTH">200</defaultValue>
 		<defaultValue property="HEIGHT">200</defaultValue>
 		
-		<defaultValue property="checkboxExample">true</defaultValue>
-		<defaultValue property="checkboxOnlyGetterExample">true</defaultValue>
-		<defaultValue property="colorExample"></defaultValue>
-		<defaultValue property="comboboxExample">quantile</defaultValue>
-		<defaultValue property="data">null</defaultValue>
-		<defaultValue property="paletteExample"></defaultValue>
-		<defaultValue property="spinnerExample"></defaultValue>
-		<defaultValue property="textExample">initial</defaultValue>
+		<defaultValue property="checkboxExample"><![CDATA[true]]></defaultValue>
+		<defaultValue property="checkboxOnlyGetterExample"><![CDATA[true]]></defaultValue>
+		<defaultValue property="colorExample"><![CDATA[]]></defaultValue>
+		<defaultValue property="comboboxExample"><![CDATA[quantile]]></defaultValue>
+		<defaultValue property="data"><![CDATA[null]]></defaultValue>
+		<defaultValue property="paletteExample"><![CDATA[]]></defaultValue>
+		<defaultValue property="spinnerExample"><![CDATA[]]></defaultValue>
+		<defaultValue property="textExample"><![CDATA[initial]]></defaultValue>
 
 	</initialization>
 
@@ -574,12 +584,8 @@
 </component>
 <component
 	id="ProgressSet" title="Progress Bar Set" handlerType="div" icon="res/ProgressSet/ProgressSet.png" group="ScnCommunityPrototypes"
-	propertySheetPath="res/ProgressSet/aps/ProgressSetPropertyPage.html">
-	<stdInclude kind="d3"/>
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/common_basics.js</jsInclude>
-	<jsInclude>res/ProgressSet/ProgressSet.js</jsInclude>
-  	<cssInclude>res/ProgressSet/ProgressSet.css</cssInclude>
+	propertySheetPath="aps/PropertyPage.html">
+	<requireJs modes="commons m">res/ProgressSet/ProgressSet</requireJs>
   	<property type="String" title="Bar Config" id="barConfig" visible="false"/>
   	<property type="String" title="Selected Bar" id="selectedBar" visible="false"/>
   	<property type="String" title="Orientation" id="orientation" visible="true">
@@ -594,6 +600,7 @@
   	<property type="float" title="Gradient Stop (0.00 - 1.00)" id="gradientStop" visible="true"/>
   	<property type="float" title="Gradient Stop Opacity (0.00 - 1.00)" id="gradientStopOpacity" visible="true"/>
   	<property type="Color" title="Gradient Stop Color" id="gradientStopColor" visible="true"/>
+  	<property type="String" title="Palette" id="palette" visible="false"/>
   	<property type="float" title="Bar Fill Opacity (0.00 - 1.00)" id="barFillOpacity" visible="true"/>
   	<property type="int" title="Bar Roundness" id="barRoundness" visible="true"/>
   	<property type="int" title="Bar Height (-1 = auto height)" id="barHeight" visible="true"/>
@@ -602,6 +609,7 @@
   	<initialization>
   		<defaultValue property="orientation">horizontal</defaultValue>
   		<defaultValue property="barConfig">[{&quot;title&quot;:&quot;Measure&quot;,&quot;fillColor&quot;:&quot;auto&quot;,&quot;number&quot;:&quot;10&quot;,&quot;numberUnit&quot;:&quot;USD&quot;,&quot;styleClass&quot;:&quot;&quot;},{&quot;title&quot;:&quot;Measure1&quot;,&quot;fillColor&quot;:&quot;auto&quot;,&quot;number&quot;:&quot;15&quot;,&quot;numberUnit&quot;:&quot;USD&quot;,&quot;styleClass&quot;:&quot;&quot;},{&quot;title&quot;:&quot;Measure2&quot;,&quot;fillColor&quot;:&quot;auto&quot;,&quot;number&quot;:&quot;30&quot;,&quot;numberUnit&quot;:&quot;USD&quot;,&quot;styleClass&quot;:&quot;&quot;},{&quot;title&quot;:&quot;Measure3&quot;,&quot;fillColor&quot;:&quot;auto&quot;,&quot;number&quot;:&quot;20&quot;,&quot;numberUnit&quot;:&quot;USD&quot;,&quot;styleClass&quot;:&quot;&quot;},{&quot;title&quot;:&quot;Measure4&quot;,&quot;fillColor&quot;:&quot;auto&quot;,&quot;number&quot;:&quot;45&quot;,&quot;numberUnit&quot;:&quot;USD&quot;,&quot;styleClass&quot;:&quot;&quot;}]</defaultValue>
+  		<defaultValue property="palette">#8DD3C7,#FFFFB3,#BEBADA,#FB8072,#80B1D3,#FDB462,#B3DE69,#FCCDE5,#D9D9D9,#BC80BD,#CCEBC5,#FFED6F</defaultValue>
   		<defaultValue property="inlineLabels">false</defaultValue>
   		<defaultValue property="gradientFullWidth">false</defaultValue>
   		<defaultValue property="barFillOpacity">1</defaultValue>
@@ -628,15 +636,16 @@
 	tooltip="Bullet Chart Visualization"
 	icon="res/BulletChartGen/BulletChartGen.png"
 	handlerType="div"
-	propertySheetPath="aps/org.scn.community.PropertyPage.div.html"
+	propertySheetPath="aps/PropertyPage.html"
 	group="ScnCommunityPrototypes"
 	databound="true"
+	modes="commons"
 >
-	<stdInclude kind="d3"/>
 	
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/BulletChartGen/BulletChartGenLoader.js</jsInclude>
+	<requireJs modes="commons">res/BulletChartGen/BulletChartGen</requireJs>
+
 	<cssInclude>res/BulletChartGen/BulletChartGen.css</cssInclude>
+	
 	
 	<property
 		id="clickedgraphkey"
@@ -660,10 +669,13 @@
 		id="data"
 		type="ResultSet"
 		title="Dataset"
-		group="Display"
-		bindable="true"
+		group="DataBinding"
 		visible="true">
 
+		<option name="maxCells" value="100000" />
+		<option name="includeFormattedData" value="true"/>
+		<option name="includeData" value="true"/>
+		<option name="presentationDelimiter" value=" | " />
 	</property>
 	<property
 		id="extrapolation"
@@ -810,24 +822,24 @@
 		<defaultValue property="WIDTH">600</defaultValue>
 		<defaultValue property="HEIGHT">400</defaultValue>
 		
-		<defaultValue property="clickedgraphkey"></defaultValue>
-		<defaultValue property="comparison"></defaultValue>
-		<defaultValue property="data">null</defaultValue>
-		<defaultValue property="extrapolation"></defaultValue>
-		<defaultValue property="graphTitle"></defaultValue>
-		<defaultValue property="keydimension"></defaultValue>
-		<defaultValue property="labeldimension"></defaultValue>
-		<defaultValue property="maxgraphheight">40</defaultValue>
-		<defaultValue property="mingraphheight">40</defaultValue>
-		<defaultValue property="realization"></defaultValue>
-		<defaultValue property="showalert">worse than comparison</defaultValue>
-		<defaultValue property="showaxis">true</defaultValue>
-		<defaultValue property="sublabeldimension"></defaultValue>
-		<defaultValue property="threshold1"></defaultValue>
-		<defaultValue property="threshold2"></defaultValue>
-		<defaultValue property="threshold3"></defaultValue>
-		<defaultValue property="threshold4"></defaultValue>
-		<defaultValue property="threshold5"></defaultValue>
+		<defaultValue property="clickedgraphkey"><![CDATA[]]></defaultValue>
+		<defaultValue property="comparison"><![CDATA[]]></defaultValue>
+		<defaultValue property="data"><![CDATA[null]]></defaultValue>
+		<defaultValue property="extrapolation"><![CDATA[]]></defaultValue>
+		<defaultValue property="graphTitle"><![CDATA[]]></defaultValue>
+		<defaultValue property="keydimension"><![CDATA[]]></defaultValue>
+		<defaultValue property="labeldimension"><![CDATA[]]></defaultValue>
+		<defaultValue property="maxgraphheight"><![CDATA[40]]></defaultValue>
+		<defaultValue property="mingraphheight"><![CDATA[40]]></defaultValue>
+		<defaultValue property="realization"><![CDATA[]]></defaultValue>
+		<defaultValue property="showalert"><![CDATA[comparison]]></defaultValue>
+		<defaultValue property="showaxis"><![CDATA[true]]></defaultValue>
+		<defaultValue property="sublabeldimension"><![CDATA[]]></defaultValue>
+		<defaultValue property="threshold1"><![CDATA[]]></defaultValue>
+		<defaultValue property="threshold2"><![CDATA[]]></defaultValue>
+		<defaultValue property="threshold3"><![CDATA[]]></defaultValue>
+		<defaultValue property="threshold4"><![CDATA[]]></defaultValue>
+		<defaultValue property="threshold5"><![CDATA[]]></defaultValue>
 
 	</initialization>
 
@@ -862,53 +874,74 @@
 		tooltip="Not recommended for production use!"
 		icon="res/RapidPrototype/RapidPrototype.png"
 		handlerType="div"
+		modes="commons m"
 		group="ScnCommunityPrototypes"
-		propertySheetPath="res/RapidPrototype/aps/RapidPrototypePropertyPage.html">
+		propertySheetPath="aps/PropertyPage.html"
+		databound="true">
 		
-		<jsInclude>res/require_loader.js</jsInclude>
-		<jsInclude>res/common_basics.js</jsInclude>
-		<jsInclude>res/RapidPrototype/RapidPrototype.js</jsInclude>
+		<requireJs modes="commons m">res/RapidPrototype/RapidPrototype</requireJs>
 
 		<property id="HTML" type="String" title="HTML" group="Display" />
 		<property id="afterInit" type="String" title="JavaScript" group="Display" />
 		<property type="String" title="Placeholder 1" id="term1"></property>
-		<property type="String" title="Replacement 1" id="replacement1"></property>
-		
+		<property type="String" title="Manual Replacement 1" id="replacement1"></property>
+				
 		<property type="String" title="Placeholder 2" id="term2"></property>
-		<property type="String" title="Replacement 2" id="replacement2"></property>
+		<property type="String" title="Manual Replacement 2" id="replacement2"></property>
 		
 		<property type="String" title="Placeholder 3" id="term3"></property>
-		<property type="String" title="Replacement 3" id="replacement3"></property>
+		<property type="String" title="Manual Replacement 3" id="replacement3"></property>
 		
 		<property type="String" title="Placeholder 4" id="term4"></property>
-		<property type="String" title="Replacement 4" id="replacement4"></property>
+		<property type="String" title="Manual Replacement 4" id="replacement4"></property>
 		
 		<property type="String" title="Placeholder 5" id="term5"></property>
-		<property type="String" title="Replacement 5" id="replacement5"></property>
+		<property type="String" title="Manual Replacement 5" id="replacement5"></property>
 		
 		<property type="String" title="Placeholder 6" id="term6"></property>
-		<property type="String" title="Replacement 6" id="replacement6"></property>
+		<property type="String" title="Manual Replacement 6" id="replacement6"></property>
 
 		<property type="String" title="Placeholder 7" id="term7"></property>
-		<property type="String" title="Replacement 7" id="replacement7"></property>
+		<property type="String" title="Manual Replacement 7" id="replacement7"></property>
 
 		<property type="String" title="Placeholder 8" id="term8"></property>
-		<property type="String" title="Replacement 8" id="replacement8"></property>
+		<property type="String" title="Manual Replacement 8" id="replacement8"></property>
 
 		<property type="String" title="Placeholder 9" id="term9"></property>
-		<property type="String" title="Replacement 9" id="replacement9"></property>
+		<property type="String" title="Manual Replacement 9" id="replacement9"></property>
 		
 		<property type="String" title="Placeholder 10" id="term10"></property>
-		<property type="String" title="Replacement 10" id="replacement10"></property>
+		<property type="String" title="Manual Replacement 10" id="replacement10"></property>
+		
+		<property type="ResultCell" title="Databound Replacement 1" id="KPIreplacement1"></property>
+		<property type="ResultCell" title="Databound Replacement 2" id="KPIreplacement2"></property>
+		<property type="ResultCell" title="Databound Replacement 3" id="KPIreplacement3"></property>
+		<property type="ResultCell" title="Databound Replacement 4" id="KPIreplacement4"></property>
+		<property type="ResultCell" title="Databound Replacement 5" id="KPIreplacement5"></property>
+		<property type="ResultCell" title="Databound Replacement 6" id="KPIreplacement6"></property>
+		<property type="ResultCell" title="Databound Replacement 7" id="KPIreplacement7"></property>
+		<property type="ResultCell" title="Databound Replacement 8" id="KPIreplacement8"></property>
+		<property type="ResultCell" title="Databound Replacement 9" id="KPIreplacement9"></property>
+		<property type="ResultCell" title="Databound Replacement 10" id="KPIreplacement10"></property>
 		
 		<initialization>
+			<defaultValue property="term1">{kpi1}</defaultValue>
+			<defaultValue property="term2">{kpi2}</defaultValue>
+			<defaultValue property="term3">{kpi3}</defaultValue>
+			<defaultValue property="term4">{kpi4}</defaultValue>
+			<defaultValue property="term5">{kpi5}</defaultValue>
+			<defaultValue property="term6">{kpi6}</defaultValue>
+			<defaultValue property="term7">{kpi7}</defaultValue>
+			<defaultValue property="term8">{kpi8}</defaultValue>
+			<defaultValue property="term9">{kpi9}</defaultValue>
+			<defaultValue property="term10">{kpi10}</defaultValue>
 			<defaultValue property="TOP_MARGIN">0</defaultValue>
 			<defaultValue property="LEFT_MARGIN">0</defaultValue>
 			<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
 			<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
 			<defaultValue property="WIDTH">400</defaultValue>
 			<defaultValue property="HEIGHT">300</defaultValue>
-			<defaultValue property="HTML">HTML Here</defaultValue>
+			<defaultValue property="HTML"><![CDATA[HTML Here.  <b>Sales:</b>{kpi1}]]></defaultValue>
 		</initialization>
 	</component>
 </sdkExtension>

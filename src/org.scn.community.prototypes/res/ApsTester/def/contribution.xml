@@ -5,14 +5,16 @@
 	tooltip="Application Property Sheet Tester"
 	icon="res/ApsTester/ApsTester.png"
 	handlerType="div"
-	propertySheetPath="aps/org.scn.community.PropertyPage.div.html"
+	propertySheetPath="aps/PropertyPage.html"
 	group="ScnCommunityPrototypes"
 	databound="true"
+	modes="commons"
 >
 	
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/ApsTester/ApsTesterLoader.js</jsInclude>
+	<requireJs modes="commons">res/ApsTester/ApsTester</requireJs>
+
 	<cssInclude>res/ApsTester/ApsTester.css</cssInclude>
+	
 	
 	<property
 		id="checkboxExample"
@@ -54,10 +56,13 @@
 		id="data"
 		type="ResultSet"
 		title="Data"
-		group="Display"
-		bindable="true"
+		group="DataBinding"
 		visible="true">
 
+		<option name="maxCells" value="100000" />
+		<option name="includeFormattedData" value="true"/>
+		<option name="includeData" value="true"/>
+		<option name="presentationDelimiter" value=" | " />
 	</property>
 	<property
 		id="doublearray"
@@ -123,17 +128,17 @@
 		<defaultValue property="WIDTH">200</defaultValue>
 		<defaultValue property="HEIGHT">200</defaultValue>
 		
-		<defaultValue property="checkboxExample">true</defaultValue>
-		<defaultValue property="checkboxOnlyGetterExample">true</defaultValue>
-		<defaultValue property="colorExample"></defaultValue>
-		<defaultValue property="comboboxExample">quantile</defaultValue>
-		<defaultValue property="data">null</defaultValue>
-		<defaultValue property="doublearray">[]</defaultValue>
-		<defaultValue property="paletteExample"></defaultValue>
-		<defaultValue property="singlearray">[]</defaultValue>
-		<defaultValue property="spinnerExample"></defaultValue>
-		<defaultValue property="stringarray">[]</defaultValue>
-		<defaultValue property="textExample">initial</defaultValue>
+		<defaultValue property="checkboxExample"><![CDATA[true]]></defaultValue>
+		<defaultValue property="checkboxOnlyGetterExample"><![CDATA[true]]></defaultValue>
+		<defaultValue property="colorExample"><![CDATA[]]></defaultValue>
+		<defaultValue property="comboboxExample"><![CDATA[quantile]]></defaultValue>
+		<defaultValue property="data"><![CDATA[null]]></defaultValue>
+		<defaultValue property="doublearray"><![CDATA[[]]]></defaultValue>
+		<defaultValue property="paletteExample"><![CDATA[]]></defaultValue>
+		<defaultValue property="singlearray"><![CDATA[[]]]></defaultValue>
+		<defaultValue property="spinnerExample"><![CDATA[0]]></defaultValue>
+		<defaultValue property="stringarray"><![CDATA[[]]]></defaultValue>
+		<defaultValue property="textExample"><![CDATA[initial]]></defaultValue>
 
 	</initialization>
 

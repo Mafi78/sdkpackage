@@ -75,6 +75,7 @@ public class Helpers {
 	}
 
 	public static List<String> stringToList(String content) {
+		if(content == null) {return new ArrayList<String>();}
 		content = content.replace("\r", "");
 		String[] listArray = content.split("\n");
 
@@ -347,7 +348,48 @@ public class Helpers {
 
 
 	public static String makeFirstUpper(String value) {
+		if(value.length() == 0) {
+			return value;
+		}
+		
+		if(value.length() == 1) {
+			return value.toUpperCase(Locale.ENGLISH);	
+		}
 		return value.substring(0,1).toUpperCase(Locale.ENGLISH)  +value.substring(1);
+	}
+	
+	public static String makeFirstLower(String value) {
+		if(value.length() == 0) {
+			return value;
+		}
+		
+		if(value.length() == 1) {
+			return value.toLowerCase(Locale.ENGLISH);	
+		}
+		return value.substring(0,1).toLowerCase(Locale.ENGLISH)  +value.substring(1);
+	}
+
+	public static String makeAllUpper(String value) {
+		String sentence = "";
+		String [] splitWords = value.split(" ");
+		for (int i = 0; i < splitWords.length; i++) {
+			String word = splitWords[i];
+			
+			word = makeFirstUpper(word);
+			
+			if(sentence.length()>0) {
+				sentence = sentence + " ";
+			}
+			
+			sentence = sentence + word;
+		}
+		
+		if(sentence.contains("Color")) {
+			// hack for designer bug which takes Color as type
+			sentence = sentence.replace("Color", "Colour");
+		}
+		
+		return sentence;
 	}
 	
 	public static File[] listFiles(String iFilePath) {
@@ -444,4 +486,35 @@ public class Helpers {
 
 		string2File(absolutePath, buffer.toString());
 	}
+
+	public static String makeDescription(String name) {
+		String description = "";
+		
+		for (int i = 0; i < name.length(); i++) {
+			char n = name.charAt(i);
+			
+			if(Character.isUpperCase(n)) {
+				description = description + " ";
+			}
+			
+			if(i == 0) {
+				n = new Character(n).toUpperCase(n);
+			}
+			description = description + n;
+		}
+
+		if(description.contains("Color")) {
+			// need a hack as the description with "Color" is taking it as type
+			description = description.replace("Color", "Colour");
+		}
+		return description;
+	}
+
+	public static String cutLastS(String name) {
+		if(name.charAt(name.length()-1) == 's') {
+			name = name.substring(0, name.length() - 1);
+		}
+		return name;
+	}
+
 }

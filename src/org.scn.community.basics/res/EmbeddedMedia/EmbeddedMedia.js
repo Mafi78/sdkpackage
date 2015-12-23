@@ -1,44 +1,35 @@
-/**
- * Copyright 2014 Scn Community Contributors
- * 
- * Original Source Code Location:
- *  https://github.com/org-scn-design-studio-community/sdkpackage/
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
- * you may not use this file except in compliance with the License. 
- * You may obtain a copy of the License at 
- *  
- *  http://www.apache.org/licenses/LICENSE-2.0
- *  
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
- */
-
-sap.designstudio.sdk.Component.subclass("org.scn.community.basics.EmbeddedMedia", function() {
-
-	this.url = function (value) {
-		if (value === undefined) {
-			return url;
-		} else {
-			url = value;
-			return this;
-		}
-	};
+//%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./EmbeddedMediaSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics"
 	
-	this.tag = function (value) {
-		if (value === undefined) {
-			return tag;
-		} else {
-			tag = value;
-			return this;
-		}
-	};
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
+
+var myComponentData = spec;
+
+EmbeddedMedia = function () {
+
+	var that = this;
 	
-    this.afterUpdate = function(){
-    	var html = "";
+	this.init = function() {
+		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+		
+		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
+	};
+
+	this.afterUpdate = function() {
+		/* COMPONENT SPECIFIC CODE - START(afterDesignStudioUpdate)*/
+		var html = "";
     	
     	var isInDesignMode = (sap.zen.designmode != undefined);
     	
@@ -94,5 +85,21 @@ sap.designstudio.sdk.Component.subclass("org.scn.community.basics.EmbeddedMedia"
 		html = html.concat(">");
 		
 		this.$().html(html);
-    };
+		/* COMPONENT SPECIFIC CODE - START(afterDesignStudioUpdate)*/
+	};
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+
+	org_scn_community_component_Core(that, myComponentData);
+	
+	return that;
+};
+
+//%INIT-START%
+myComponentData.instance = EmbeddedMedia;
+Component.subclass(myComponentData.fullComponentName, myComponentData.instance);
+
+
 });

@@ -1,24 +1,15 @@
 
 <component
 		id="ScatterPlot"
-		title="Scatter Plot Chart"
+		title="Scatter Plot Chart 2.0"
 		icon="res/ScatterPlot/ScatterPlot.png"
 		handlerType="div"
-		propertySheetPath="res/org.scn.community.aps.PropertyPage.html"
-		group="ScnCommunityChartMaps"
+		modes="commons m"
+		propertySheetPath="aps/PropertyPage.html"
+		group="ScnCommunityVisualizations"
 		databound="true"
 >
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/common_basics.js</jsInclude>
-	<jsInclude>res/common_databound.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.Core.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.Databound.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.BaseViz.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.AxisChart.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.XYViz.js</jsInclude>
-	<jsInclude>res/ScatterPlot/ScatterPlot.js</jsInclude>
-	<cssInclude>res/Viz.css</cssInclude>
-	<cssInclude>os/d3-tip.css</cssInclude>
+<requireJs modes="commons m">res/ScatterPlot/ScatterPlot</requireJs>
 	<!-- Base Databound Properties -->
 	<property
 			id="data"
@@ -82,7 +73,19 @@
 	<property id="maxY" title="Manual Max Y" type="int" visible="false"/>
 	<property id="measureX" title="X-Axis Measure (Blank will take whatever is in first column)" type="String" visible="false"/>
 	<property id="measureY" title="Y-Axis Measure (Blank will take whatever is in second column)" type="String" visible="false"/>
+	<property id="xAxisTickFormat" title="X-Axis Tick Format" type="String"/>
+	<property id="yAxisTickFormat" title="Y-Axis Tick Format" type="String"/>
+	<property id="xAxisOrientation" type="String" title = "X-Axis Orientation" visible="true">
+		<possibleValue>top</possibleValue>
+		<possibleValue>bottom</possibleValue>	
+	</property>
+	<property id="yAxisOrientation" type="String" title = "Y-Axis Orientation" visible="true">
+		<possibleValue>left</possibleValue>
+		<possibleValue>right</possibleValue>
+	</property>
+	
 	<!-- End of BaseVizXY Properties -->
+	
 	<!-- ScatterPlot Properties -->
 	<property id="colorDimension" title="Dimension for Series" type="String"/>
 	<property id="radius" type="int" title = "Plot Radius" visible="true"/>
@@ -132,6 +135,8 @@
 		<defaultValue property="maxZoom">1</defaultValue>
 		<!-- End of Base Defaults -->
 		<!-- BaseVizXY Defaults -->
+		<defaultValue property="measureX">{&quot;fieldType&quot;:&quot;position&quot;,&quot;fieldPosition&quot;:0}</defaultValue>
+		<defaultValue property="measureY">{&quot;fieldType&quot;:&quot;position&quot;,&quot;fieldPosition&quot;:1}</defaultValue>
 		<defaultValue property="maxX">0</defaultValue>
 		<defaultValue property="maxY">0</defaultValue>
 		<defaultValue property="minX">0</defaultValue>
@@ -148,12 +153,15 @@ __n__  stroke: #303030;
 __n__  stroke-width: 2px;
 __n__}
 		</defaultValue>
+		<defaultValue property="measureZ">{&quot;fieldType&quot;:&quot;position&quot;,&quot;fieldPosition&quot;:3}</defaultValue>
 		<defaultValue property="chartTitle">Scatterplot Chart</defaultValue>
 		<defaultValue property="radius">5</defaultValue>
 		<defaultValue property="bubbleMin">3</defaultValue>
 		<defaultValue property="bubbleMax">50</defaultValue>
 		<defaultValue property="xAxisTickFormat">,n</defaultValue>
 		<defaultValue property="yAxisTickFormat">,n</defaultValue>
+		<defaultValue property="xAxisOrientation">bottom</defaultValue>
+		<defaultValue property="yAxisOrientation">left</defaultValue>
 		<!-- End of ScatterPlot Defaults -->
 	</initialization>
 </component>

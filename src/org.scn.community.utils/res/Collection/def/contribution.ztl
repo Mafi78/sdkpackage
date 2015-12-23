@@ -225,6 +225,39 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	*}
 
 	/**
+	Removes an item from existing collection. This implementation of collection allows duplicate keys - all keys will be removed.
+	<example>
+	You have an array with keys "k1,k2,k3":
+	<code>
+	ARRAY_1.removeItem("k1");<br>
+	</code>
+	This array has now following values: k2,k3
+	Return is the number of removed items. 0 means no removal was done.
+	</example>
+	*/
+	int removeItem (
+			/*key*/ String key) {*  
+		
+		var s = this.items;  
+		var a = [];  
+		if(s!="") a = JSON.parse(s);
+		
+		var newArray = [];
+		var foundNumber = 0;
+		for(var aI in a){
+			if(a[aI].key == key) {
+				foundNumber++;
+			} else {
+				newArray.push(a[aI]);
+			}
+		}
+
+		this.items = JSON.stringify(newArray);
+
+		return foundNumber;
+	*}
+
+	/**
 	Returns all keys as String separated by given optional separator. default separator is comma ,
 	<example>
 	You have an array with 3 elements with keys ["K1", "K2", "K3"]:
@@ -318,7 +351,7 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	 * Sorts the collection by values with optional parameter for direction (ascending is default)
 	 */
 	void sortByKey(optional org_scn_community_shared_SortDirectionEnumfield direction) {*
-		if(direction == org_scn_community_shared_SortDirection.DESCENDING) {
+		if(direction == org_scn_community_shared_SortDirection.Descending) {
 			this.sortByKeyDescending();
 			return;
 		}
@@ -327,8 +360,16 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			return a.key>b.key;  
+		a.sort(function(p,m){
+		     var A = p.key.toLowerCase();
+		     var B = m.key.toLowerCase();
+		     if (A < B){
+		        return 1;
+		     }else if (A > B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     }
 		});  
 		
 		this.items = JSON.stringify(a);  
@@ -342,9 +383,17 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			return (b.key>a.key);  
-		});  
+		a.sort(function(p,m){  
+		     var A = p.key.toLowerCase();
+		     var B = m.key.toLowerCase();
+		     if (A > B){
+		        return 1;
+		     }else if (A < B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     } 
+		});   
 		
 		this.items = JSON.stringify(a);  
 	*}
@@ -353,7 +402,7 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	 * Sorts the collection by values with optional parameter for direction (ascending is default)
 	 */
 	void sortByLabel(optional org_scn_community_shared_SortDirectionEnumfield direction) {*
-		if(direction == org_scn_community_shared_SortDirection.DESCENDING) {
+		if(direction == org_scn_community_shared_SortDirection.Descending) {
 			this.sortByLabelDescending();
 			return;
 		}
@@ -362,9 +411,17 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			return a.label>b.label;  
-		});  
+		a.sort(function(p,m){  
+		     var A = p.label.toLowerCase();
+		     var B = m.label.toLowerCase();
+		     if (A < B){
+		        return 1;
+		     }else if (A > B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     }
+		}); 
 		
 		this.items = JSON.stringify(a);  
 	*}  
@@ -377,9 +434,17 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s); 
 		
-		a.sort(function(a,b){  
-			return (b.label>a.label);  
-		});  
+		a.sort(function(p,m){  
+		     var A = p.label.toLowerCase();
+		     var B = m.label.toLowerCase();
+		     if (A > B){
+		        return 1;
+		     }else if (A < B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     }
+		});   
 		
 		this.items = JSON.stringify(a);  
 	*}
@@ -388,7 +453,7 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	 * Sorts the collection by values with optional parameter for direction (ascending is default)
 	 */
 	void sortByValue(optional org_scn_community_shared_SortDirectionEnumfield direction) {*
-		if(direction == org_scn_community_shared_SortDirection.DESCENDING) {
+		if(direction == org_scn_community_shared_SortDirection.Descending) {
 			this.sortByValueDescending();
 			return;
 		}
@@ -397,10 +462,10 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s); 
 		
-		a.sort(function(a,b){  
-			var newA = parseFloat(a.value);  
-			var newB = parseFloat(b.value);  
-			return newA-newB;  
+		a.sort(function(p,m){  
+			var newA = parseFloat(p.value);  
+			var newB = parseFloat(m.value);  
+			return newB-newA;  
 		});
 		
 		this.items = JSON.stringify(a);  
@@ -414,10 +479,10 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			var newA = parseFloat(a.value);  
-			var newB = parseFloat(b.value);  
-			return newB-newA;  
+		a.sort(function(p,m){  
+			var newA = parseFloat(p.value);  
+			var newB = parseFloat(m.value);  
+			return newA-newB;  
 		});
 		
 		this.items = JSON.stringify(a);  
@@ -718,9 +783,27 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		
 		if(this.isDebug()) { DEBUG.inspectZtl(that, l)};
 		for(var i=0;i<l.list.length;i++){
-			selectionComponent.addItem(l.list[i].key, l.list[i].label);
+			//erase '\"' to prettify titles/keys since json strings usually come with '"'
+			var replacer = new RegExp('"','g');
+			var label = l.list[i].label;
+			var key = l.list[i].key;
+			label = label.replace(replacer,'');
+			key = key.replace(replacer,'');
+			
+			selectionComponent.addItem(key, label);
 		}
 		
 		if(this.isDebug()) { DEBUG.inspectZtl(that, l)};
 	*}
+	
+	/**
+	 * Gets Collection As JSON String
+	 */	
+	String getCollectionAsJSON() {*
+		//erase '\"' to prettify titles/keys since json strings usually come with '"'
+		var result = this.items.replace(/\\"/g,'');
+		var jsonObject = JSON.parse(result);
+		return JSON.stringify(jsonObject, null, 4);
+	*}
+
 }

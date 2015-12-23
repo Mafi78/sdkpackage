@@ -16,39 +16,84 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-
-(function() {
-/** code for recognition of script path */
-var myScript = $("script:last")[0].src;
-var ownComponentName = "org.scn.community.basics.TextArea";
-var _readScriptPath = function () {
-	var scriptInfo = org_scn_community_basics.readOwnScriptAccess(myScript, ownComponentName);
-	return scriptInfo.myScriptPath;
-};
-/** end of path recognition */
-
-jQuery.sap.require("sap.ui.commons.TextArea");
-
-sap.ui.commons.TextArea.extend(ownComponentName, {
-
-  	initDesignStudio: function() {
-		var that = this;
-		this._ownScript = _readScriptPath();
-		
-		this.addStyleClass("scn-pack-TextArea");
-		
-		this.setWrapping(sap.ui.core.Wrapping.Off);
-
-		this.attachChange(function() {
-			that.fireDesignStudioPropertiesChanged(["value"]);
-			that.fireDesignStudioEvent("onValueChanged");
-		});
-  	},
+ 
+ //%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./TextAreaSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics"
 	
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
+
+var myComponentData = spec;
+
+TextArea = {
+
 	renderer: {},
 	
-	afterDesignStudioUpdate : function() {
+	initDesignStudio: function() {
 		var that = this;
-	}
+
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
+	},
+	
+	initAsync: function (owner) {
+		var that = owner;
+		org_scn_community_component_Core(that, myComponentData);
+
+		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+that.addStyleClass("scn-pack-TextArea");
+		
+		that.setWrapping(sap.ui.core.Wrapping.Off);
+
+		that.attachChange(function() {
+			that.fireDesignStudioPropertiesChangedAndEvent(["value"], "onValueChanged");
+		});
+		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
+		
+		// that.onAfterRendering = function () {
+			// org_scn_community_basics.resizeContentAbsoluteLayout(that, that._oRoot, that.onResize);
+		// }
+	},
+	
+	afterDesignStudioUpdate: function() {
+		var that = this;
+		
+		org_scn_community_basics.fillDummyData(that, that.processData, that.afterPrepare);
+	},
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+	processData: function (flatData, afterPrepare, owner) {
+		var that = owner;
+
+		// processing on data
+		that.afterPrepare(that);
+	},
+
+	afterPrepare: function (owner) {
+		var that = owner;
+			
+		// visualization on processed data
+		
+	},
+	
+	onResize: function(width, height, parent) {
+		// in case special resize code is required
+	},
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+};
+
+//%INIT-START%
+myComponentData.instance = TextArea;
+jQuery.sap.require("sap.ui.commons.TextArea");
+sap.ui.commons.TextArea.extend(myComponentData.fullComponentName, myComponentData.instance);
 });
-})();

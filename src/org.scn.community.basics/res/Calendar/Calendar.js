@@ -16,61 +16,83 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-(function() {
-/** code for recognition of script path */
-var myScript = $("script:last")[0].src;
-var ownComponentName = "org.scn.community.basics.Calendar";
-var _readScriptPath = function () {
-	var scriptInfo = org_scn_community_basics.readOwnScriptAccess(myScript, ownComponentName);
-	return scriptInfo.myScriptPath;
-};
-/** end of path recognition */
 
-var oCore = sap.ui.getCore();
-oCore.loadLibrary("sap.me");
+//%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./CalendarSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics",
+	"../../../"+scn_pkg+"basics/os/date/DateFormat",
+	"../../../"+scn_pkg+"basics/os/sapui5/sap_m_loader"
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
 
-jQuery.sap.require("sap.me.Calendar");
-jQuery.sap.require("sap.m.Button");
+var myComponentData = spec;
 
-sap.me.Calendar.extend(ownComponentName, {
+Calendar = {
 
-	metadata: {
-        properties: {
-        	  "DCurrentValue": {type: "string"},
-        	  "DValue": {type: "string"},
-        	  "DValueF": {type: "string"},
-        	  "DValueT": {type: "string"},
-        	  "DSelectionType": {type: "string"},
-        }
-	},
-	
-  	initDesignStudio: function() {
-		var that = this;
-		this._ownScript = _readScriptPath();
-		
-		this.addStyleClass("scn-pack-Calendar");
-		this.addStyleClass(this.getId());
-        
-		this.attachTapOnDate(this._tapOnDate);
-		this.attachChangeCurrentDate(this._changeCurrentDate);
-		this.attachChangeRange(this._attachChangeRange);
-  	},
-	
 	renderer: {},
 	
-	afterDesignStudioUpdate : function() {
+	initDesignStudio: function() {
+		var that = this;
+
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
+	},
+	
+	initAsync: function (owner) {
+		var that = owner;
+
+		org_scn_community_component_Core(that, myComponentData);
+
+		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+		that.addStyleClass("scn-pack-Calendar");
+        
+		that.attachTapOnDate(that._tapOnDate);
+		that.attachChangeCurrentDate(that._changeCurrentDate);
+		that.attachChangeRange(that._attachChangeRange);
+		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
+		
+		that.onAfterRendering = function () {
+			// org_scn_community_basics.resizeContentAbsoluteLayout(that, that._oRoot, that.onResize);
+		}
+	},
+	
+	afterDesignStudioUpdate: function() {
 		var that = this;
 		
-		var currentDate = that.getDateValue(that.getDCurrentValue(), dateFormat);
-		var singleDate = that.getDateValue(that.getDValue(), dateFormat);
-		var fromDate = that.getDateValue(that.getDValueF(), dateFormat);
-		var toDate = that.getDateValue(that.getDValueT(), dateFormat);
+		org_scn_community_basics.fillDummyData(that, that.processData, that.afterPrepare);
+	},
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+	processData: function (flatData, afterPrepare, owner) {
+		var that = owner;
 
-		var selectionType = this.getDSelectionType();
+		// processing on data
+		that.afterPrepare(that);
+	},
+
+	afterPrepare: function (owner) {
+		var that = owner;
+			
+		// visualization on processed data
+		var currentDate = org_scn_community_basics.getDateValue(that.getDCurrentValue());
+		var singleDate = org_scn_community_basics.getDateValue(that.getDValue());
+		var fromDate = org_scn_community_basics.getDateValue(that.getDValueF());
+		var toDate = org_scn_community_basics.getDateValue(that.getDValueT());
+
+		var selectionType = that.getDSelectionType();
 		if(selectionType == "Single Selection") {
-			this.setSelectionMode(sap.me.CalendarSelectionMode.SINGLE);
+			that.setSelectionMode(sap.me.CalendarSelectionMode.SINGLE);
 		} else if(selectionType == "Range Selection") { 
-			this.setSelectionMode(sap.me.CalendarSelectionMode.RANGE);
+			that.setSelectionMode(sap.me.CalendarSelectionMode.RANGE);
 		}
 
 		that._deactivateEvent = true;
@@ -87,7 +109,7 @@ sap.me.Calendar.extend(ownComponentName, {
 			
 			var selectedDates = that.getSelectedDates();
 			
-			if(this.getSelectionMode() == sap.me.CalendarSelectionMode.SINGLE) {
+			if(that.getSelectionMode() == sap.me.CalendarSelectionMode.SINGLE) {
 				if(selectedDates.length == 1) {
 					var curSelected = selectedDates[0];
 					var dateO = new Date(curSelected);
@@ -98,7 +120,7 @@ sap.me.Calendar.extend(ownComponentName, {
 						that.toggleDatesRangeSelection(singleDate, singleDate, true);
 					}
 				}
-			} else if(this.getSelectionMode() == sap.me.CalendarSelectionMode.RANGE) {
+			} else if(that.getSelectionMode() == sap.me.CalendarSelectionMode.RANGE) {
 				if(selectedDates.length >= 2) {
 					var fromSelected = selectedDates[0];
 					var dateF = new Date(fromSelected);
@@ -117,9 +139,14 @@ sap.me.Calendar.extend(ownComponentName, {
 		}
 		that._deactivateEvent = false;
 	},
-
+	
+	onResize: function(width, height, parent) {
+		// in case special resize code is required
+	},
+	
 	_changeCurrentDate: function(oEvent) {
 		var that = this;
+		
 		if(that._deactivateEvent) {
 			// endless loop...
 			return;
@@ -128,14 +155,14 @@ sap.me.Calendar.extend(ownComponentName, {
     	var date = oEvent.getParameters().currentDate;
 		var dateO = new Date(date);
 		var techDate = "" + dateO.format(dateFormat.masks.technical);
-    	this.setDCurrentValue(techDate);
+    	that.setDCurrentValue(techDate);
     	
-        that.fireDesignStudioPropertiesChanged(["DCurrentValue"]);
-		that.fireDesignStudioEvent("onCurrentChanged");
+        that.fireDesignStudioPropertiesChangedAndEvent(["DCurrentValue"], "onCurrentChanged");
 	},
 	
 	_tapOnDate: function (oEvent) {
 		var that = this;
+		
 		if(that._deactivateEvent) {
 			// endless loop...
 			return;
@@ -148,14 +175,14 @@ sap.me.Calendar.extend(ownComponentName, {
     	var date = oEvent.getParameters().date;
 		var dateO = new Date(date);
 		var techDate = "" + dateO.format(dateFormat.masks.technical);
-    	this.setDValue(techDate);
+    	that.setDValue(techDate);
     	
-        that.fireDesignStudioPropertiesChanged(["DValue"]);
-		that.fireDesignStudioEvent("onSingleChanged");
+        that.fireDesignStudioPropertiesChangedAndEvent(["DValue"], "onSingleChanged");
     },
     
     _attachChangeRange: function (oEvent) {
     	var that = this;
+    	
 		if(that._deactivateEvent) {
 			// endless loop...
 			return;
@@ -166,31 +193,20 @@ sap.me.Calendar.extend(ownComponentName, {
     	var date = oEvent.getParameters().fromDate;
 		var dateO = new Date(date);
 		var techDate = "" + dateO.format(dateFormat.masks.technical);
-    	this.setDValueF(techDate);
+    	that.setDValueF(techDate);
 
     	date = oEvent.getParameters().toDate;
 		dateO = new Date(date);
 		techDate = "" + dateO.format(dateFormat.masks.technical);
-    	this.setDValueT(techDate);
+    	that.setDValueT(techDate);
     	
-        that.fireDesignStudioPropertiesChanged(["DValueF", "DValueT"]);
-		that.fireDesignStudioEvent("onRangeChanged");
+        that.fireDesignStudioPropertiesChangedAndEvent(["DValueF", "DValueT"], "onRangeChanged");
     },
-    
-	getDateValue: function (inputDate, dateFormat) {
-		if(inputDate == "TODAY" || inputDate.length != 8) {
-			inputDate = new Date();
-			inputDate = inputDate.format(dateFormat.masks.technical);
-		}
-		
-		var year = inputDate.substring(0,4);
-		var month = inputDate.substring(4,6);
-		var day = inputDate.substring(6,8);
-		
-		var date = new Date(year, month - 1, day);
-		date.formatted = date.format(dateFormat.masks.technical);
-		
-		return date;
-	},
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+};
+
+//%INIT-START%
+myComponentData.instance = Calendar;
+jQuery.sap.require("sap.me.Calendar");
+sap.me.Calendar.extend(myComponentData.fullComponentName, myComponentData.instance);
 });
-})();

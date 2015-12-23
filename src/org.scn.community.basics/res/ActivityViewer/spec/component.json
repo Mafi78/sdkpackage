@@ -1,9 +1,9 @@
 {
 	"id": "ActivityViewer",
-	"title": "Activity Viewer",
+	"title": "Activity Viewer 2.0",
 	"tooltip": "Viewer for Custom Activities",
 	"handlerType": "div",
-	"group": "ScnCommunityBasics",
+	"group": "ScnCommunityVisualizations",
 	"package": "basics",
 	"extension": "Component",
 	"databound": false,
@@ -12,11 +12,11 @@
 	[
 		{
 			"space" : "d3",
-			"id" : "d3",
+			"id" : "basics/os/d3/d3",
 		},
 		{
 			"space" : "d3",
-			"id" : "d3plug_gantt",
+			"id" : "basics/os/d3-plug/gantt-chart-d3v2",
 		},
 		{
 			"space" : "known",

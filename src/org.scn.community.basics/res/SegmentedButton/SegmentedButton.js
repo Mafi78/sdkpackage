@@ -16,87 +16,96 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-
-(function() {
-/** code for recognition of script path */
-var myScript = $("script:last")[0].src;
-var ownComponentName = "org.scn.community.basics.SegmentedButton";
-var _readScriptPath = function () {
-	var scriptInfo = org_scn_community_basics.readOwnScriptAccess(myScript, ownComponentName);
-	return scriptInfo.myScriptPath;
-};
-/** end of path recognition */
-
-sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
-
-	setDDefaultImage : function(value) {
-		this._DefaultImage = value;
-		
-		if(value != undefined && value != "")  {
-			this._pImagePrefix = value.substring(0, value.lastIndexOf("/") + 1);	
-		}
-	},
-
-	getDDefaultImage : function() {
-		return this._DefaultImage;
-	},
+ 
+ //%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./SegmentedButtonSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics"
 	
-	metadata: {
-        properties: {
-              "DElementsContent": {type: "string"},
-              "DCleanAll": {type: "boolean"},
-              
-              "DSelectedKeys": {type: "string"},
-              "DPressedButtonKey": {type: "string"},
-              "DPressedItemKey": {type: "string"},
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
 
-              "DSelectionType": {type: "string"},
+var myComponentData = spec;
 
-        	  "DWithImage": {type: "boolean"},
-              "DImageSize": {type: "string"},
-        }
-	},
-  
-	initDesignStudio: function() {
-		var that = this;
-		this._ownScript = _readScriptPath();
-		
-		this.addStyleClass("scn-pack-SegmentedButton");
-		
-		this._oElements = {};
-		this._oParentElements = {};
-		
-		this._initComponent();
-	},
-	
+SegmentedButton = {
+
 	renderer: {},
 	
-	afterDesignStudioUpdate : function() {
+	initDesignStudio: function() {
+		var that = this;
+
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
+	},
+	
+	initAsync: function (owner) {
+		var that = owner;
+
+		org_scn_community_component_Core(that, myComponentData);
+
+		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+		that.addStyleClass("scn-pack-SegmentedButton");
+		
+		that._oElements = {};
+		that._oParentElements = {};
+		
+		that._initComponent();
+		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
+		
+		// that.onAfterRendering = function () {
+			// org_scn_community_basics.resizeContentAbsoluteLayout(that, that._oRoot, that.onResize);
+		// }
+	},
+	
+	afterDesignStudioUpdate: function() {
 		var that = this;
 		
-		if(this.getDCleanAll()) {
-			this._destroyAll();
+		org_scn_community_basics.fillDummyData(that, that.processData, that.afterPrepare);
+	},
+	
+	/* COMPONENT SPECIFIC CODE - START METHODS*/
+	processData: function (flatData, afterPrepare, owner) {
+		var that = owner;
+
+		// processing on data
+		that.afterPrepare(that);
+	},
+
+	afterPrepare: function (owner) {
+		var that = owner;
 			
-			this._oElements = {};
-			this._oParentElements = {};
+		// visualization on processed data
+		if(that.getDCleanAll()) {
+			that._destroyAll(that);
 			
-			this.setDCleanAll(false);
+			that._oElements = {};
+			that._oParentElements = {};
+			
+			that.setDCleanAll(false);
 			that.fireDesignStudioPropertiesChanged(["DCleanAll"]);
 		}
 		
 		var allKeysAsOfNow = "";
-		var lElementsToRender = this.getDElementsContent();
+		var lElementsToRender = that.getDElementsContent();
 		if(lElementsToRender != null && lElementsToRender != undefined && lElementsToRender != ""){
 			var lElementsToRenderArray = JSON.parse(lElementsToRender);
 
 			// check parent-childs
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
 				var element = lElementsToRenderArray[i];
-				if(this._oParentElements[element.parentKey] == undefined) {
-					this._oParentElements[element.parentKey] = "";
+				if(that._oParentElements[element.parentKey] == undefined) {
+					that._oParentElements[element.parentKey] = "";
 				}
-				if(!this._oParentElements[element.parentKey].indexOf("|" + element.key + "|") > -1) {
-					this._oParentElements[element.parentKey] = this._oParentElements[element.parentKey] + "|" + element.key + "|";	
+				if(!that._oParentElements[element.parentKey].indexOf("|" + element.key + "|") > -1) {
+					that._oParentElements[element.parentKey] = that._oParentElements[element.parentKey] + "|" + element.key + "|";	
 				}
 
 				if(allKeysAsOfNow.indexOf("|"+element.key+"|") == -1) {
@@ -107,13 +116,18 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 			// distribute content
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
 				var element = lElementsToRenderArray[i];
-				if(this._oElements[element.key] == undefined) {
-					var lNewElement = this._createElement(i, element.key, element.text, element.image, element.parentKey, element.selected, element.leaf);
-					this._oElements[element.key] = lNewElement;
+
+				if(element.text == undefined) {element.text = ""};
+				if(element.image == undefined) {element.image = ""};
+				if(element.selected == undefined) {element.selected = false};
+
+				if(that._oElements[element.key] == undefined) {
+					var lNewElement = that._createElement(that, i, element.key, element.text, element.image, element.parentKey, element.selected, element.leaf);
+					that._oElements[element.key] = lNewElement;
 				} else {
-					var currentElement = this._oElements[element.key];
+					var currentElement = that._oElements[element.key];
 					currentElement.setText(element.text);
-					currentElement.setIcon(this._prepareImage(element.image));
+					currentElement.setIcon(that._prepareImage(that, element.image));
 					// need to find a way to synchronize
 					// if(currentElement.setPressed) {
 					// 	currentElement.setPressed(element.selected);	
@@ -122,17 +136,17 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 			}
 		}
 		
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			if(lElement != undefined) {
 				var parentKey = lElement._ParentKey;
 				if(lElement._Placed != true) {
 					if(parentKey == "ROOT") {
-						this._addRoot(lElement);
+						that._addRoot(that, lElement);
 					} else {
-						var parentElement = this._oElements[parentKey];
+						var parentElement = that._oElements[parentKey];
 						if(parentElement != undefined) {
-							this._addChild(parentElement, lElement);
+							that._addChild(parentElement, lElement);
 						}
 					}
 					
@@ -143,53 +157,56 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 						// no more in array... delete
 
 						if(parentKey == "ROOT") {
-							this._oSegmentedButton.removeButton(lElement);
+							that._oSegmentedButton.removeButton(lElement);
 							
 							// check children and remove
-							var childrenKeysList = this._oParentElements[lElementKey];
+							var childrenKeysList = that._oParentElements[lElementKey];
 							if(childrenKeysList) {
 								var childrenKeys = childrenKeysList.split("|");
 								for (childKey in childrenKeys) {
-									if(this._oElements[childrenKeys[childKey]]) {
-										this._oElements[childrenKeys[childKey]].destroy();
-										this._oElements[childrenKeys[childKey]] = undefined;
+									if(that._oElements[childrenKeys[childKey]]) {
+										that._oElements[childrenKeys[childKey]].destroy();
+										that._oElements[childrenKeys[childKey]] = undefined;
 									}
 								}
 							}
 						} else {
-							if(this._oElements[parentKey] && this._oElements[parentKey].getMenu){
-								this._oElements[parentKey].getMenu().removeItem(lElement);	
+							if(that._oElements[parentKey] && that._oElements[parentKey].getMenu){
+								that._oElements[parentKey].getMenu().removeItem(lElement);	
 							}
 						}
 						lElement.destroy();
 						
-						this._oElements[lElementKey] = undefined;
+						that._oElements[lElementKey] = undefined;
 					}
 				}
 			}
 		}
 		
-		this._cleanUpAfterUpdate();
+		that._cleanUpAfterUpdate(that);
 	},
 	
-
+	onResize: function(width, height, parent) {
+		// in case special resize code is required
+	},
+	
 	/**
 	 * Specific Function for Initialization of the Content Component
 	 */
 	_initComponent : function() {
 		var that = this;
 		
-		this._oSegmentedButton = new sap.ui.commons.SegmentedButton();
+		that._oSegmentedButton = new sap.ui.commons.SegmentedButton();
 
-		this.onAfterRendering = function () {
+		that.onAfterRendering = function () {
 			if(that._oSegmentedButtonPlaced != true) {
 				var jqThis = that.$();
 				
 				that._containerWidth = (jqThis.outerWidth(true) - 6) + "px";
 				that._containerHeight = jqThis.outerHeight(true) + "px";
 
-				this.addContent(
-						this._oSegmentedButton,
+				that.addContent(
+						that._oSegmentedButton,
 						{left: "0px", top: "0px"}
 				);
 				
@@ -201,25 +218,29 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 	/**
 	 * Specific Function for Destroy All
 	 */
-	_destroyAll : function () {
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+	_destroyAll : function (owner) {
+		var that = owner;
+		
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			if(lElement != undefined) {
 				lElement.destroy();	
 			}
 		}
 		
-		this._oSegmentedButton.removeAllButtons();
-		this._oSegmentedButton.destroyButtons();
+		that._oSegmentedButton.removeAllButtons();
+		that._oSegmentedButton.destroyButtons();
 		
-		this._oElements = {};
+		that._oElements = {};
 	},
 	
 	/**
 	 * Specific Function for Adding Root Elements
 	 */
-	_addRoot : function(iElement) {
-		this._oSegmentedButton.addButton(iElement);
+	_addRoot : function(owner, iElement) {
+		var that = owner;
+		
+		that._oSegmentedButton.addButton(iElement);
 	},
 	
 	/**
@@ -234,10 +255,12 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 	/**
 	 * Specific Function for CleanUp (if required)
 	 */
-	_cleanUpAfterUpdate : function () {
+	_cleanUpAfterUpdate : function (owner) {
+		var that = owner;
+		
 		// clean up "loading" element
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
+		for (lElementKey in that._oElements) {
+			var lElement = that._oElements[lElementKey];
 			if(lElement != undefined) {
 				if(lElement._childrenRequested) {
 					lElement._childrenRequested = false;
@@ -246,35 +269,37 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 		}
 	},
 
-	_prepareImage: function (iImageUrl) {
+	_prepareImage: function (owner, iImageUrl) {
+		var that = owner;
+		
+		if(that.getDWithImages() == false) {return ""};
+		
 		// in case starts with http, keep as is 
 		if(iImageUrl.indexOf("http") == 0) {
 			// no nothing
 		} else {
 			// in case of repository, add the prefix from repository
-			if(iImageUrl != "" && this._pImagePrefix != undefined && this._pImagePrefix != ""){
-				iImageUrl = this._pImagePrefix + iImageUrl;
-			}
+			iImageUrl = org_scn_community_basics.getRepositoryImageUrlPrefix(that, that.getDDefaultImage(), iImageUrl, "SegmentedButton.png");	
 		}
 		return iImageUrl;
 	},
-	
-	_createElement: function (index, iElementKey, iElementText, iImageUrl, iParentKey, iSelected, isLeaf) {
-		var that = this;
+
+	_createElement: function (owner, index, iElementKey, iElementText, iImageUrl, iParentKey, iSelected, isLeaf) {
+		var that = owner;
 		
-		iImageUrl = this._prepareImage(iImageUrl);
+		iImageUrl = that._prepareImage(that, iImageUrl);
 		
 		var lElement = undefined;
 		
 		if(isLeaf){
 			// menu item for menu button
 			lElement = new sap.ui.unified.MenuItem({
-				id: this.getId() + "-s-" +  iElementKey,
+				id: that.getId() + "-s-" +  iElementKey,
 				text: iElementText,
 				icon: iImageUrl
 			});
 		} else {
-			var lDSelectionType = this.getDSelectionType();
+			var lDSelectionType = that.getDSelectionType();
 				var hasChildren = (that._oParentElements[iElementKey] != undefined);
 				// special handling for design mode, always menu button
 				hasChildren = hasChildren || (sap.zen.designmode != undefined);
@@ -282,18 +307,18 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 				if(hasChildren) {
 					// in this case, multiple selection will not work perfectly
 					lElement = new sap.ui.commons.MenuButton({
-						id: this.getId() + "-m-" +  iElementKey,
+						id: that.getId() + "-m-" +  iElementKey,
 						text: iElementText,
 						tooltip: iElementText,
 						icon: iImageUrl
 					});
-					var lMenu = new sap.ui.commons.Menu(this.getId() + "-mm-" +  iElementKey, {ariaDescription: "", tooltip: ""});
+					var lMenu = new sap.ui.commons.Menu(that.getId() + "-mm-" +  iElementKey, {ariaDescription: "", tooltip: ""});
 					lElement.setMenu(lMenu);
 				} else {
 					if(lDSelectionType == "Single") {
 						// simple button, standard case
 						lElement = new sap.ui.commons.Button({
-							id: this.getId() + "-m-" +  iElementKey,
+							id: that.getId() + "-m-" +  iElementKey,
 							text: iElementText,
 							tooltip: iElementText,
 							icon: iImageUrl
@@ -301,7 +326,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 					} else if (lDSelectionType == "Multiple") {
 						// toggle button for multiple selection
 						lElement = new sap.ui.commons.ToggleButton({
-							id: this.getId() + "-m-" +  iElementKey,
+							id: that.getId() + "-m-" +  iElementKey,
 							text: iElementText,
 							tooltip: iElementText,
 							pressed: iSelected,
@@ -320,8 +345,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 				if(lDSelectionType == "Single") {
 					that.setDPressedButtonKey(lElementId);
 
-					that.fireDesignStudioPropertiesChanged(["DPressedButtonKey"]);
-					that.fireDesignStudioEvent("onButtonPressed");
+					that.fireDesignStudioPropertiesChangedAndEvent(["DPressedButtonKey"], "onButtonPressed");
 				} else if (lDSelectionType == "Multiple") {
 					var selectedKeys = [];
 					
@@ -339,8 +363,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 					}
 					that.setDSelectedKeys(JSON.stringify(selectedKeys));
 
-					that.fireDesignStudioPropertiesChanged(["DPressedButtonKey", "DSelectedKeys"]);
-					that.fireDesignStudioEvent("onSelected");
+					that.fireDesignStudioPropertiesChangedAndEvent(["DPressedButtonKey", "DSelectedKeys"], "onSelected");
 				}
 
 				if(lElement._childrenRequested == undefined) {
@@ -361,8 +384,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 				var lElement = that._oElements[lElementKey];
 				that.setDPressedItemKey(lElement._Key);
 				
-				that.fireDesignStudioPropertiesChanged(["DPressedItemKey"]);
-				that.fireDesignStudioEvent("onItemPressed");
+				that.fireDesignStudioPropertiesChangedAndEvent(["DPressedItemKey"], "onItemPressed");
 			});
 		}
 
@@ -373,5 +395,12 @@ sap.ui.commons.layout.AbsoluteLayout.extend(ownComponentName, {
 		
 		return lElement;
 	},
+
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+};
+
+//%INIT-START%
+myComponentData.instance = SegmentedButton;
+jQuery.sap.require("sap.zen.commons.layout.AbsoluteLayout");
+sap.zen.commons.layout.AbsoluteLayout.extend(myComponentData.fullComponentName, myComponentData.instance);
 });
-})();

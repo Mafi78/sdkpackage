@@ -1,11 +1,11 @@
 {
 	"selectedKey" : {
 		"type" : "String",
-		"value" : "-get",
+		"value" : "",
 		"visible": false,
 		"opts" : {
 			"ztlType": "String",
-			"ztlFunction": "",
+			"ztlFunction": "-get",
 			"desc" : "Selected Key",
 			"cat" : "Internal",
 			"tooltip" : "Selected Key",
@@ -29,6 +29,21 @@
 			"noZtl":false
 		}
 	},
+	"supportedContentNotation" : {
+		"type" : "String",
+		"value" : "PARENT_CHILD_TEXT_URL",
+		"visible": false,
+		"opts" : {
+			"ztlType": "shared.ContentNotation",
+			"ztlFunction": "-get",
+			"desc" : "Supported Content Notation",
+			"cat" : "Internal",
+			"tooltip" : "Supported Content Notation",
+			"apsControl" : "text",
+			"noAps":true,
+			"noZtl":false
+		}
+	},
 	"defaultImage" : {
 		"type" : "Url",
 		"value" : "",
@@ -37,7 +52,7 @@
 			"ztlType": "String",
 			"ztlFunction": "",
 			"desc" : "Default Image",
-			"cat" : "Image",
+			"cat" : "Display-Image",
 			"tooltip" : "Default Image",
 			"apsControl" : "text",
 			"noAps":true,
@@ -46,49 +61,73 @@
 	},
     "withImage":{
 	    "type":"boolean",
-	    "onSet":"flattenData",
 	    "value":true,
 	    "visible":true,
 	    "opts":{
 	         "ztlType":"boolean",
 	         "ztlFunction":"",
 	         "desc":"Use Images",
-	         "cat":"Image",
+	         "cat":"Display-Image",
 	         "tooltip":"Use Images",
 	         "apsControl":"checkbox"
 	    }
 	},
-    "maxSectionHeight":{
+    "memberDisplay":{
+        "type":"String",
+        "value":"Text",
+        "visible":true,
+        "opts":{
+           "ztlType":"Choice",
+           "choiceType":"MemberDisplay",
+           "ztlFunction":"",
+           "desc":"Member Display",
+           "cat":"Display-Members",
+           "tooltip":"Member Display",
+           "apsControl":"combobox",
+           "options":[
+              {
+                 "key":"Text",
+                 "text":"Text Only"
+              },
+              {
+                 "key":"Text_Key",
+                 "text":"Text (Key)"
+              }
+           ]
+        }
+     },
+	"maxSectionHeight":{
 	    "type":"int",
-	    "value":"200",
+	    "value":200,
 	    "visible":true,
 	    "opts":{
-	         "ztlType":"String",
+	         "ztlType":"int",
 	         "ztlFunction":"",
 	         "desc":"Max Height for Section",
-	         "cat":"Image",
+	         "cat":"Display-Section",
 	         "tooltip":"Max Height for Section",
 	         "apsControl":"spinner"
 		}
     },
     "imageSize":{
         "type":"String",
-        "value":"16px",
+        "value":"Size_16px",
         "visible":true,
         "opts":{
            "ztlType":"Choice",
+           "choiceType":"ImageSize",
            "ztlFunction":"",
            "desc":"Size of the Image",
-           "cat":"Image",
+           "cat":"Display-Image",
            "tooltip":"Size of the Image",
            "apsControl":"combobox",
            "options":[
               {
-                 "key":"16px",
+                 "key":"Size_16px",
                  "text":"16x16 pixels"
               },
               {
-                 "key":"32px",
+                 "key":"Size_32px",
                  "text":"32x32 pixels"
               }
            ]
@@ -115,7 +154,7 @@
 	},
 	"elementsContent": {
 		"type":"String",
-		"value":"[]",
+		"value":"[{\"parentKey\":\"ROOT\",\"key\":\"SECTION1\",\"leaf\":false,\"text\":\"First Section\"},{\"parentKey\":\"ROOT\",\"key\":\"SECTION2\",\"leaf\":false,\"text\":\"Second Section\"},{\"parentKey\":\"ROOT\",\"key\":\"SECTION3\",\"leaf\":false,\"text\":\"Third Section\"},{\"parentKey\":\"SECTION1\",\"key\":\"SECTION1_ITEM\",\"leaf\":true,\"text\":\"Item 1\"},{\"parentKey\":\"SECTION1\",\"key\":\"SECTION1_ITEM1\",\"leaf\":true,\"text\":\"Item 2\"},{\"parentKey\":\"SECTION2\",\"key\":\"SECTION2_ITEM\",\"leaf\":true,\"text\":\"Item 2/1\"},{\"parentKey\":\"SECTION2\",\"key\":\"SECTION2_ITEM1\",\"leaf\":true,\"text\":\"Item 2/2\"},{\"parentKey\":\"SECTION2\",\"key\":\"SECTION2_ITEM2\",\"leaf\":true,\"text\":\"Item 2/3\"},{\"parentKey\":\"SECTION3\",\"key\":\"SECTION3_ITEM\",\"leaf\":true,\"text\":\"Item 3/1\"}]",
 		"visible":true,
 	  
 		"opts":{
@@ -140,7 +179,12 @@
 	               },
 	               "element":{
 	                  "type":"Array",
-	                  "sequence":"key,text,url,parentKey",
+	                  "sequence":"parentKey,key,text,url",
+	                  "parentKey":{
+		                "desc":"Parent Key",
+		                "type":"String",
+		              	"mode":"ztl"
+		              },
 	                  "key":{
 	                     "desc":"Unique Key",
 	                     "type":"String"
@@ -152,12 +196,7 @@
 	                  "url":{
 	                     "desc":"Given Url",
 	                     "type":"Url"
-	                  },
-	                  "parentKey":{
-		                "desc":"Parent Key",
-		                "type":"String",
-		              	"mode":"ztl"
-		              }
+	                  }
 	               }
 	            }
 	        },

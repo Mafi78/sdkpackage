@@ -8,6 +8,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.xml.head.txt ^
 ..\res\Array\def\contribution.xml ^
 ..\res\ClientInformation\def\contribution.xml ^
 ..\res\Collection\def\contribution.xml ^
+..\res\DataSourceHelper\def\contribution.xml ^
 ..\res\Debugger\def\contribution.xml ^
 ..\res\ComponentManager\def\contribution.xml ^
 ..\res\CustomCssCollector\def\contribution.xml ^
@@ -20,6 +21,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.xml.head.txt ^
 ..\res\PostResponseParser\def\contribution.xml ^
 ..\res\RealDate\def\contribution.xml ^
 ..\res\SimpleDate\def\contribution.xml ^
+..\res\WSPusher\def\contribution.xml ^
 ..\..\org.scn.community.shared\templates.main\contribution.xml.close.txt > ^
 ..\contribution.xml
 
@@ -34,6 +36,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.ztl.head.txt ^
 ..\res\ComponentManager\def\contribution.ztl ^
 ..\res\CustomCssCollector\def\contribution.ztl ^
 ..\res\Debugger\def\contribution.ztl ^
+..\res\DataSourceHelper\def\contribution.ztl ^
 ..\res\FlowLayouter\def\contribution.ztl ^
 ..\res\JsonObject\def\contribution.ztl ^
 ..\res\Math\def\contribution.ztl ^
@@ -43,6 +46,7 @@ type ..\..\org.scn.community.shared\templates.main\contribution.ztl.head.txt ^
 ..\res\PostResponseParser\def\contribution.ztl ^
 ..\res\RealDate\def\contribution.ztl ^
 ..\res\SimpleDate\def\contribution.ztl ^
+..\res\WSPusher\def\contribution.ztl ^
 ..\..\org.scn.community.shared\templates.main\contribution.ztl.close.txt > ^
 ..\contribution.ztl
 

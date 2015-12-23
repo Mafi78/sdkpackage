@@ -1,6 +1,6 @@
 /* GENERATED - DO NOT EDIT */
 /**
- * Copyright 2014, Contributors
+ * Copyright 2015, Contributors
  * 
  * Original Source Code Location:
  *  https://github.com/org-scn-design-studio-community/sdkpackage/
@@ -271,6 +271,56 @@ class org.scn.community.utils.Array extends org.scn.community.shared.Component {
 		this.items = JSON.stringify(a);  
 	*}
 	
+	/**
+	Removes a value from existing array. This implementation of array allows duplicate values - all keys will be removed.
+	<example>
+	You have an array with values "k1,k2,k3":
+	<code>
+	ARRAY_1.removeValue("k1");<br>
+	</code>
+	This array has now following values: k2,k3
+	Return is the number of removed values. 0 means no removal was done.
+	</example>
+	*/
+	int removeValue (
+			/*value*/ String value) {*  
+		
+		var s = this.items;  
+		var a = [];  
+		if(s!="") a = JSON.parse(s);
+		
+		var newArray = [];
+		var foundNumber = 0;
+		for (var aI in a) {
+			if(a[aI].value == value) {
+				foundNumber++;
+			} else {
+				newArray.push(a[aI]);
+			}
+		}
+		
+		this.items = JSON.stringify(newArray);
+
+		return foundNumber;
+	*}
+	
+	float getValueByKey(
+			/* value */ String value) {*  
+		var s = this.items;  
+		var a = [];
+		if(s!="") a = JSON.parse(s);  
+		var r = 0.0;  
+		
+		for(var i=0;i<a.length;i++){
+			if(a[i].value == value) {
+				r = a[i].value;
+				break;
+			}
+		}
+		
+		return r;  
+	*}
+
 	/**
 	 * Returns length of current array
 	 */
@@ -728,6 +778,39 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	*}
 
 	/**
+	Removes an item from existing collection. This implementation of collection allows duplicate keys - all keys will be removed.
+	<example>
+	You have an array with keys "k1,k2,k3":
+	<code>
+	ARRAY_1.removeItem("k1");<br>
+	</code>
+	This array has now following values: k2,k3
+	Return is the number of removed items. 0 means no removal was done.
+	</example>
+	*/
+	int removeItem (
+			/*key*/ String key) {*  
+		
+		var s = this.items;  
+		var a = [];  
+		if(s!="") a = JSON.parse(s);
+		
+		var newArray = [];
+		var foundNumber = 0;
+		for(var aI in a){
+			if(a[aI].key == key) {
+				foundNumber++;
+			} else {
+				newArray.push(a[aI]);
+			}
+		}
+
+		this.items = JSON.stringify(newArray);
+
+		return foundNumber;
+	*}
+
+	/**
 	Returns all keys as String separated by given optional separator. default separator is comma ,
 	<example>
 	You have an array with 3 elements with keys ["K1", "K2", "K3"]:
@@ -821,7 +904,7 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	 * Sorts the collection by values with optional parameter for direction (ascending is default)
 	 */
 	void sortByKey(optional org_scn_community_shared_SortDirectionEnumfield direction) {*
-		if(direction == org_scn_community_shared_SortDirection.DESCENDING) {
+		if(direction == org_scn_community_shared_SortDirection.Descending) {
 			this.sortByKeyDescending();
 			return;
 		}
@@ -830,8 +913,16 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			return a.key>b.key;  
+		a.sort(function(p,m){
+		     var A = p.key.toLowerCase();
+		     var B = m.key.toLowerCase();
+		     if (A < B){
+		        return 1;
+		     }else if (A > B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     }
 		});  
 		
 		this.items = JSON.stringify(a);  
@@ -845,9 +936,17 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			return (b.key>a.key);  
-		});  
+		a.sort(function(p,m){  
+		     var A = p.key.toLowerCase();
+		     var B = m.key.toLowerCase();
+		     if (A > B){
+		        return 1;
+		     }else if (A < B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     } 
+		});   
 		
 		this.items = JSON.stringify(a);  
 	*}
@@ -856,7 +955,7 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	 * Sorts the collection by values with optional parameter for direction (ascending is default)
 	 */
 	void sortByLabel(optional org_scn_community_shared_SortDirectionEnumfield direction) {*
-		if(direction == org_scn_community_shared_SortDirection.DESCENDING) {
+		if(direction == org_scn_community_shared_SortDirection.Descending) {
 			this.sortByLabelDescending();
 			return;
 		}
@@ -865,9 +964,17 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			return a.label>b.label;  
-		});  
+		a.sort(function(p,m){  
+		     var A = p.label.toLowerCase();
+		     var B = m.label.toLowerCase();
+		     if (A < B){
+		        return 1;
+		     }else if (A > B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     }
+		}); 
 		
 		this.items = JSON.stringify(a);  
 	*}  
@@ -880,9 +987,17 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s); 
 		
-		a.sort(function(a,b){  
-			return (b.label>a.label);  
-		});  
+		a.sort(function(p,m){  
+		     var A = p.label.toLowerCase();
+		     var B = m.label.toLowerCase();
+		     if (A > B){
+		        return 1;
+		     }else if (A < B){
+		       return  -1;
+		     }else{
+		       return 0;
+		     }
+		});   
 		
 		this.items = JSON.stringify(a);  
 	*}
@@ -891,7 +1006,7 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 	 * Sorts the collection by values with optional parameter for direction (ascending is default)
 	 */
 	void sortByValue(optional org_scn_community_shared_SortDirectionEnumfield direction) {*
-		if(direction == org_scn_community_shared_SortDirection.DESCENDING) {
+		if(direction == org_scn_community_shared_SortDirection.Descending) {
 			this.sortByValueDescending();
 			return;
 		}
@@ -900,10 +1015,10 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s); 
 		
-		a.sort(function(a,b){  
-			var newA = parseFloat(a.value);  
-			var newB = parseFloat(b.value);  
-			return newA-newB;  
+		a.sort(function(p,m){  
+			var newA = parseFloat(p.value);  
+			var newB = parseFloat(m.value);  
+			return newB-newA;  
 		});
 		
 		this.items = JSON.stringify(a);  
@@ -917,10 +1032,10 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		var a = [];
 		if(s!="") a = JSON.parse(s);  
 		
-		a.sort(function(a,b){  
-			var newA = parseFloat(a.value);  
-			var newB = parseFloat(b.value);  
-			return newB-newA;  
+		a.sort(function(p,m){  
+			var newA = parseFloat(p.value);  
+			var newB = parseFloat(m.value);  
+			return newA-newB;  
 		});
 		
 		this.items = JSON.stringify(a);  
@@ -1221,11 +1336,29 @@ class org.scn.community.utils.Collection extends org.scn.community.shared.Compon
 		
 		if(this.isDebug()) { DEBUG.inspectZtl(that, l)};
 		for(var i=0;i<l.list.length;i++){
-			selectionComponent.addItem(l.list[i].key, l.list[i].label);
+			//erase '\"' to prettify titles/keys since json strings usually come with '"'
+			var replacer = new RegExp('"','g');
+			var label = l.list[i].label;
+			var key = l.list[i].key;
+			label = label.replace(replacer,'');
+			key = key.replace(replacer,'');
+			
+			selectionComponent.addItem(key, label);
 		}
 		
 		if(this.isDebug()) { DEBUG.inspectZtl(that, l)};
 	*}
+	
+	/**
+	 * Gets Collection As JSON String
+	 */	
+	String getCollectionAsJSON() {*
+		//erase '\"' to prettify titles/keys since json strings usually come with '"'
+		var result = this.items.replace(/\\"/g,'');
+		var jsonObject = JSON.parse(result);
+		return JSON.stringify(jsonObject, null, 4);
+	*}
+
 }
 
 /**
@@ -1892,220 +2025,283 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 	/**Cast to Accordion 2.0 component*/
 	org.scn.community.basics.Accordion returnAsScnAccordion (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Action Sheet Button component*/
+	/**Cast to Action Sheet Button 2.0 component*/
 	org.scn.community.basics.ActionSheetButton returnAsScnActionSheetButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Activity Viewer component*/
+	/**Cast to Activity Viewer 2.0 component*/
 	org.scn.community.basics.ActivityViewer returnAsScnActivityViewer (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Application Header component*/
+	/**Cast to Application Header 2.0 component*/
 	org.scn.community.basics.ApplicationHeader returnAsScnApplicationHeader (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Base64 Image Encoder component*/
+	/**Cast to Arrowed Line 2.0 component*/
+	org.scn.community.basics.ArrowedLine returnAsScnArrowedLine (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Base64 Image Encoder 2.0 component*/
 	org.scn.community.basics.Base64Image returnAsScnBase64Image (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Basic Business Card component*/
+	/**Cast to Basic Business Card 2.0 component*/
 	org.scn.community.basics.BasicBusinessCard returnAsScnBasicBusinessCard (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Calendar component*/
+	/**Cast to Calendar 2.0 component*/
 	org.scn.community.basics.Calendar returnAsScnCalendar (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Check Box Group component*/
+	/**Cast to Check Box Group 2.0 component*/
 	org.scn.community.basics.CheckBoxGroup returnAsScnCheckBoxGroup (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Color Picker component*/
+	/**Cast to Color Picker 2.0 component*/
 	org.scn.community.basics.ColorPicker returnAsScnColorPicker (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Date Range Scroller component*/
+	/**Cast to Date Range Scroller 2.0 component*/
 	org.scn.community.basics.DateRangeScroller returnAsScnDateRangeScroller (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Date Range Slider component*/
+	/**Cast to Date Range Slider 2.0 component*/
 	org.scn.community.basics.DateRangeSlider returnAsScnDateRangeSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Drag Drop Area component*/
+	/**Cast to Drag Drop Area 2.0 component*/
 	org.scn.community.basics.DragDropArea returnAsScnDragDropArea (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Embedded Frame component*/
+	/**Cast to Embedded Frame 2.0 component*/
 	org.scn.community.basics.EmbeddedFrame returnAsScnEmbeddedFrame (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Embedded Media component*/
+	/**Cast to Embedded Media 2.0 component*/
 	org.scn.community.basics.EmbeddedMedia returnAsScnEmbeddedMedia (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fallback Picture component*/
+	/**Cast to Fallback Picture 2.0 component*/
 	org.scn.community.basics.FallbackPicture returnAsScnFallbackPicture (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fiori App Header component*/
+	/**Cast to Fiori App Header 2.0 component*/
 	org.scn.community.basics.FioriAppHeader returnAsScnFioriAppHeader (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fiori Button component*/
+	/**Cast to Fiori Bar 2.0 component*/
+	org.scn.community.basics.FioriBar returnAsScnFioriBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Button 2.0 component*/
 	org.scn.community.basics.FioriButton returnAsScnFioriButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fiori Toolbar component*/
+	/**Cast to Fiori Input Field component*/
+	org.scn.community.basics.FioriInput returnAsScnFioriInput (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Segmented Button component*/
+	org.scn.community.basics.FioriSegmentedButton returnAsScnFioriSegmentedButton (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Slider component*/
+	org.scn.community.basics.FioriSlider returnAsScnFioriSlider (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Switch component*/
+	org.scn.community.basics.FioriSwitch returnAsScnFioriSwitch (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Toolbar 2.0 component*/
 	org.scn.community.basics.FioriToolbar returnAsScnFioriToolbar (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Fish Eye component*/
+	/**Cast to Fish Eye 2.0 component*/
 	org.scn.community.basics.FishEye returnAsScnFishEye (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Gauge (Speedometer) component*/
+	/**Cast to Gauge (Speedometer) 2.0 component*/
 	org.scn.community.basics.Gauge returnAsScnGauge (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Image Carousel component*/
+	/**Cast to Image Carousel 2.0 component*/
 	org.scn.community.basics.ImageCarousel returnAsScnImageCarousel (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Kpi View component*/
+	/**Cast to Kpi Tile 2.0 component*/
+	org.scn.community.basics.KpiTile returnAsScnKpiTile (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Kpi View 2.0 component*/
 	org.scn.community.basics.KpiView returnAsScnKpiView (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Launch Pad component*/
+	/**Cast to Launch Pad 2.0 component*/
 	org.scn.community.basics.LaunchPad returnAsScnLaunchPad (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Leader Board component*/
+	/**Cast to Leader Board 2.0 component*/
 	org.scn.community.basics.LeaderBoard returnAsScnLeaderBoard (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Link component*/
+	/**Cast to Link 2.0 component*/
 	org.scn.community.basics.Link returnAsScnLink (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to List Selector component*/
+	/**Cast to List Selector 2.0 component*/
 	org.scn.community.basics.ListSelector returnAsScnListSelector (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Menu Bar (>= 1.4) component*/
-	org.scn.community.basics.MenuBar returnAsScnMenuBar (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Menu Button (>= 1.4) component*/
-	org.scn.community.basics.MenuButton returnAsScnMenuButton (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Modal Browser component*/
-	org.scn.community.basics.ModalBrowser returnAsScnModalBrowser (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Navigation Bar component*/
-	org.scn.community.basics.NavigationBar returnAsScnNavigationBar (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Notification Bar component*/
-	org.scn.community.basics.NotificationBar returnAsScnNotificationBar (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Notify component*/
-	org.scn.community.basics.Notify returnAsScnNotify (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Open Street Map (Basic) component*/
+	/**Cast to Open Street Map (Basic) 2.0 component*/
 	org.scn.community.basics.Map returnAsScnMap (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Paginator component*/
+	/**Cast to Menu Bar 2.0 component*/
+	org.scn.community.basics.MenuBar returnAsScnMenuBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Menu Button 2.0 component*/
+	org.scn.community.basics.MenuButton returnAsScnMenuButton (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Modal Browser 0.X component*/
+	org.scn.community.basics.ModalBrowser returnAsScnModalBrowser (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Navigation Bar 2.0 component*/
+	org.scn.community.basics.NavigationBar returnAsScnNavigationBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Notification Bar 2.0 component*/
+	org.scn.community.basics.NotificationBar returnAsScnNotificationBar (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Notify 2.0 component*/
+	org.scn.community.basics.Notify returnAsScnNotify (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Object 2.0 component*/
+	org.scn.community.basics.Object returnAsScnObject (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Paginator 2.0 component*/
 	org.scn.community.basics.Paginator returnAsScnPaginator (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Password Field component*/
+	/**Cast to Password Field 2.0 component*/
 	org.scn.community.basics.PasswordField returnAsScnPasswordField (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Progress Indicator component*/
+	/**Cast to Progress Indicator 2.0 component*/
 	org.scn.community.basics.ProgressIndicator returnAsScnProgressIndicator (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to QRCode Generator component*/
+	/**Cast to QRCode Generator 2.0 component*/
 	org.scn.community.basics.QRCode returnAsScnQRCode (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Range Slider component*/
-	org.scn.community.basics.RangeSlider returnAsScnRangeSlider (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Rating Indicator component*/
-	org.scn.community.basics.RatingIndicator returnAsScnRatingIndicator (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Road Map component*/
-	org.scn.community.basics.RoadMap returnAsScnRoadMap (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to RSSFeedReader component*/
+	/**Cast to RSSFeedReader 2.0 component*/
 	org.scn.community.basics.RSSFeedReader returnAsScnRSSFeedReader (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Segmented Button component*/
+	/**Cast to Range Slider 2.0 component*/
+	org.scn.community.basics.RangeSlider returnAsScnRangeSlider (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Rating Indicator 2.0 component*/
+	org.scn.community.basics.RatingIndicator returnAsScnRatingIndicator (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Road Map 2.0 component*/
+	org.scn.community.basics.RoadMap returnAsScnRoadMap (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Segmented Button 2.0 component*/
 	org.scn.community.basics.SegmentedButton returnAsScnSegmentedButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Slider component*/
+	/**Cast to Slider 2.0 component*/
 	org.scn.community.basics.Slider returnAsScnSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Text Area component*/
+	/**Cast to Text Area 2.0 component*/
 	org.scn.community.basics.TextArea returnAsScnTextArea (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Toggle Button component*/
+	/**Cast to TimeOut (Timer) 2.0 component*/
+	org.scn.community.basics.TimeOut returnAsScnTimeOut (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Toggle Button 2.0 component*/
 	org.scn.community.basics.ToggleButton returnAsScnToggleButton (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Tree component*/
+	/**Cast to Tree 2.0 component*/
 	org.scn.community.basics.Tree returnAsScnTree (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Tri State CheckBox component*/
+	/**Cast to Tri State CheckBox 2.0 component*/
 	org.scn.community.basics.TriStateCheckBox returnAsScnTriStateCheckBox (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Validated Input Field component*/
+	/**Cast to Validated Input Field 2.0 component*/
 	org.scn.community.basics.ValiInput returnAsScnValiInput (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Value Help Field component*/
+	/**Cast to Value Help Field 2.0 component*/
 	org.scn.community.basics.ValueHelpField returnAsScnValueHelpField (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to WorldTime component*/
+	/**Cast to World Time 2.0 component*/
 	org.scn.community.basics.WorldTime returnAsScnWorldTime (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Bullet Chart component*/
+	/**Cast to Advanced Data Table 2.0 component*/
+	org.scn.community.databound.AdvancedDataTable returnAsScnAdvancedDataTable (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Area Micro Chart 2.0 component*/
+	org.scn.community.databound.AreaMicroChart returnAsScnAreaMicroChart (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Bullet Chart 2.0 component*/
 	org.scn.community.databound.BulletChart returnAsScnBulletChart (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Choropleth Map component*/
+	/**Cast to Bullet Micro Chart 2.0 component*/
+	org.scn.community.databound.BulletMicroChart returnAsScnBulletMicroChart (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Choropleth Map 2.0 component*/
 	org.scn.community.databound.Choropleth returnAsScnChoropleth (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Table component*/
-	org.scn.community.databound.Table returnAsScnTable (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Data Drop Down component*/
+	/**Cast to Data Drop Down 2.0 component*/
 	org.scn.community.databound.DropDown returnAsScnDropDown (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Facet Filter component*/
+	/**Cast to Facet Filter 2.0 component*/
 	org.scn.community.databound.FacetFilter returnAsScnFacetFilter (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Hexbin Chart component*/
+	/**Cast to Facet Selector 2.0 component*/
+	org.scn.community.databound.FacetSelector returnAsScnFacetSelector (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Busy Dialog 2.0 component*/
+	org.scn.community.databound.FioriBusyDialog returnAsScnFioriBusyDialog (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Fiori Link 2.0 component*/
+	org.scn.community.databound.FioriLink returnAsScnFioriLink (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Harvey Ball Micro Chart 2.0 component*/
+	org.scn.community.databound.HarveyBallMicroChart returnAsScnHarveyBallMicroChart (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Hexbin Chart 2.0 component*/
 	org.scn.community.databound.HexBin returnAsScnHexBin (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to D3 Hierarchy component*/
+	/**Cast to D3 Hierarchy 2.0 component*/
 	org.scn.community.databound.jpd3hier returnAsScnjpd3hier (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Data Leader Board component*/
 	org.scn.community.databound.LeaderBoard returnAsScnLeaderBoard (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Location Intelligence component*/
+	/**Cast to Leaflet Map component*/
+	org.scn.community.databound.LeafletMap returnAsScnLeafletMap (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Location Intelligence 2.0 component*/
 	org.scn.community.databound.LocationIntel returnAsScnLocationIntel (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Marimekko Chart component*/
+	/**Cast to Marimekko Chart 2.0 component*/
 	org.scn.community.databound.MarimekkoChart returnAsScnMarimekkoChart (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Hierarchical Menu component*/
+	/**Cast to Multi ComboBox 0.0 component*/
+	org.scn.community.databound.MultiComboBox returnAsScnMultiComboBox (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Hierarchical Menu 1.0 component*/
 	org.scn.community.databound.MultiLevelDropDown returnAsScnMultiLevelDropDown (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Nice Chart component*/
+	/**Cast to Nice Chart 2.0 component*/
 	org.scn.community.databound.NiceChart returnAsScnNiceChart (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Projector component*/
-	org.scn.community.databound.Projector returnAsScnProjector (Component inputComponent) {* return inputComponent; *}
+	/**Cast to Pictogram component*/
+	org.scn.community.databound.Pictogram returnAsScnPictogram (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Range Slider component*/
+	/**Cast to Process Flow 2.0 component*/
+	org.scn.community.databound.ProcessFlow returnAsScnProcessFlow (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Progress Bar Set 2.0 component*/
+	org.scn.community.databound.ProgressBarSet returnAsScnProgressBarSet (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Radio Button Group 2.0 component*/
+	org.scn.community.databound.RadioButtonGroup returnAsScnRadioButtonGroup (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Data Range Slider 2.0 component*/
 	org.scn.community.databound.RangeSlider returnAsScnRangeSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Result Set Information component*/
+	/**Cast to Result Set Information 2.0 component*/
 	org.scn.community.databound.ResultSetInfo returnAsScnResultSetInfo (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Result Set Mixer component*/
+	/**Cast to Result Set Mixer 2.0 component*/
 	org.scn.community.databound.ResultSetMixer returnAsScnResultSetMixer (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Scatter Plot Chart component*/
+	/**Cast to Scatter Plot Chart 2.0 component*/
 	org.scn.community.databound.ScatterPlot returnAsScnScatterPlot (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Slider component*/
+	/**Cast to Data Slider 2.0 component*/
 	org.scn.community.databound.Slider returnAsScnSlider (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to 2D Crosstab component*/
+	/**Cast to 2D Crosstab 2.0 component*/
 	org.scn.community.databound.Table2D returnAsScnTable2D (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Tag Cloud component*/
+	/**Cast to Data Table 2.0 component*/
+	org.scn.community.databound.Table returnAsScnTable (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Tag Cloud 2.0 component*/
 	org.scn.community.databound.tagCloud returnAsScntagCloud (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Data Top Flop Chart component*/
+	org.scn.community.databound.TopFlopChart returnAsScnTopFlopChart (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Data Top Flop component*/
 	org.scn.community.databound.TopFlop returnAsScnTopFlop (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Data Top FLop Chart component*/
-	org.scn.community.databound.TopFlopChart returnAsScnTopFlopChart (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to UI5 Table component*/
+	/**Cast to UI5 Table 2.0 component*/
 	org.scn.community.databound.UI5Table returnAsScnUI5Table (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Bring Your Own Data component*/
@@ -2113,6 +2309,9 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 
 	/**Cast to Dynamic Csv Data Source component*/
 	org.scn.community.datasource.DynCsvDataSource returnAsScnDynCsvDataSource (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Scaling Data Source 2.0 component*/
+	org.scn.community.datasource.ScalingDataSource returnAsScnScalingDataSource (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Maps component*/
 	org.scn.community.geovis.Maps returnAsScnMaps (Component inputComponent) {* return inputComponent; *}
@@ -2123,14 +2322,17 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 	/**Cast to (PROTOTYPE!) Application Header (OnBeforeRender) component*/
 	org.scn.community.prototypes.ApplicationHeaderO returnAsScnApplicationHeaderO (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Aps Tester component*/
-	org.scn.community.prototypes.ApsTester returnAsScnApsTester (Component inputComponent) {* return inputComponent; *}
-
 	/**Cast to Aps Tester UI5 component*/
 	org.scn.community.prototypes.ApsTesterUI5 returnAsScnApsTesterUI5 (Component inputComponent) {* return inputComponent; *}
 
+	/**Cast to Aps Tester component*/
+	org.scn.community.prototypes.ApsTester returnAsScnApsTester (Component inputComponent) {* return inputComponent; *}
+
 	/**Cast to Bullet Chart (Gen Prototype) component*/
 	org.scn.community.prototypes.BulletChartGen returnAsScnBulletChartGen (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Horizon Chart component*/
+	org.scn.community.prototypes.horizonChart returnAsScnhorizonChart (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Progress Bar Set component*/
 	org.scn.community.prototypes.ProgressSet returnAsScnProgressSet (Component inputComponent) {* return inputComponent; *}
@@ -2141,68 +2343,56 @@ class org.scn.community.utils.ComponentManager extends org.scn.community.shared.
 	/**Cast to (PROTOTYPE!) Sap M List component*/
 	org.scn.community.prototypes.SapMList returnAsScnSapMList (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Array Utility component*/
+	/**Cast to Array Utility 0.X component*/
 	org.scn.community.utils.Array returnAsScnArray (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Client Information component*/
+	/**Cast to Client Information 0.X component*/
 	org.scn.community.utils.ClientInformation returnAsScnClientInformation (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Collection Utility component*/
+	/**Cast to Collection Utility 0.X component*/
 	org.scn.community.utils.Collection returnAsScnCollection (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Component Manager component*/
+	/**Cast to Component Manager 0.X component*/
 	org.scn.community.utils.ComponentManager returnAsScnComponentManager (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Custom Css Collector component*/
+	/**Cast to Custom Css Collector 0.X component*/
 	org.scn.community.utils.CustomCssCollector returnAsScnCustomCssCollector (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Debugger Code Inspector component*/
+	/**Cast to Data Source Helper 2.0 component*/
+	org.scn.community.utils.DataSourceHelper returnAsScnDataSourceHelper (Component inputComponent) {* return inputComponent; *}
+
+	/**Cast to Debugger Code Inspector 0.X component*/
 	org.scn.community.utils.Debugger returnAsScnDebugger (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Flow Layouter component*/
+	/**Cast to Flow Layouter 0.X component*/
 	org.scn.community.utils.FlowLayouter returnAsScnFlowLayouter (Component inputComponent) {* return inputComponent; *}
 
 	/**Cast to Json Object component*/
 	org.scn.community.utils.JsonObject returnAsScnJsonObject (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Math Utility component*/
+	/**Cast to Math Utility 0.X component*/
 	org.scn.community.utils.Math returnAsScnMath (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Open Url Inplace component*/
+	/**Cast to Open Url Inplace 0.X component*/
 	org.scn.community.utils.OpenUrlInplace returnAsScnOpenUrlInplace (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Open Window by Post component*/
+	/**Cast to Open Window by Post 0.X component*/
 	org.scn.community.utils.OpenWindowPost returnAsScnOpenWindowPost (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to PDF Print component*/
+	/**Cast to PDF Print 2.0 component*/
 	org.scn.community.utils.PdfPrint returnAsScnPdfPrint (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Post Response Parser component*/
+	/**Cast to Post Response Parser 2.0 component*/
 	org.scn.community.utils.PostResponseParser returnAsScnPostResponseParser (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Real Date component*/
+	/**Cast to Real Date 0.X component*/
 	org.scn.community.utils.RealDate returnAsScnRealDate (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Simple Date component*/
+	/**Cast to Simple Date 0.X component*/
 	org.scn.community.utils.SimpleDate returnAsScnSimpleDate (Component inputComponent) {* return inputComponent; *}
 
-	/**Cast to Accordion 2.0 component*/
-	org.scn.community.basics.Accordion returnAsScnAccordion (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Activity Viewer component*/
-	org.scn.community.basics.ActivityViewer returnAsScnActivityViewer (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Aps Tester component*/
-	org.scn.community.prototypes.ApsTester returnAsScnApsTester (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Aps Tester UI5 component*/
-	org.scn.community.prototypes.ApsTesterUI5 returnAsScnApsTesterUI5 (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Bullet Chart (Gen Prototype) component*/
-	org.scn.community.prototypes.BulletChartGen returnAsScnBulletChartGen (Component inputComponent) {* return inputComponent; *}
-
-	/**Cast to Json Object component*/
-	org.scn.community.utils.JsonObject returnAsScnJsonObject (Component inputComponent) {* return inputComponent; *}
+	/**Cast to WebSocket Implementation 0.X component*/
+	org.scn.community.utils.WSPusher returnAsScnWSPusher (Component inputComponent) {* return inputComponent; *}
 
 
 }
@@ -2401,9 +2591,30 @@ class org.scn.community.utils.Debugger extends org.scn.community.shared.Componen
 //		}
 		
 		this.toConsole("Component [CUSTOM] : " + thisValue._VariableName, true);
-		this.private_inspect(thisValue);
+		this.private_inspect(thisValue, undefined, undefined, true);
 	*}
+
+	/**
+	 * Inspects only given JSON property
+	 */
+	void inspectJSONProperty (optional String comment, optional JSON property) {*
+		if(this.DActive != true) {
+			return;
+		}
 	
+		this.internal_assureGlobalAccess();
+		
+		if(comment == undefined) {comment="";}
+
+		var thisValue = {};
+		
+		var locals = {};
+		locals.property = property;
+		
+		this.toConsole("Component [CUSTOM] : " + thisValue._VariableName, true);
+		this.private_inspect(thisValue, locals, undefined, true);
+	*}
+		
 	/**
 	 * Only for Use in SDK Development in ZTL code!
 	 */
@@ -2508,6 +2719,7 @@ class org.scn.community.utils.Debugger extends org.scn.community.shared.Componen
 					
 					if(value.indexOf("com.sap.ip.bi.zen") > -1) {
 						// internal object
+						this.toConsole("  " + name + "=" + value);
 						continue;
 					}
 					
@@ -2524,11 +2736,13 @@ class org.scn.community.utils.Debugger extends org.scn.community.shared.Componen
 			this.toConsole("OWNER ? "+(thisValue != undefined));
 			if(thisValue) {
 				
-				var owner = thisValue.getOwner();
-				
-				if(owner) {
-					lVariables.push({"date":l.date, "item-type":name, "value":owner.getItemType(), "type":"info"});
-					lVariables.push({"date":l.date, "item-name":name, "value":owner.getName(), "type":"info"});
+				if(thisValue.getOwner) {
+					var owner = thisValue.getOwner();
+					
+					if(owner) {
+						lVariables.push({"date":l.date, "item-type":name, "value":owner.getItemType(), "type":"info"});
+						lVariables.push({"date":l.date, "item-name":name, "value":owner.getName(), "type":"info"});
+					}
 				}
 				
 				for (var name in thisValue) {
@@ -2546,11 +2760,13 @@ class org.scn.community.utils.Debugger extends org.scn.community.shared.Componen
 						
 						if(!fullScope && value.indexOf("function") > -1) {
 							// internal function
+							this.toConsole("  " + name + "=" + value);
 							continue;
 						}
 		
 						if(!fullScope && value.indexOf("com.sap.ip.bi.zen") > -1) {
 							// internal object
+							this.toConsole("  " + name + "=" + value);
 							continue;
 						}
 		
@@ -2696,6 +2912,144 @@ class org.scn.community.utils.Debugger extends org.scn.community.shared.Componen
 		this.clearConsole();
 		this.DStack = "[]";
 		this.DVariables = "[]";
+	*}
+}
+
+/**
+ * Generated ZTL Class for DataSourceHelper
+ * 
+ * DO NOT EDIT, ROOT SOURCE for custom functions in /spec/contribution.ztl
+ */
+class org.scn.community.utils.DataSourceHelper extends org.scn.community.shared.Component {
+
+	/**
+	 * Sets Activate Cache Property
+	 */	
+	void setCache( /**Activate Cache*/ boolean cache){*
+		this.cache = cache;
+	*}
+
+	/**
+	 * Gets Activate Cache Property
+	 */	
+	boolean isCache() {*
+		return this.cache;
+	*}
+
+
+	/* START HERE PLACE FOR CUSTOM ZTL FUNCTIONS */
+	// here is the place for other custom functions
+
+	/**
+	 * Returns the correct content for <maxMemberCount> members in all dimensions.
+	 * Can be passed into the property <Elements> as String - using the binding feature. 
+	 */
+	String getDataBindingMembersForAllDimensions (org_scn_community_shared_ContentNotationEnumfield notation, optional int maxMemberCount) {*
+		var DS = this.getDataSource();
+	
+		this.setupHolder();
+
+		if(maxMemberCount == undefined) {
+			maxMemberCount = 100;
+		}
+		
+		// read here the cache property, access in "forEach" is not possible because of different scope
+		var cacheActive = this.isCache();
+		var holder = this.runtimeHolder;
+		
+	    var dimensions = DS.getDimensions();
+
+	    var elementsJArr = [];
+
+	    dimensions.forEach(function(dimension, index) {
+	        var dimensionJObj = {};
+	        var dimensionJArr = [];
+	        
+	        dimensionJObj.parentKey = "ROOT";
+	        dimensionJObj.key = dimension.name;
+	        dimensionJObj.text = dimension.text;
+	        dimensionJObj.url = "";
+	        dimensionJObj.leaf = false;
+	        
+	        dimensionJArr.push(dimensionJObj);
+	        elementsJArr.push(dimensionJObj);
+
+	        var cacheKey = dimension.name + "-" + maxMemberCount;
+	        
+	        // check if cache is active or nothing in cache
+	        if(!cacheActive || holder.memberCache[cacheKey] == undefined) {
+	        	holder.memberCache[cacheKey] = DS.getMembers(dimension, maxMemberCount);	
+	        }
+
+	        holder.memberCache[cacheKey].forEach(function(member, index) {
+	            var intKey = member.internalKey;
+
+	            // hack for unassigned
+	            if (intKey == "") {
+	                intKey = "UNASSIGNED";
+	            }
+
+	            var memberJObj = {};
+		        
+	            memberJObj.parentKey = dimension.name;
+	            memberJObj.key = dimension.name + "-" + intKey;
+	            memberJObj.text = member.text;
+	            memberJObj.url = "";
+	            memberJObj.leaf = true;
+
+	            dimensionJArr.push(memberJObj);
+	            elementsJArr.push(memberJObj);
+	            
+	            holder.dimensionArrayCache[cacheKey] = dimensionJArr;
+	        });
+	    });
+
+	    this.runtimeHolder.dataSourceCache["ALL_MEMBERS"] = elementsJArr;
+	    elementsJArr = JSON.stringify(elementsJArr);
+
+	    return elementsJArr;
+	*}
+	
+	MemberArray getMembers(String dimension, optional int maxMemberCount) {*
+		var DS = this.getDataSource();
+	
+		this.setupHolder();
+		
+		if(maxMemberCount == undefined) {
+			maxMemberCount = 100;
+		}
+	
+		// read here the cache property, access in "forEach" is not possible because of different scope
+		var cacheActive = this.isCache();
+		var holder = this.runtimeHolder;
+		
+		var cacheKey = dimension + "-" + maxMemberCount;
+		
+		// check if cache is active or nothing in cache
+        if(!cacheActive || holder.memberCache[cacheKey] == undefined) {
+        	holder.memberCache[cacheKey] = DS.getMembers(dimension, maxMemberCount);	
+        }
+        
+        return holder.memberCache[cacheKey];
+	*}
+	
+	/**
+	 * Resets the Cached Content. You can place this in the Data Source -> onResultSetChanged() method
+	 */
+	void resetContent () {*
+		this.runtimeHolder = undefined;
+		this.setupHolder();
+	*}
+	
+	@Visibility(private)
+	void setupHolder() {*
+		if(this.runtimeHolder == undefined) {
+			this.runtimeHolder = {};
+			this.runtimeHolder.memberCache = {};
+			this.runtimeHolder.memberArrayCache = {};
+			this.runtimeHolder.dimensionArrayCache = {};
+			this.runtimeHolder.dataSourceCache = {};
+		}
 	*}
 }
 /**
@@ -2914,8 +3268,13 @@ class org.scn.community.utils.JsonObject extends org.scn.community.shared.Compon
 	/**
 	 * Returns as Json String (indented)
 	 */
-	String getAsJSON () {*
+	String getAsJSON (optional boolean noLinebreaks) {*
+		if(noLinebreaks == undefined) {noLinebreaks = false;}
+		
 		var jsonObject = JSON.parse(this.content);
+		if(noLinebreaks) {
+			return JSON.stringify(jsonObject);
+		}
 		return JSON.stringify(jsonObject, null, 4);
 	*}
 	
@@ -2940,6 +3299,48 @@ class org.scn.community.utils.JsonObject extends org.scn.community.shared.Compon
 		return JSON.parse(this.content);
 	*}
 	
+	String getValueAsString (String key) {*
+		var js = JSON.parse(this.content);
+		var result = [];
+		if(js instanceof Array){
+			for(var i=0;i<js.length;i++){
+				var myObject = js[i];
+				if(myObject[key] != undefined){
+					result.push(myObject[key]);
+				}
+			}
+			return JSON.stringify(result);
+		}
+		else if(js[key] != undefined) {
+			return js[key];
+		}
+		
+		return "N/A";
+	*}
+
+	JSON getValueAsJsonObject (String key) {*
+		var js = JSON.parse(this.content);
+	
+		var result = [];
+		if(js instanceof Array){
+			for(var i=0;i<js.length;i++){
+				var myObject = js[i];
+				if(myObject[key] != undefined){
+					result.push(myObject[key]);
+				}
+			}
+			return result;
+		}
+		else if(js[key] != undefined) {
+			var jsValue = js[key];
+			
+			return jsValue;
+		}
+
+   	    // not there, empty one
+		return {};
+	*}
+	
 	/**
 	 * Creates from a string value in notation "{'key':'value', 'key2':'value2'}"
 	 */
@@ -2960,6 +3361,57 @@ class org.scn.community.utils.JsonObject extends org.scn.community.shared.Compon
 	 */
 	void clear () {*
 		this.content = "{}";
+	*}
+	
+	/**
+	Returns the content of property Return Headers as loopable name/value array.
+	<example>
+	You want to loop at values:
+	<code>
+	var content = POSTRESPONSEPARSER.getReturnHeadersAsNameValueArray();<br>
+	<br>
+	// a loop for all entries<br>
+	content.forEach(function(element, index) {<br>
+		LISTBOX_1.addItem(element.name, element.value);<br>
+	});
+	</code>
+	This LISTBOX_1 has now following values entries:<br>
+		<ul>
+		<li>key: k1; value: v1</li>
+		<li>key: k2; value: v2</li>
+		<li>key: k3; value: v3</li></ul>
+	</example>
+	*/
+	org.scn.community.shared.NameValueArray getReturnHeadersAsNameValueArray () {*
+		var s = this.content;  
+		var js = []; 
+		if(s!="") js = JSON.parse(s);
+		
+		var tempA = [];
+		
+		if(js instanceof Array){
+			for(var i=0;i<js.length;i++){
+				var myObject = js[i];
+				var itemDef = { 
+					"name": "" + i, 
+					"value": myObject
+				};
+				
+				tempA.push(itemDef);
+			}
+			return result;
+		} else {
+			for (var iI in js) {
+				var itemDef = { 
+					"name": "" + iI, 
+					"value": js[iI]
+				};
+
+				tempA.push(itemDef);
+			}
+		}
+
+		return tempA;
 	*}
 }
 
@@ -3315,9 +3767,189 @@ class org.scn.community.utils.OpenWindowPost extends org.scn.community.shared.Co
 	*}
 }
 /**
- * Class for PdfPrint
+ * Generated ZTL Class for PdfPrint
+ * 
+ * DO NOT EDIT, ROOT SOURCE for custom functions in /spec/contribution.ztl
  */
 class org.scn.community.utils.PdfPrint extends org.scn.community.shared.Component {
+
+	/**
+	 * Sets File Name Property
+	 */	
+	void setFileName( /**File Name*/ String fileName){*
+		this.fileName = fileName;
+	*}
+
+	/**
+	 * Gets File Name Property
+	 */	
+	String getFileName() {*
+		return this.fileName;
+	*}
+
+	/**
+	 * Sets Page Format Property by String
+	 */	
+	void setFormatByString( /**Page Format*/ String format){*
+		this.format = format;
+	*}
+
+	/**
+	 * Gets Page Format Property as String
+	 */	
+	String getFormatAsString() {*
+		return this.format;
+	*}
+	
+	/**
+	 * Sets Page Format Property by Choice Option
+	 */	
+	void setFormat( /**Page Format*/ org_scn_community_shared_Enumfield format){*
+		this.format = format;
+	*}
+	
+	/**
+	 * Gets Page Format Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getFormat() {*
+		return this.format;
+	*}
+
+	/**
+	 * Sets Page Orientation Property by String
+	 */	
+	void setOrientationByString( /**Page Orientation*/ String orientation){*
+		this.orientation = orientation;
+	*}
+
+	/**
+	 * Gets Page Orientation Property as String
+	 */	
+	String getOrientationAsString() {*
+		return this.orientation;
+	*}
+	
+	/**
+	 * Sets Page Orientation Property by Choice Option
+	 */	
+	void setOrientation( /**Page Orientation*/ org_scn_community_shared_Enumfield orientation){*
+		this.orientation = orientation;
+	*}
+	
+	/**
+	 * Gets Page Orientation Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getOrientation() {*
+		return this.orientation;
+	*}
+
+	/**
+	 * Sets PDF Export Type Property by String
+	 */	
+	void setPdfMethodByString( /**PDF Export Type*/ String pdfMethod){*
+		this.pdfMethod = pdfMethod;
+	*}
+
+	/**
+	 * Gets PDF Export Type Property as String
+	 */	
+	String getPdfMethodAsString() {*
+		return this.pdfMethod;
+	*}
+	
+	/**
+	 * Sets PDF Export Type Property by Choice Option
+	 */	
+	void setPdfMethod( /**PDF Export Type*/ org_scn_community_shared_Enumfield pdfMethod){*
+		this.pdfMethod = pdfMethod;
+	*}
+	
+	/**
+	 * Gets PDF Export Type Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getPdfMethod() {*
+		return this.pdfMethod;
+	*}
+
+	/**
+	 * Sets Root Panel Name Property
+	 */	
+	void setRootPanel( /**Root Panel Name*/ String rootPanel){*
+		this.rootPanel = rootPanel;
+	*}
+
+	/**
+	 * Gets Root Panel Name Property
+	 */	
+	String getRootPanel() {*
+		return this.rootPanel;
+	*}
+
+	/**
+	 * Sets SVG Conversion Mode Property by String
+	 */	
+	void setSvgModeByString( /**SVG Conversion Mode*/ String svgMode){*
+		this.svgMode = svgMode;
+	*}
+
+	/**
+	 * Gets SVG Conversion Mode Property as String
+	 */	
+	String getSvgModeAsString() {*
+		return this.svgMode;
+	*}
+	
+	/**
+	 * Sets SVG Conversion Mode Property by Choice Option
+	 */	
+	void setSvgMode( /**SVG Conversion Mode*/ org_scn_community_shared_Enumfield svgMode){*
+		this.svgMode = svgMode;
+	*}
+	
+	/**
+	 * Gets SVG Conversion Mode Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getSvgMode() {*
+		return this.svgMode;
+	*}
+
+	/**
+	 * Gets Just As Simple Triger Property
+	 */	
+	String getTrigger() {*
+		return this.trigger;
+	*}
+
+	/**
+	 * Sets Unit Property by String
+	 */	
+	void setUnitByString( /**Unit*/ String unit){*
+		this.unit = unit;
+	*}
+
+	/**
+	 * Gets Unit Property as String
+	 */	
+	String getUnitAsString() {*
+		return this.unit;
+	*}
+	
+	/**
+	 * Sets Unit Property by Choice Option
+	 */	
+	void setUnit( /**Unit*/ org_scn_community_shared_Enumfield unit){*
+		this.unit = unit;
+	*}
+	
+	/**
+	 * Gets Unit Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getUnit() {*
+		return this.unit;
+	*}
+
+
+	/* START HERE PLACE FOR CUSTOM ZTL FUNCTIONS */
 
 	/**
 	 * Trigger Execution of the given URL and parameter list
@@ -3332,10 +3964,11 @@ class org.scn.community.utils.PdfPrint extends org.scn.community.shared.Componen
 	void setRootPanel (/*Name of the panel to print*/ String panelName) {*
 		this.rootPanel = panelName;
 	*}
+
 }
 
 /**
- * Generated ZTL Class for Post Response Parser
+ * Generated ZTL Class for PostResponseParser
  * 
  * DO NOT EDIT, ROOT SOURCE for custom functions in /spec/contribution.ztl
  */
@@ -3344,7 +3977,7 @@ class org.scn.community.utils.PostResponseParser extends org.scn.community.share
 	/**
 	 * Sets Basic Authorization Content [Basic: GUID] Property
 	 */	
-	void setBasicAuthorisation( /* &nbsp; */  String basicAuthorisation){*
+	void setBasicAuthorisation( /**Basic Authorization Content [Basic: GUID]*/ String basicAuthorisation){*
 		this.DBasicAuthorisation = basicAuthorisation;
 	*}
 
@@ -3356,19 +3989,16 @@ class org.scn.community.utils.PostResponseParser extends org.scn.community.share
 	*}
 
 	/**
-	 * Remove All Parameters from the Array.
+	 * Gets Clean All Parameters Property
 	 */	
-	void cleanAllElements (){*
-		this.DCleanAll = true;
-
-		var elementsArray = [];
-		this.DParameters = JSON.stringify(elementsArray);
+	String getCleanAll() {*
+		return this.DCleanAll;
 	*}
 
 	/**
 	 * Sets Content Type Property
 	 */	
-	void setContentType( /* &nbsp; */  String contentType){*
+	void setContentType( /**Content Type*/ String contentType){*
 		this.DContentType = contentType;
 	*}
 
@@ -3380,341 +4010,175 @@ class org.scn.community.utils.PostResponseParser extends org.scn.community.share
 	*}
 
 	/**
-	 * Sets Is this Request Cross-Domain Property
+	 * Sets Is This Request Cross-Domain Property
 	 */	
-	void setCrossDomain( /* &nbsp; */  boolean crossDomain){*
+	void setCrossDomain( /**Is This Request Cross-Domain*/ boolean crossDomain){*
 		this.DCrossDomain = crossDomain;
 	*}
 
 	/**
-	 * Gets Is this Request Cross-Domain Property
+	 * Gets Is This Request Cross-Domain Property
 	 */	
-	boolean getCrossDomain() {*
+	boolean isCrossDomain() {*
 		return this.DCrossDomain;
 	*}
 
 	/**
-	 * Sets Expected Content Type Property
+	 * Sets Expected Content Type Property by String
 	 */	
-	void setExpectedContentType( /* &nbsp; */  choice expectedContentType){*
+	void setExpectedContentTypeByString( /**Expected Content Type*/ String expectedContentType){*
 		this.DExpectedContentType = expectedContentType;
 	*}
 
 	/**
-	 * Gets Expected Content Type Property
+	 * Gets Expected Content Type Property as String
 	 */	
-	choice getExpectedContentType() {*
+	String getExpectedContentTypeAsString() {*
+		return this.DExpectedContentType;
+	*}
+	
+	/**
+	 * Sets Expected Content Type Property by Choice Option
+	 */	
+	void setExpectedContentType( /**Expected Content Type*/ org_scn_community_shared_Enumfield expectedContentType){*
+		this.DExpectedContentType = expectedContentType;
+	*}
+	
+	/**
+	 * Gets Expected Content Type Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getExpectedContentType() {*
 		return this.DExpectedContentType;
 	*}
 
 	/**
-	 * Sets Response Status for Good Response Property
+	 * Sets Response Status For Good Response Property
 	 */	
-	void setExpectedResponseStatus( /* &nbsp; */  int expectedResponseStatus){*
+	void setExpectedResponseStatus( /**Response Status For Good Response*/ int expectedResponseStatus){*
 		this.DExpectedResponseStatus = expectedResponseStatus;
 	*}
 
 	/**
-	 * Gets Response Status for Good Response Property
+	 * Gets Response Status For Good Response Property
 	 */	
 	int getExpectedResponseStatus() {*
 		return this.DExpectedResponseStatus;
 	*}
 
-	/** Adds a root element containing key [String], value [String].
-
- 	<example>
-	You want to add 2 root elements
-	<code>
-	POSTRESPONSEPARSER.addHeader(key [String], value [String]);<br>
-	POSTRESPONSEPARSER.addHeader(key [String], value [String]);<br>
-	<br>
-	</code>
-	</example>
-	 */
-	void addHeader (
-			/**Header Name*/String key, 
-			/**Header Value*/String value
-			) {*		
-		
-		
-		var itemDef = {
-			leaf:true,
-			key:key, 
-			value:value
-			};
-	
-		if (this.DHeaders === undefined || this.DHeaders === "" || this.DHeaders === "<delete>"){
-			this.DHeaders = "[]";
-		}
-		
-		var elementsJson = JSON.parse(this.DHeaders);
-		
-		var alreadyFound = false;
-		for (var i = 0; i < elementsJson.length ; i++){
-			if (elementsJson[i].key == key) {
-				alreadyFound = true;
-				break;
-			}
-		}
-		
-		if(!alreadyFound) {
-			elementsJson.push(itemDef);
-		}
-	
-		this.DHeaders = JSON.stringify(elementsJson);
-	*}
-	
-	/** Removes a root element by key.
-
- 	<example>
-	You want to remove root element
-	<code>
-	POSTRESPONSEPARSER.removeHeader(String key);<br>
-	<br>
-	</code>
-	</example>
-	 */
-	void removeHeader (
-			String key
-			) {*		
-		
-		if (this.DHeaders === undefined || this.DHeaders === "" || this.DHeaders === "<delete>"){
-			this.DHeaders = "[]";
-		}
-		
-		var elementsJson = JSON.parse(this.DHeaders);
-		
-		var alreadyFound = false;
-		for (var i = 0; i < elementsJson.length ; i++){
-			if (elementsJson[i].key == key) {
-				elementsJson.splice(i,1);
-				break;
-			}
-		}
-
-		// remove all items with this parent
-		for (var i = elementsJson.length - 1; i >= 0; i--){
-			if (elementsJson[i].parentKey == key) {
-				elementsJson.splice(i,1);
-			}
-		}
-
-		this.DHeaders = JSON.stringify(elementsJson);
-	*}
-
-	/** Adds a root element containing key [String], value [String].
-
- 	<example>
-	You want to add 2 root elements
-	<code>
-	POSTRESPONSEPARSER.addParameter(key [String], value [String]);<br>
-	POSTRESPONSEPARSER.addParameter(key [String], value [String]);<br>
-	<br>
-	</code>
-	</example>
-	 */
-	void addParameter (
-			/**Parameter Name*/String key, 
-			/**Parameter Value*/String value
-			) {*		
-		
-		
-		var itemDef = {
-			leaf:true,
-			key:key, 
-			value:value
-			};
-	
-		if (this.DParameters === undefined || this.DParameters === "" || this.DParameters === "<delete>"){
-			this.DParameters = "[]";
-		}
-		
-		var elementsJson = JSON.parse(this.DParameters);
-		
-		var alreadyFound = false;
-		for (var i = 0; i < elementsJson.length ; i++){
-			if (elementsJson[i].key == key) {
-				alreadyFound = true;
-				break;
-			}
-		}
-		
-		if(!alreadyFound) {
-			elementsJson.push(itemDef);
-		}
-	
-		this.DParameters = JSON.stringify(elementsJson);
-	*}
-	
-	/** Removes a root element by key.
-
- 	<example>
-	You want to remove root element
-	<code>
-	POSTRESPONSEPARSER.removeParameter(String key);<br>
-	<br>
-	</code>
-	</example>
-	 */
-	void removeParameter (
-			String key
-			) {*		
-		
-		if (this.DParameters === undefined || this.DParameters === "" || this.DParameters === "<delete>"){
-			this.DParameters = "[]";
-		}
-		
-		var elementsJson = JSON.parse(this.DParameters);
-		
-		var alreadyFound = false;
-		for (var i = 0; i < elementsJson.length ; i++){
-			if (elementsJson[i].key == key) {
-				elementsJson.splice(i,1);
-				break;
-			}
-		}
-
-		// remove all items with this parent
-		for (var i = elementsJson.length - 1; i >= 0; i--){
-			if (elementsJson[i].parentKey == key) {
-				elementsJson.splice(i,1);
-			}
-		}
-
-		this.DParameters = JSON.stringify(elementsJson);
-	*}
-
 	/**
-	 * Sets Raw Parameters as String Content Property
+	 * Gets List Of Headers (Name / Value) Property
 	 */	
-	void setRawParameters( /* &nbsp; */  String rawParameters){*
-		this.DRawParameters = rawParameters;
+	String getHeaders() {*
+		return this.DHeaders;
 	*}
 
 	/**
-	 * Gets Raw Parameters as String Content Property
+	 * Sets Do You Want To Use JSONP Property
+	 */	
+	void setJsonp( /**Do You Want To Use JSONP*/ boolean jsonp){*
+		this.DJsonp = jsonp;
+	*}
+
+	/**
+	 * Gets Do You Want To Use JSONP Property
+	 */	
+	boolean isJsonp() {*
+		return this.DJsonp;
+	*}
+
+	/**
+	 * Gets List Of Parameters (Name / Value) Property
+	 */	
+	String getParameters() {*
+		return this.DParameters;
+	*}
+
+	/**
+	 * Gets HTTP Reuqest Payload Property
+	 */	
+	String getPayload() {*
+		return this.DPayload;
+	*}
+
+	/**
+	 * Gets Raw Parameters As String Content Property
 	 */	
 	String getRawParameters() {*
 		return this.DRawParameters;
 	*}
 
 	/**
-	 * Sets Request Method (POST | GET | PUT) Property
+	 * Sets Request Method (POST | GET | PUT) Property by String
 	 */	
-	void setRequestMethod( /* &nbsp; */  choice requestMethod){*
+	void setRequestMethodByString( /**Request Method (POST | GET | PUT)*/ String requestMethod){*
 		this.DRequestMethod = requestMethod;
 	*}
 
 	/**
-	 * Gets Request Method (POST | GET | PUT) Property
+	 * Gets Request Method (POST | GET | PUT) Property as String
 	 */	
-	choice getRequestMethod() {*
+	String getRequestMethodAsString() {*
+		return this.DRequestMethod;
+	*}
+	
+	/**
+	 * Sets Request Method (POST | GET | PUT) Property by Choice Option
+	 */	
+	void setRequestMethod( /**Request Method (POST | GET | PUT)*/ org_scn_community_shared_Enumfield requestMethod){*
+		this.DRequestMethod = requestMethod;
+	*}
+	
+	/**
+	 * Gets Request Method (POST | GET | PUT) Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getRequestMethod() {*
 		return this.DRequestMethod;
 	*}
 
 	/**
-	 * Sets Request Type (JQuery | HTTP) Property
+	 * Sets Request Type (JQuery | HTTP) Property by String
 	 */	
-	void setRequestType( /* &nbsp; */  choice requestType){*
+	void setRequestTypeByString( /**Request Type (JQuery | HTTP)*/ String requestType){*
 		this.DRequestType = requestType;
 	*}
 
 	/**
-	 * Gets Request Type (JQuery | HTTP) Property
+	 * Gets Request Type (JQuery | HTTP) Property as String
 	 */	
-	choice getRequestType() {*
+	String getRequestTypeAsString() {*
+		return this.DRequestType;
+	*}
+	
+	/**
+	 * Sets Request Type (JQuery | HTTP) Property by Choice Option
+	 */	
+	void setRequestType( /**Request Type (JQuery | HTTP)*/ org_scn_community_shared_Enumfield requestType){*
+		this.DRequestType = requestType;
+	*}
+	
+	/**
+	 * Gets Request Type (JQuery | HTTP) Property as Choice Option
+	 */	
+	org_scn_community_shared_Enumfield getRequestType() {*
 		return this.DRequestType;
 	*}
 
 	/**
-	Returns the content of property Return Headers as loopable name/value array.
-	<example>
-	You want to loop at values:
-	<code>
-	var content = POSTRESPONSEPARSER.getReturnHeadersAsNameValueArray();<br>
-	<br>
-	// a loop for all entries<br>
-	content.forEach(function(element, index) {<br>
-		LISTBOX_1.addItem(element.name, element.value);<br>
-	});
-	</code>
-	This LISTBOX_1 has now following values entries:<br>
-		<ul>
-		<li>key: k1; value: v1</li>
-		<li>key: k2; value: v2</li>
-		<li>key: k3; value: v3</li></ul>
-	</example>
-	*/
-	org.scn.community.shared.NameValueArray getReturnHeadersAsNameValueArray (
-			/**max members*/ optional int maxMembers) {*
-		var s = this.DReturnHeaders;  
-		var a = []; 
-		if(s!="") a = JSON.parse(s);
-		
-		var tempA = [];
-		
-		if(maxMembers == undefined || maxMembers <= 0 || maxMembers > a.length) {
-			maxMembers = a.length;
-		}
-		
-		for(var i=0;i<maxMembers;i++){
-			var itemDef = { 
-				"name": a[i].name, 
-				"value": a[i].value
-			};
-			
-			tempA.push(itemDef);
-		}
-		
-		return tempA;
+	 * Gets Return Headers Property
+	 */	
+	String getReturnHeaders() {*
+		return this.DReturnHeaders;
 	*}
 
 	/**
-	Returns the content of property Return Parameters as loopable name/value array.
-	<example>
-	You want to loop at values:
-	<code>
-	var content = POSTRESPONSEPARSER.getReturnParametersAsNameValueArray();<br>
-	<br>
-	// a loop for all entries<br>
-	content.forEach(function(element, index) {<br>
-		LISTBOX_1.addItem(element.name, element.value);<br>
-	});
-	</code>
-	This LISTBOX_1 has now following values entries:<br>
-		<ul>
-		<li>key: k1; value: v1</li>
-		<li>key: k2; value: v2</li>
-		<li>key: k3; value: v3</li></ul>
-	</example>
-	*/
-	org.scn.community.shared.NameValueArray getReturnParametersAsNameValueArray (
-			/**max members*/ optional int maxMembers) {*
-		var s = this.DReturnParameters;  
-		var a = []; 
-		if(s!="") a = JSON.parse(s);
-		
-		var tempA = [];
-		
-		if(maxMembers == undefined || maxMembers <= 0 || maxMembers > a.length) {
-			maxMembers = a.length;
-		}
-		
-		for(var i=0;i<maxMembers;i++){
-			var itemDef = { 
-				"name": a[i].name, 
-				"value": a[i].value
-			};
-			
-			tempA.push(itemDef);
-		}
-		
-		return tempA;
+	 * Gets Return Parameters Property
+	 */	
+	String getReturnParameters() {*
+		return this.DReturnParameters;
 	*}
 
 	/**
-	 * Gets Return Response as String Property
+	 * Gets Return Response As String Property
 	 */	
 	String getReturnResponse() {*
 		return this.DReturnResponse;
@@ -3728,21 +4192,59 @@ class org.scn.community.utils.PostResponseParser extends org.scn.community.share
 	*}
 
 	/**
-	 * Sets Url To Send the Request Property
+	 * Gets Just As Simple Triger Property
 	 */	
-	void setUrl( /* &nbsp; */  String url){*
+	String getTrigger() {*
+		return this.DTrigger;
+	*}
+
+	/**
+	 * Sets Url To Send The Request Property
+	 */	
+	void setUrl( /**Url To Send The Request*/ String url){*
 		this.DUrl = url;
 	*}
 
 	/**
-	 * Gets Url To Send the Request Property
+	 * Gets Url To Send The Request Property
 	 */	
 	String getUrl() {*
 		return this.DUrl;
 	*}
 
+	/**
+	 * Sets Do You Need With Credentials Property
+	 */	
+	void setWithCredentials( /**Do You Need With Credentials*/ boolean withCredentials){*
+		this.DWithCredentials = withCredentials;
+	*}
+
+	/**
+	 * Gets Do You Need With Credentials Property
+	 */	
+	boolean isWithCredentials() {*
+		return this.DWithCredentials;
+	*}
+
+
+
 
 	/* START HERE PLACE FOR CUSTOM ZTL FUNCTIONS */
+	/** Adds payload to HTTP requests. Typically used with POST requests as GET
+	 * uses the URL query string.
+
+ 	<example>
+	You want to add JSON data to your POST request to be send to the server
+	<code>
+	addPayloadToHttp("{"key":"value"}");<br>
+	<br>
+	</code>
+	</example>
+	 */
+	void addPayloadToHttp(String data){*
+		this.DPayload = data;
+	*}
+
 	/**
 	 * Trigger Execution of the given URL and parameter list
 	 */
@@ -3809,6 +4311,8 @@ class org.scn.community.utils.RealDate extends org.scn.community.shared.Componen
 		this.internal_initializeNow();
 	
 		this.date.setUTCDate(this.date.getUTCDate() + days);
+		
+		this.date.recalculate();
 	*}
 	
 	/**
@@ -3818,6 +4322,8 @@ class org.scn.community.utils.RealDate extends org.scn.community.shared.Componen
 		this.internal_initializeNow();
 		
 		this.date.setUTCDate(this.date.getUTCDate() + (weeks*7));
+		
+		this.date.recalculate();
 	*}
 
 	/**
@@ -3827,6 +4333,8 @@ class org.scn.community.utils.RealDate extends org.scn.community.shared.Componen
 		this.internal_initializeNow();
 
 		this.date.setUTCMonth(this.date.getUTCMonth() + months);
+		
+		this.date.recalculate();
 	*}
 
 	/**
@@ -3836,6 +4344,8 @@ class org.scn.community.utils.RealDate extends org.scn.community.shared.Componen
 		this.internal_initializeNow();
 
 		this.date.setUTCFullYear(this.date.getUTCFullYear() + years);
+		
+		this.date.recalculate();
 	*}
 
 	/**
@@ -4259,11 +4769,7 @@ class org.scn.community.utils.RealDate extends org.scn.community.shared.Componen
 		                mask = date;
 		                date = undefined;
 		            }
-	
-		            // Passing date through Date applies Date.parse, if necessary
-		            date = date ? new Date(date) : new Date;
-		            if (isNaN(date)) throw SyntaxError("invalid date");
-	
+
 		            mask = String(dF.masks[mask] || mask || dF.masks["default"]);
 	
 		            // Allow setting the utc argument via the mask
@@ -10230,3 +10736,54 @@ class org.scn.community.utils.SimpleDate extends org.scn.community.shared.Compon
 	*}
 
 }
+/**
+ * Class for WSPusher
+ */
+class org.scn.community.utils.WSPusher extends org.scn.community.shared.Component {
+	/**
+	 * Get Server URL
+	 */
+	String getServerURL(){*
+		return this.server;
+	*}
+	/**
+	 * Set Server URL.
+	 * Examples
+	 * Non-Secure connection: ws://echo.websocket.org
+	 * Secure connection: wss://echo.websocket.org
+	 */
+	void setServerURL(String url){*
+		this.server = url;
+	*}
+	
+	/**
+	 * Get latest push message. Should be called from within event handler (onPushReceived,onPushErrorReceived)
+	 */
+	String getLastPushMessage(){*
+		return this.push;
+	*}
+	/**
+	 * Set message to be send to the destination WebSocket. Should be called before send method.
+	 * We recommend using JSON as data format
+	 */
+	void setMessage(String msg){*
+		this.msg = msg;
+	*}
+	/**
+	 * Get Message to be send to server
+	 */
+	String getMessage(){*
+		return this.msg;
+	*}
+	/**
+	 * Send actual message to WebSocket compatible server. You need to setup the message with setMessage before!
+	 */
+	void send(){*
+		this.send = calcTimestamp();
+	*}
+	
+	@Visibility(private)
+	String calcTimestamp() {*
+		return new Date().valueOf();
+	*}
+}/* ZTL END */

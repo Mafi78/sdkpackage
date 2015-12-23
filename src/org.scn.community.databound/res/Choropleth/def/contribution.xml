@@ -1,20 +1,13 @@
 
 <component id="Choropleth" 
-	title="Choropleth Map"
+	title="Choropleth Map 2.0"
 	icon="res/Choropleth/Choropleth.png"
 	handlerType="div"
-	propertySheetPath="res/org.scn.community.aps.PropertyPage.html"
+	modes="commons m"
+	propertySheetPath="aps/PropertyPage.html"
 	databound = "true"
-	group="ScnCommunityChartMaps">
-	<jsInclude>res/require_loader.js</jsInclude>
-	<jsInclude>res/common_basics.js</jsInclude>
-	<jsInclude>res/common_databound.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.Core.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.Databound.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.BaseViz.js</jsInclude>
-	<jsInclude>res/org.scn.community.component.Map.js</jsInclude>
-	<jsInclude>res/Choropleth/Choropleth.js</jsInclude>
-	<cssInclude>res/Viz.css</cssInclude>
+	group="ScnCommunityVisualizations">
+	<requireJs modes="commons m">res/Choropleth/Choropleth</requireJs>
 	<!-- Base Databound Properties -->
 	<property
 			id="data"
@@ -207,7 +200,7 @@
 		<defaultValue property="graticuleThickness">.5</defaultValue>
 		<defaultValue property="colorPalette">#EFF3FF,#BDD7E7,#6BAED6,#3182BD,#08519C</defaultValue>
 		<defaultValue property="labelProperty">NAME_1</defaultValue>
-		<defaultValue property="projection">equirectangular</defaultValue>
+		<defaultValue property="projection">Equirectangular (Plate Carrée)</defaultValue>
 		<defaultValue property="yaw">0.0</defaultValue>
 		<defaultValue property="pitch">0.0</defaultValue>
 		<defaultValue property="roll">0.0</defaultValue>
@@ -228,7 +221,8 @@
 		<defaultValue property="bubbleMax">50</defaultValue>
 		<defaultValue property="bubbleAlpha">50</defaultValue>
 		<defaultValue property="bubbleColor">#006699</defaultValue>
-		
+		<defaultValue property="measureMember">{&quot;fieldType&quot;:&quot;position&quot;,&quot;fieldPosition&quot;:0}</defaultValue>
+		<defaultValue property="bubbleMember">{&quot;fieldType&quot;:&quot;position&quot;,&quot;fieldPosition&quot;:1}</defaultValue>
 		<!-- End of Choropleth Defaults -->
 	</initialization>
 </component>

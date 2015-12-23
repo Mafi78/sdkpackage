@@ -16,10 +16,21 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
+define([],
+function() {
 
-(function() {
+	var spec = {
+		id: "ActivityViewer",
+		name: "basics.ActivityViewer",
+		requireName: "basicsactivityviewer",
+		fullComponentName: "org.scn.community.basics.ActivityViewer",
+		fullComponentPackage: "org.scn.community.basics/res/ActivityViewer",
+		script: "org.scn.community.basics/res/ActivityViewer/ActivityViewer",
+		scriptSpec: "org.scn.community.basics/res/ActivityViewer/ActivityViewerSpec",
+		min: false
+	};
 
-	org_scn_community_require.knownComponents.basics.ActivityViewer.spec = 
+	spec.spec = 
 {
   "activities": {
     "opts": {
@@ -60,7 +71,7 @@
       "ztlType": "SingleArray"
     },
     "type": "String",
-    "value": "[]",
+    "value": "[{\"parentKey\":\"ROOT\",\"key\":\"ELEMENT\",\"leaf\":false,\"text\":\"Distribution\",\"category\":\"CAT1\",\"state\":\"FAILED\",\"startDate\":\"20130101\",\"endDate\":\"20130205\"},{\"parentKey\":\"ROOT\",\"key\":\"ELEMENT1\",\"leaf\":false,\"text\":\"Process\",\"category\":\"CAT1\",\"state\":\"RUNNING\",\"startDate\":\"20140102\",\"endDate\":\"20140605\"},{\"parentKey\":\"ROOT\",\"key\":\"ELEMENT2\",\"leaf\":false,\"text\":\"Buying\",\"category\":\"CAT2\",\"state\":\"STANDARD\",\"startDate\":\"20140905\",\"endDate\":\"20141216\"},{\"parentKey\":\"ROOT\",\"key\":\"ELEMENT3\",\"leaf\":false,\"text\":\"Work On\",\"state\":\"KILLED\",\"category\":\"CAT2\",\"startDate\":\"20141228\",\"endDate\":\"20150206\"}]",
     "visible": true
   },
   "categories": {
@@ -94,7 +105,7 @@
       "ztlType": "SingleArray"
     },
     "type": "String",
-    "value": "[]",
+    "value": "[{\"parentKey\":\"ROOT\",\"key\":\"CAT1\",\"leaf\":false,\"text\":\"Good Products\"},{\"parentKey\":\"ROOT\",\"key\":\"CAT2\",\"leaf\":false,\"text\":\"Better Products\"}]",
     "visible": true
   },
   "onSelectionChanged": {
@@ -108,6 +119,21 @@
     "type": "ScriptText",
     "value": "",
     "visible": true
+  },
+  "selectedKey": {
+    "opts": {
+      "apsControl": "text",
+      "cat": "Internal",
+      "desc": "Selected Key",
+      "noAps": true,
+      "noZtl": false,
+      "tooltip": "Selected Key",
+      "ztlFunction": "-get",
+      "ztlType": "String"
+    },
+    "type": "String",
+    "value": "",
+    "visible": false
   },
   "states": {
     "opts": {
@@ -134,16 +160,19 @@
       "ztlType": "SingleArray"
     },
     "type": "String",
-    "value": "[]",
+    "value": "[{\"parentKey\":\"ROOT\",\"key\":\"STANDARD\",\"leaf\":false,\"style\":\"bar\"},{\"parentKey\":\"ROOT\",\"key\":\"FAILED\",\"leaf\":false,\"style\":\"bar-failed\"},{\"parentKey\":\"ROOT\",\"key\":\"RUNNING\",\"leaf\":false,\"style\":\"bar-running\"},{\"parentKey\":\"ROOT\",\"key\":\"SUCCEEDED\",\"leaf\":false,\"style\":\"bar-succeeded\"},{\"parentKey\":\"ROOT\",\"key\":\"KILLED\",\"leaf\":false,\"style\":\"killed\"}]",
     "visible": true
   }
 };
 
-	org_scn_community_require.knownComponents.basics.ActivityViewer.specAbout = 
+	spec.specInclude = 
+{};
+
+	spec.specAbout = 
 {
   "description": "Activity Viewer - Gantt Chart for Activities",
   "icon": "ActivityViewer.png",
-  "title": "Activity Viewer",
+  "title": "Activity Viewer 2.0",
   "topics": [
     {
       "content": "Activity must have a start and end date, it must also have a name and category. The Activity Viewer is showing all activities for a category (like a Gantt Chart).",
@@ -156,22 +185,22 @@
   ]
 };
 
-	org_scn_community_require.knownComponents.basics.ActivityViewer.specComp = 
+	spec.specComp = 
 {
   "databound": false,
   "extension": "Component",
-  "group": "ScnCommunityBasics",
+  "group": "ScnCommunityVisualizations",
   "handlerType": "div",
   "height": "400",
   "id": "ActivityViewer",
   "package": "basics",
   "require": [
     {
-      "id": "d3",
+      "id": "basics/os/d3/d3",
       "space": "d3"
     },
     {
-      "id": "d3plug_gantt",
+      "id": "basics/os/d3-plug/gantt-chart-d3v2",
       "space": "d3"
     },
     {
@@ -179,9 +208,10 @@
       "space": "known"
     }
   ],
-  "title": "Activity Viewer",
+  "title": "Activity Viewer 2.0",
   "tooltip": "Viewer for Custom Activities",
   "width": "600"
 };
 
-})();// End of closure
+	return spec;
+});// End of closure

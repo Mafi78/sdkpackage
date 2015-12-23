@@ -1,0 +1,47 @@
+{
+	"url" : {
+		"type" : "String",
+		"value" : "",
+		"visible": true,
+		"opts" : {
+			"ztlType": "String",
+			"ztlFunction": "",
+			"desc" : "Url",
+			"cat" : "Display",
+			"tooltip" : "Url to Embedd",
+			"apsControl" : "text",
+			"noAps":false,
+			"noZtl":false
+		}
+	},
+	"domainrelaxlevel": {
+	  "type" : "int",
+	  "value" : "0",
+	  "visible": true,
+	  "opts": {
+		    "apsControl": "text",
+		    "cat": "Display",
+		    "desc": "Domain Relax Level",
+		    "noAps": false,
+		    "noZtl": false,
+		    "tooltip": "Level of Domain Relaxation",
+		    "ztlFunction": "",
+		    "ztlType": "int"
+		  }
+	},
+	"skipport": {
+	  "type" : "boolean",
+	  "value" : "true",
+	  "visible": true,
+	  "opts": {
+		    "apsControl": "checkbox",
+		    "cat": "Display",
+		    "desc": "Skip port in domain",
+		    "noAps": false,
+		    "noZtl": false,
+		    "tooltip": "Skip port in domain",
+		    "ztlFunction": "",
+		    "ztlType": "boolean"
+		  }
+	}
+}

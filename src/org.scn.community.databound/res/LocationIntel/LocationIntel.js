@@ -1,33 +1,15 @@
-(function() {
-	 var myScript = $("script:last")[0].src;
-	 var ownComponentName = "org.scn.community.databound.LocationIntel";
-	 var _readScriptPath = function () {
-		 var scriptInfo = org_scn_community_basics.readOwnScriptAccess(myScript, ownComponentName);
-		 return scriptInfo;
-	 };
-	 /** end of recognition of script path */
-	 /** RequireJS Config **/
-	 var pathInfo = _readScriptPath();
-	 sap.zen.Dispatcher.instance.pauseDispatching();
-	 var sdkReqs = require.config({
-		 context : "sdk",
-		 paths: {
-			d3 :		pathInfo.mainSDKPath + "org.scn.community.databound/os/d3v3/d3.min",
-			d3tip :		pathInfo.mainSDKPath + "org.scn.community.databound/os/d3v3/d3-tip",
-			topojson : 	pathInfo.mainSDKPath + "org.scn.community.databound/os/d3v3/topojson.v1.min",
-			"d3-geo-projection" : 	pathInfo.mainSDKPath + "org.scn.community.databound/os/d3v3/d3.geo.projection"
-		 }
-	 });
-	 sdkReqs(["require","d3","d3tip","topojson","d3-geo-projection"], function(require,d3,d3tip,topojson,d3geoproj) {
-		 LocationIntel.prototype = org_scn_community_databound_Map;
-		 LocationIntel.prototype.constructor = LocationIntel;
-		 LocationIntel.prototype.toString = function(){
-	    	 return ownComponentName;
-	     }
-	     function LocationIntel() {
-	    	 var that = this;
-	    	// Call super
-	    	org_scn_community_databound_Map.call(this, d3,topojson,{
+ /**
+ * Location Intelligence
+ */
+define(["./../../../org.scn.community.shared/os/viz-modules/VizMap",
+        "sap/designstudio/sdk/component"
+    ], function(VizMap,Component) {
+	var ownComponentName = "org.scn.community.databound.LocationIntel";
+	LocationIntel.prototype = VizMap;
+	function LocationIntel() {
+    	 var that = this;
+    	 // Call super
+    	 VizMap.call(this, {
 	    		latitudeField :  { 
 					value : "",
 					opts : {
@@ -81,7 +63,7 @@
 					opts : {
 						desc : "Marker Size Measure (Optional)",
 						cat : "Data",
-						apsControl : "text"
+						apsControl : "measureselector"
 					}					
 				},
 				markerMin : { 
@@ -201,10 +183,17 @@
 		        var d, domain;
 		        this.bubbleSet = [0];
 		        if(this.markerSizeMeasure()){
+		        	var msObj = jQuery.parseJSON(this.markerSizeMeasure());
+		        	var msm;
+		        	if(typeof msObj == "object"){
+						msm = this.determineMeasureName(msObj);
+					}else{
+						msm = msObj;			// Backwards compat
+					}
 		        	for(var i=0;i<this.plots.length;i++){
 		        		var plot = this.plots[i];
-		        		if(plot.designStudioMeasures && plot.designStudioMeasures[this.markerSizeMeasure()]){
-		        			this.bubbleSet.push(plot.designStudioMeasures[this.markerSizeMeasure()]);
+		        		if(plot.designStudioMeasures && plot.designStudioMeasures[msm]){
+		        			this.bubbleSet.push(plot.designStudioMeasures[msm]);
 		        		}else{
 		        			// No value
 		        		}
@@ -247,15 +236,20 @@
 					.attr("r", 0)
 					.attr("opacity", this.markerAlpha()/100)
 					.attr("fill", this.markerColor());
-
+				var msObj = jQuery.parseJSON(this.markerSizeMeasure());
+				var msm;
+	        	if(typeof msObj == "object"){
+					msm = this.determineMeasureName(msObj);
+				}else{
+					msm = msObj;			// Backwards compat
+				}
 				this.markerGroup.selectAll("circle")
 					.transition().duration(this.ms())	
 					.attr("r",function(d){
 						if(d.designStudioMeasures){
-							var bm = that.markerSizeMeasure();
-							if(bm){
-								if(d.designStudioMeasures[bm]){
-									return that.bubbleScale(d.designStudioMeasures[bm])/that.zoomScale;
+							if(msm){
+								if(d.designStudioMeasures[msm]){
+									return that.bubbleScale(d.designStudioMeasures[msm])/that.zoomScale;
 									// linear scale
 								}else{
 									return that.markerSize()/that.zoomScale;	
@@ -304,33 +298,36 @@
 	    	};
 			var parentAfterUpdate = this.afterUpdate;
 			this.afterUpdate = function(){
+				this.plots = [];
 				try{
 					var that = this;
-				var dimHeaders = this.flatData.dimensionHeaders.slice();
-				this.plots = [];
-				var latIndex = -1;
-				var lngIndex = -1;
-				var titleIndex = -1;
-				for(var i=0;i<dimHeaders.length;i++){
-					if(dimHeaders[i] == this.latitudeField()) latIndex = i;
-					if(dimHeaders[i] == this.longitudeField()) lngIndex = i;
-					if(dimHeaders[i] == this.markerTitle()) titleIndex = i;
-				}
-				if(latIndex != -1 && lngIndex !=-1){
-					for(var i=0;i<this.flatData.rowHeaders2D.length;i++){
-						var row = this.flatData.rowHeaders2D[i];
-						var dsm = {};
-						for(var j=0;j<this.flatData.columnHeaders.length;j++){
-							dsm[this.flatData.columnHeaders[j]] = this.flatData.values[i][j];
+					if(this.flatData && this.flatData.dimensionHeaders){
+						var dimHeaders = this.flatData.dimensionHeaders.slice();
+						
+						var latIndex = -1;
+						var lngIndex = -1;
+						var titleIndex = -1;
+						for(var i=0;i<dimHeaders.length;i++){
+							if(dimHeaders[i] == this.latitudeField()) latIndex = i;
+							if(dimHeaders[i] == this.longitudeField()) lngIndex = i;
+							if(dimHeaders[i] == this.markerTitle()) titleIndex = i;
 						}
-						this.plots.push({
-							latitude : row[latIndex],
-							longitude : row[lngIndex],
-							title : row[titleIndex],
-							designStudioMeasures : dsm
-						})
+						if(latIndex != -1 && lngIndex !=-1){
+							for(var i=0;i<this.flatData.rowHeaders2D.length;i++){
+								var row = this.flatData.rowHeaders2D[i];
+								var dsm = {};
+								for(var j=0;j<this.flatData.columnHeaders.length;j++){
+									dsm[this.flatData.columnHeaders[j]] = this.flatData.values[i][j];
+								}
+								this.plots.push({
+									latitude : row[latIndex],
+									longitude : row[lngIndex],
+									title : row[titleIndex],
+									designStudioMeasures : dsm
+								})
+							}
+						}						
 					}
-				}
 				}catch(e){
 					alert(e);
 				}
@@ -348,7 +345,9 @@
 	    	}
 	     }
 	    	
-		sap.designstudio.sdk.Component.subclass(ownComponentName, LocationIntel);	// End of SDK
-		sap.zen.Dispatcher.instance.resumeDispatching();
-	 });//End of Require Callback 	
-})();// End of closure
+		 LocationIntel.prototype.constructor = LocationIntel;
+		 LocationIntel.prototype.toString = function(){
+			 return ownComponentName;
+		 }
+		 Component.subclass(ownComponentName, LocationIntel);	// End of SDK
+});// End of closure

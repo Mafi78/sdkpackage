@@ -16,42 +16,50 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-
-sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostResponseParser", {
-
-	metadata: {
-        properties: {
-              "DUrl": {type: "string"},
-              "DTrigger": {type: "string"},
-              
-              "DParameters": {type: "string"},
-              "DRawParameters": {type: "string"},
-              "DHeaders": {type: "string"},
-              
-              "DBasicAuthorisation": {type: "string"},
-              "DContentType": {type: "string"},
-
-              "DExpectedResponseStatus": {type: "int"},
-              "DExpectedContentType": {type: "string"},
-              
-              "DReturnParameters": {type: "string"},
-              "DReturnResponse": {type: "string"},
-              "DReturnStatus": {type: "string"},
-              "DReturnHeaders": {type: "string"},
-              
-              "DRequestMethod": {type: "string"},
-              "DRequestType": {type: "string"},
-              "DCrossDomain": {type: "boolean"},
-        }
-	},
-
-	initDesignStudio: function() {
-		var that = this;
-	},	
+ 
+//%DEFINE-START%
+var scn_pkg="org.scn.community.";if(sap.firefly!=undefined){scn_pkg=scn_pkg.replace(".","_");}
+define([
+	"sap/designstudio/sdk/component",
+	"./PostResponseParserSpec",
+	"../../../"+scn_pkg+"shared/modules/component.core",
+	"../../../"+scn_pkg+"shared/modules/component.basics"
 	
+	],
+	function(
+		Component,
+		spec,
+		core,
+		basics
+	) {
+//%DEFINE-END%
+
+var myComponentData = spec;
+
+PostResponseParser = {
+
 	renderer: {},
 	
-	afterDesignStudioUpdate : function() {
+	initDesignStudio: function() {
+		var that = this;
+
+		org_scn_community_basics.fillDummyDataInit(that, that.initAsync);		
+	},
+	
+	initAsync: function (owner) {
+		var that = owner;
+		org_scn_community_component_Core(that, myComponentData);
+
+		/* COMPONENT SPECIFIC CODE - START(initDesignStudio)*/
+		
+		/* COMPONENT SPECIFIC CODE - END(initDesignStudio)*/
+		
+		// that.onAfterRendering = function () {
+			// org_scn_community_basics.resizeContentAbsoluteLayout(that, that._oRoot, that.onResize);
+		// }
+	},
+	
+	afterDesignStudioUpdate: function() {
 		var that = this;
 
 		if(this.getDUrl() != "" && this.getDTrigger() == "GO") {
@@ -119,6 +127,10 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostRespon
 			if(that.getDContentType().indexOf("json") == -1) {
 				lData = lDataUrl;
 			}	
+			//payload for post requests
+			if(that.getDPayload() !== undefined && that.getDPayload() !== null && that.getDPayload() !== ""){
+				lData = that.getDPayload();
+			}
 		}
 
 		var ajaxRequest = {
@@ -126,7 +138,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostRespon
 		    contentType: that.getDContentType(),
 		    processData: false,
 		    crossDomain: that.getDCrossDomain(),
-		    jsonp: false,
+//		    jsonp: false,
 		    url: url,
 		    headers: lHeadersObject,
 		    data: lData,
@@ -136,14 +148,21 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostRespon
 	    		var status = jqXHR.status;
 	    		
 		    	if(status == that.getDExpectedResponseStatus()){
-		    		if(that.getDExpectedContentType() == "JSON") {
+		    		if(that.getDExpectedContentType() == "json") {
 		    			try{
-		    				var responseJson = JSON.parse(response);
-		    				
-		    				for (lElementKey in responseJson) {
-		    					returnParameters.push({name: lElementKey, value: responseJson[lElementKey]});
+		    				if(typeof response =='object'){			    				
+			    				for (lElementKey in response) {
+			    					returnParameters.push({name: lElementKey, value: response[lElementKey]});
+			    				}
 		    				}
-		    				
+		    				else{
+		    					var responseJson = JSON.parse(response);
+			    				
+			    				for (lElementKey in responseJson) {
+			    					returnParameters.push({name: lElementKey, value: responseJson[lElementKey]});
+			    				}	
+		    				}
+		    				response = JSON.stringify(response);
 		    			} catch (e) {
 		    				returnParameters.push({name: "STATUS", value: "PARSE_ERROR"});
 		    			}
@@ -213,7 +232,13 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostRespon
 				that.fireDesignStudioEvent("onResponse");
 		    }
 		};
-		
+		if(that.getDJsonp()){
+			ajaxRequest.dataType = 'jsonp';
+			ajaxRequest.crossDomain = true;
+			ajaxRequest.contentType = "application/javascript";
+		}else{
+			ajaxRequest.jsonp = false;
+		}
 		$.ajax(ajaxRequest);
 	},
 	
@@ -241,13 +266,21 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostRespon
 			}
 		}
 		
-		http.open("POST", url, true);
+		//payload for post requests
+		if(that.getDPayload() !== undefined && that.getDPayload() !== null && that.getDPayload() !== ""){
+			params = that.getDPayload();
+		}
+		
+		http.open(that.getDRequestMethod(), url, true);
 
 		// "application/json; charset=utf-8"
 		if(this.getDContentType() != "") {
 			http.setRequestHeader("Content-type", that.getDContentType());	
 		}
 		
+		if(this.getDWithCredentials() != ""){
+			http.withCredentials = this.getDWithCredentials();
+		}
 		
 		if(this.getDBasicAuthorisation() != "") {
 			http.setRequestHeader("Authorization", that.getDBasicAuthorisation());	
@@ -272,12 +305,18 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostRespon
 		    	if(http.status == that.getDExpectedResponseStatus()){
 		    		if(that.getDExpectedContentType() == "JSON") {
 		    			try{
-		    				var responseJson = JSON.parse(response);
-		    				
-		    				for (lElementKey in responseJson) {
-		    					returnParameters.push({name: lElementKey, value: responseJson[lElementKey]});
+		    				if(typeof response =='object'){
+			    				for (lElementKey in responseJson) {
+			    					returnParameters.push({name: lElementKey, value: response[lElementKey]});
+			    				}
+		    				}else{
+			    				var responseJson = JSON.parse(response);
+			    				
+			    				for (lElementKey in responseJson) {
+			    					returnParameters.push({name: lElementKey, value: responseJson[lElementKey]});
+			    				}
 		    				}
-		    				
+		    				response = JSON.stringify(response);
 		    			} catch (e) {
 		    				returnParameters.push({name: "STATUS", value: "PARSE_ERROR"});
 		    			}
@@ -331,4 +370,10 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.scn.community.utils.PostRespon
 			that.fireDesignStudioEvent("onResponse");
 		}
 	},
+	/* COMPONENT SPECIFIC CODE - END METHODS*/
+};
+//%INIT-START%
+myComponentData.instance = PostResponseParser;
+jQuery.sap.require("sap.zen.commons.layout.AbsoluteLayout");
+sap.zen.commons.layout.AbsoluteLayout.extend(myComponentData.fullComponentName, myComponentData.instance);
 });
